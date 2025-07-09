@@ -1,93 +1,145 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Pahana Edu</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
     <style>
         body {
-            background: #f0f2f5;
-            font-family: Arial, sans-serif;
+            margin: 0;
+            font-family: 'Roboto', Arial, sans-serif;
+            background: linear-gradient(120deg, #232b3e, #1a2233);
+            color: #d7dee5;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
+            padding: 20px;
         }
-        .login-card {
+        .login-container {
             background: #fff;
-            padding: 2rem 2.5rem;
             border-radius: 10px;
-            box-shadow: 0 4px 24px rgba(0,0,0,0.10);
-            min-width: 320px;
-        }
-        .login-card h2 {
-            margin-bottom: 1.5rem;
-            color: #333;
+            padding: 30px;
             text-align: center;
-        }
-        .login-card label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: #555;
-        }
-        .login-card input[type="text"],
-        .login-card input[type="password"] {
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+            max-width: 350px;
             width: 100%;
-            padding: 0.5rem;
-            margin-bottom: 1rem;
-            border: 1px solid #ccc;
+        }
+        .login-title {
+            color: #232b3e;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #232b3e;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        .input-container {
+            position: relative;
+        }
+        .form-group input[type="text"],
+        .form-group input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
             border-radius: 5px;
             font-size: 1rem;
+            box-sizing: border-box;
+            background: #fff;
+            color: #232b3e;
         }
-        .login-card input[type="submit"] {
+        .form-group input[type="text"]:focus,
+        .form-group input[type="password"]:focus {
+            outline: none;
+            border-color: #21b701;
+        }
+        .password-toggle {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #666;
+        }
+        .login-button {
             width: 100%;
-            padding: 0.7rem;
-            background: #1976d2;
+            background: #21b701;
             color: #fff;
+            padding: 10px;
             border: none;
             border-radius: 5px;
             font-size: 1rem;
+            font-weight: 600;
             cursor: pointer;
-            transition: background 0.2s;
+            margin-top: 10px;
         }
-        .login-card input[type="submit"]:hover {
-            background: #1565c0;
+        .login-button:hover {
+            background: #1a8f01;
         }
         .error-message {
-            color: #d32f2f;
+            color: #e74c3c;
             text-align: center;
-            margin-bottom: 1rem;
+            margin: 10px 0;
+            font-size: 0.9rem;
+        }
+        @media (max-width: 600px) {
+            .login-container {
+                padding: 20px;
+                margin: 10px;
+            }
         }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-<div class="login-card">
-    <h2>Login</h2>
-    <form action="login" method="post">
-        <label for="username">Username</label>
-        <input type="text" id="username" name="username" required>
-        <label for="password">Password</label>
-        <div style="position: relative;">
-            <input type="password" id="password" name="password" required style="padding-right: 2.5rem;">
-            <i class="fa fa-eye" id="togglePassword" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
-        </div>
-        <input type="submit" value="Login">
-    </form>
-    <c:if test="${not empty error}">
-        <p class="error-message">${error}</p>
-    </c:if>
-</div>
-<!-- Font Awesome CDN for eye icon -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<script>
-    const togglePassword = document.addEventListener('DOMContentLoaded', function() {
-        const toggle = document.getElementById('togglePassword');
-        const password = document.getElementById('password');
-        toggle.addEventListener('click', function () {
-            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-            password.setAttribute('type', type);
-            this.classList.toggle('fa-eye-slash');
+    <div class="login-container">
+        <h1 class="login-title">Welcome to Pahana Edu</h1>
+        
+        <form action="login" method="post">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="input-container">
+                    <input type="password" id="password" name="password" required>
+                    <i class="fa fa-eye password-toggle" id="togglePassword"></i>
+                </div>
+            </div>
+            
+            <button type="submit" class="login-button">Login</button>
+        </form>
+        
+        <c:if test="${not empty error}">
+            <div class="error-message">
+                ${error}
+            </div>
+        </c:if>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggle = document.getElementById('togglePassword');
+            const password = document.getElementById('password');
+            
+            toggle.addEventListener('click', function () {
+                const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+                password.setAttribute('type', type);
+                this.classList.toggle('fa-eye-slash');
+            });
         });
-    });
-</script>
+    </script>
 </body>
 </html> 
