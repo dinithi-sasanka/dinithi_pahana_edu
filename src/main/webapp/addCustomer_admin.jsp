@@ -11,8 +11,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
+    <title>Add New Customer - Pahana Edu</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
             margin: 0;
@@ -97,36 +98,77 @@
             align-items: center;
             gap: 10px;
         }
-        .dashboard-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 24px;
+        .form-area {
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+            max-width: 700px;
+            width: 100%;
+            margin: 0 auto;
         }
-        .card {
-            background: #27304a;
-            border-radius: 14px;
-            padding: 30px 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            text-align: center;
-            transition: transform 0.2s, box-shadow 0.2s, background 0.2s, color 0.2s, border 0.2s;
-            cursor: pointer;
-            color: #fff;
-            border: 2px solid transparent;
+        .input-card {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(44,62,80,0.10);
+            border: 1px solid #e0e0e0;
+            padding: 22px 28px 16px 28px;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
         }
-        .card:hover {
-            background: #21b701;
+        .input-card label {
             color: #232b3e;
-            border: 2px solid #21b701;
-            box-shadow: 0 8px 32px rgba(33,183,1,0.10);
+            font-size: 1.08rem;
+            font-weight: 500;
+            margin-bottom: 7px;
+            font-family: system-ui, Arial, sans-serif;
         }
-        .card i {
-            font-size: 2.5em;
-            margin-bottom: 12px;
-            color: #21b701;
-            transition: color 0.2s;
+        .input-card input, .input-card textarea {
+            width: 100%;
+            background: #fff;
+            color: #232b3e;
+            border: 1.5px solid #bdbdbd;
+            font-size: 1.13rem;
+            padding: 12px 14px;
+            border-radius: 6px;
+            transition: border-color 0.2s;
+            box-sizing: border-box;
+            font-family: system-ui, Arial, sans-serif;
         }
-        .card:hover i {
+        .input-card textarea {
+            min-height: 50px;
+            resize: vertical;
+        }
+        .input-card input:focus, .input-card textarea:focus {
+            border-color: #21b701;
+            outline: none;
+        }
+        .button-card {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(44,62,80,0.10);
+            border: 1px solid #e0e0e0;
+            padding: 18px 28px 18px 28px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .submit-btn {
+            width: 100%;
+            background: #21b701;
             color: #fff;
+            border-radius: 6px;
+            font-size: 1.18rem;
+            font-weight: 700;
+            border: none;
+            padding: 15px;
+            transition: background 0.2s, color 0.2s;
+            box-shadow: 0 2px 6px rgba(33,183,1,0.07);
+            font-family: system-ui, Arial, sans-serif;
+        }
+        .submit-btn:hover {
+            background: #43e97b;
+            color: #232b3e;
         }
         @media (max-width: 800px) {
             .sidebar { width: 60px; padding: 20px 0 0 0; }
@@ -141,7 +183,6 @@
             .sidebar ul li { margin: 0; }
         }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div class="sidebar">
@@ -168,17 +209,28 @@
                 <i class="fa fa-user-shield"></i> <span>Role: <%= user.getRole() %></span>
             </div>
         </div>
-        <div class="dashboard-cards">
-            <div class="card" onclick="window.location.href='dashboard_admin.jsp'"><i class="fa fa-chart-line"></i><div>View Dashboards</div></div>
-            <div class="card" onclick="location.href='addCustomer_admin.jsp'"><i class="fa fa-user-plus"></i><div>Add New Customer</div></div>
-            <div class="card" onclick="location.href='editCustomer.jsp'"><i class="fa fa-user-edit"></i><div>Edit Customer Info</div></div>
-            <div class="card" onclick="location.href='viewAccount.jsp'"><i class="fa fa-id-card"></i><div>View Customer Account</div></div>
-            <div class="card" onclick="location.href='manageItems.jsp'"><i class="fa fa-boxes"></i><div>Add/Update/Delete Items</div></div>
-            <div class="card" onclick="location.href='calculateBill.jsp'"><i class="fa fa-calculator"></i><div>Calculate Bill</div></div>
-            <div class="card" onclick="location.href='printBill.jsp'"><i class="fa fa-print"></i><div>Print/View Previous Bills</div></div>
-            <div class="card" onclick="location.href='help.jsp'"><i class="fa fa-question-circle"></i><div>Help Section</div></div>
-            <div class="card" onclick="location.href='manageUsers.jsp'"><i class="fa fa-users-cog"></i><div>Manage User Roles/Settings</div></div>
-            <div class="card" onclick="location.href='logout'"><i class="fa fa-sign-out-alt"></i><div>Logout</div></div>
+        <div style="display: flex; justify-content: center; align-items: flex-start; min-height: 60vh;">
+            <form class="form-area" action="addCustomer_admin.jsp" method="post">
+                <div class="input-card">
+                    <label for="accountNumber">Account Number</label>
+                    <input type="text" id="accountNumber" name="accountNumber" required>
+                </div>
+                <div class="input-card">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="input-card">
+                    <label for="address">Address</label>
+                    <textarea id="address" name="address" required></textarea>
+                </div>
+                <div class="input-card">
+                    <label for="telephone">Telephone Number</label>
+                    <input type="text" id="telephone" name="telephone" required>
+                </div>
+                <div class="button-card">
+                    <button type="submit" class="submit-btn">Add Customer</button>
+                </div>
+            </form>
         </div>
     </div>
 </body>
