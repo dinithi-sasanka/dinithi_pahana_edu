@@ -147,7 +147,7 @@
     <div class="sidebar">
         <h2>Staff</h2>
         <ul>
-            <li><a href="viewDashboards.jsp"><i class="fa fa-chart-line"></i> Dashboards</a></li>
+            <li><a href="dashboard_staff.jsp"><i class="fa fa-chart-line"></i> Dashboards</a></li>
             <li><a href="addCustomer.jsp"><i class="fa fa-user-plus"></i> Add Customer</a></li>
             <li><a href="editCustomer.jsp"><i class="fa fa-user-edit"></i> Edit Customer</a></li>
             <li><a href="viewAccount.jsp"><i class="fa fa-id-card"></i> View Account</a></li>
@@ -167,7 +167,7 @@
             </div>
         </div>
         <div class="dashboard-cards">
-            <div class="card" onclick="location.href='viewDashboards.jsp'"><i class="fa fa-chart-line"></i><div>View Dashboards</div></div>
+            <div class="card" onclick="window.location.href='dashboard_staff.jsp'"><i class="fa fa-chart-line"></i><div>View Dashboards</div></div>
             <div class="card" onclick="location.href='addCustomer.jsp'"><i class="fa fa-user-plus"></i><div>Add New Customer</div></div>
             <div class="card" onclick="location.href='editCustomer.jsp'"><i class="fa fa-user-edit"></i><div>Edit Customer Info</div></div>
             <div class="card" onclick="location.href='viewAccount.jsp'"><i class="fa fa-id-card"></i><div>View Customer Account</div></div>
