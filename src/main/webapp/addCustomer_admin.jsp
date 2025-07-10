@@ -170,6 +170,23 @@
             background: #43e97b;
             color: #232b3e;
         }
+        .message {
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-weight: 500;
+            text-align: center;
+        }
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
         @media (max-width: 800px) {
             .sidebar { width: 60px; padding: 20px 0 0 0; }
             .sidebar h2 { display: none; }
@@ -210,7 +227,7 @@
             </div>
         </div>
         <div style="display: flex; justify-content: center; align-items: flex-start; min-height: 60vh;">
-            <form class="form-area" action="addCustomer_admin.jsp" method="post">
+            <form class="form-area" action="addCustomer" method="post">
                 <div class="input-card">
                     <label for="accountNumber">Account Number</label>
                     <input type="text" id="accountNumber" name="accountNumber" required>
@@ -233,5 +250,10 @@
             </form>
         </div>
     </div>
+    <% if (request.getAttribute("message") != null && "success".equals(request.getAttribute("messageType"))) { %>
+        <script>
+            alert("customer saved successfully");
+        </script>
+    <% } %>
 </body>
 </html> 
