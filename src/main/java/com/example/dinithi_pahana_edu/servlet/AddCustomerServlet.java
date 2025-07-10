@@ -39,7 +39,14 @@ public class AddCustomerServlet extends HttpServlet {
         }
         
         User user = (User) session.getAttribute("user");
-        if (user == null || !"admin".equalsIgnoreCase(user.getRole())) {
+        System.out.println("User: " + user);
+        if (user != null) {
+            System.out.println("Role: " + user.getRole());
+        }
+        
+        if (user == null || !(user.getRole().equalsIgnoreCase("admin")
+                || user.getRole().equalsIgnoreCase("coadmin")
+                || user.getRole().equalsIgnoreCase("staff"))) {
             response.sendRedirect("error.jsp");
             return;
         }
@@ -88,7 +95,13 @@ public class AddCustomerServlet extends HttpServlet {
         request.setAttribute("address", address);
         request.setAttribute("telephone", telephone);
         
-        // Forward back to the add customer page
-        request.getRequestDispatcher("addCustomer_admin.jsp").forward(request, response);
+        // After processing the form and setting request attributes:
+        String forwardPage = "addCustomer_admin.jsp";
+        if (user.getRole().equalsIgnoreCase("coadmin")) {
+            forwardPage = "addCustomer_coadmin.jsp";
+        } else if (user.getRole().equalsIgnoreCase("staff")) {
+            forwardPage = "addCustomer_staff.jsp";
+        }
+        request.getRequestDispatcher(forwardPage).forward(request, response);
     }
 } 

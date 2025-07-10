@@ -1,7 +1,9 @@
 <%@ page session="true" %>
 <%
     com.example.dinithi_pahana_edu.model.User user = (com.example.dinithi_pahana_edu.model.User) session.getAttribute("user");
-    if (user == null || !"coadmin".equalsIgnoreCase(user.getRole())) {
+    if (user == null || !(user.getRole().equalsIgnoreCase("admin") ||
+                        user.getRole().equalsIgnoreCase("coadmin") ||
+                        user.getRole().equalsIgnoreCase("staff"))) {
         response.sendRedirect("error.jsp");
         return;
     }
