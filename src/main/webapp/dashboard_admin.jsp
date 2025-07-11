@@ -149,7 +149,7 @@
         <ul>
             <li><a href="dashboard_admin.jsp"><i class="fa fa-chart-line"></i> Dashboards</a></li>
             <li><a href="addCustomer_admin.jsp"><i class="fa fa-user-plus"></i> Add Customer</a></li>
-            <li><a href="editCustomer.jsp"><i class="fa fa-user-edit"></i> Edit Customer</a></li>
+            <li><a href="editCustomer_admin.jsp"><i class="fa fa-user-edit"></i> Edit Customer</a></li>
             <li><a href="viewAccount.jsp"><i class="fa fa-id-card"></i> View Account</a></li>
             <li><a href="manageItems.jsp"><i class="fa fa-boxes"></i> Manage Items</a></li>
             <li><a href="calculateBill.jsp"><i class="fa fa-calculator"></i> Calculate Bill</a></li>
@@ -171,7 +171,7 @@
         <div class="dashboard-cards">
             <div class="card" onclick="window.location.href='dashboard_admin.jsp'"><i class="fa fa-chart-line"></i><div>View Dashboards</div></div>
             <div class="card" onclick="location.href='addCustomer_admin.jsp'"><i class="fa fa-user-plus"></i><div>Add New Customer</div></div>
-            <div class="card" onclick="location.href='editCustomer.jsp'"><i class="fa fa-user-edit"></i><div>Edit Customer Info</div></div>
+            <div class="card" onclick="location.href='editCustomer_admin.jsp'"><i class="fa fa-user-edit"></i><div>Edit Customer Info</div></div>
             <div class="card" onclick="location.href='viewAccount.jsp'"><i class="fa fa-id-card"></i><div>View Customer Account</div></div>
             <div class="card" onclick="location.href='manageItems.jsp'"><i class="fa fa-boxes"></i><div>Add/Update/Delete Items</div></div>
             <div class="card" onclick="location.href='calculateBill.jsp'"><i class="fa fa-calculator"></i><div>Calculate Bill</div></div>
