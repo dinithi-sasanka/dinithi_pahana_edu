@@ -200,4 +200,42 @@ public class CustomerDAO {
         
         return customers;
     }
+
+    // Search customer by account number, name, or telephone (all optional, match if all non-empty fields match)
+    public Customer searchCustomer(String accountNumber, String name, String telephone) {
+        StringBuilder sql = new StringBuilder("SELECT * FROM customers WHERE 1=1");
+        java.util.List<Object> params = new java.util.ArrayList<>();
+        if (accountNumber != null && !accountNumber.trim().isEmpty()) {
+            sql.append(" AND account_number = ?");
+            params.add(accountNumber.trim());
+        }
+        if (name != null && !name.trim().isEmpty()) {
+            sql.append(" AND name = ?");
+            params.add(name.trim());
+        }
+        if (telephone != null && !telephone.trim().isEmpty()) {
+            sql.append(" AND telephone = ?");
+            params.add(telephone.trim());
+        }
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql.toString())) {
+            for (int i = 0; i < params.size(); i++) {
+                pstmt.setObject(i + 1, params.get(i));
+            }
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                Customer customer = new Customer();
+                customer.setId(rs.getInt("id"));
+                customer.setAccountNumber(rs.getString("account_number"));
+                customer.setName(rs.getString("name"));
+                customer.setAddress(rs.getString("address"));
+                customer.setTelephone(rs.getString("telephone"));
+                customer.setCreatedAt(rs.getString("created_at"));
+                return customer;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 } 

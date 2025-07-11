@@ -100,4 +100,9 @@ public class CustomerService {
         }
         return customerDAO.searchCustomersByName(name.trim());
     }
+
+    // Search customer by account number, name, or telephone
+    public Customer searchCustomer(String accountNumber, String name, String telephone) {
+        return customerDAO.searchCustomer(accountNumber, name, telephone);
+    }
 } 
