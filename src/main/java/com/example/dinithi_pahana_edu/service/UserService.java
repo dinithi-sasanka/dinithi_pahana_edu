@@ -9,4 +9,8 @@ public class UserService {
     public User authenticate(String username, String password) {
         return userDAO.getUserByUsernameAndPassword(username, password);
     }
+
+    public boolean addUser(User user) {
+        return userDAO.addUser(user);
+    }
 } 
