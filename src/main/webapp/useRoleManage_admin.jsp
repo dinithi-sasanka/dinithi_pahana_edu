@@ -183,6 +183,25 @@
             color: #721c24;
             border: 1px solid #f5c6cb;
         }
+        .view-users-btn {
+            background: #21b701;
+            color: #fff;
+            border-radius: 6px;
+            font-size: 1.08rem;
+            font-weight: 600;
+            border: none;
+            padding: 10px 22px;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.2s, color 0.2s;
+            box-shadow: 0 2px 6px rgba(33,183,1,0.07);
+            margin-bottom: 0;
+        }
+        .view-users-btn:hover {
+            background: #43e97b;
+            color: #232b3e;
+            text-decoration: none;
+        }
         @media (max-width: 800px) {
             .sidebar { width: 60px; padding: 20px 0 0 0; }
             .sidebar h2 { display: none; }
@@ -222,7 +241,12 @@
                 <i class="fa fa-user-shield"></i> <span>Role: <%= user.getRole() %></span>
             </div>
         </div>
-        <div style="display: flex; justify-content: center; align-items: flex-start; min-height: 60vh;">
+        <div style="display: flex; justify-content: flex-end; max-width: 700px; margin: 0 auto 18px auto;">
+            <a href="ViewUsersServlet" class="view-users-btn">
+                <i class="fa fa-users"></i> View Users
+            </a>
+        </div>
+        <div style="display: flex; justify-content: center; align-items: flex-start; min-height: 60vh; flex-direction: column; align-items: center;">
             <form class="form-area" action="AddUserServlet" method="post">
                 <% String message = (String) request.getAttribute("message");
                    if (message != null) { %>
