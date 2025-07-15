@@ -209,7 +209,7 @@
             <li><a href="addCustomer_coadmin.jsp"><i class="fa fa-user-plus"></i> Add Customer</a></li>
             <li><a href="editCustomer.jsp"><i class="fa fa-user-edit"></i> Edit Customer</a></li>
             <li><a href="viewAccount.jsp"><i class="fa fa-id-card"></i> View Account</a></li>
-            <li><a href="manageItems.jsp"><i class="fa fa-boxes"></i> Manage Items</a></li>
+            <li><a href="addItems_admin.jsp"><i class="fa fa-boxes"></i> Manage Items</a></li>
             <li><a href="calculateBill.jsp"><i class="fa fa-calculator"></i> Calculate Bill</a></li>
             <li><a href="printBill.jsp"><i class="fa fa-print"></i> Print/View Bills</a></li>
             <li><a href="help.jsp"><i class="fa fa-question-circle"></i> Help</a></li>
