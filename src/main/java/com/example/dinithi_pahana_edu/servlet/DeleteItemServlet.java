@@ -21,6 +21,12 @@ public class DeleteItemServlet extends HttpServlet {
         } else {
             request.setAttribute("message", "Failed to delete item.");
         }
-        request.getRequestDispatcher("ViewItemsServlet").forward(request, response);
+        javax.servlet.http.HttpSession session = request.getSession(false);
+        com.example.dinithi_pahana_edu.model.User user = (session != null) ? (com.example.dinithi_pahana_edu.model.User) session.getAttribute("user") : null;
+        String forwardPage = "ViewItemsServlet";
+        if (user != null && "coadmin".equalsIgnoreCase(user.getRole())) {
+            forwardPage = "viewItems_coadmin.jsp";
+        }
+        request.getRequestDispatcher(forwardPage).forward(request, response);
     }
 } 
