@@ -6,6 +6,28 @@
         return;
     }
 %>
+<%
+    // Get the next customer ID and account number for display
+    com.example.dinithi_pahana_edu.service.CustomerService customerService = new com.example.dinithi_pahana_edu.service.CustomerService();
+    java.util.List<com.example.dinithi_pahana_edu.model.Customer> allCustomers = customerService.getAllCustomers();
+    int nextId = 1;
+    int max = 0;
+    String nextAccountNumber = "CUST000001";
+    java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("CUST(\\d{6})");
+    for (com.example.dinithi_pahana_edu.model.Customer c : allCustomers) {
+        if (c.getId() > nextId) nextId = c.getId();
+        String acc = c.getAccountNumber();
+        if (acc != null) {
+            java.util.regex.Matcher m = pattern.matcher(acc);
+            if (m.matches()) {
+                int num = Integer.parseInt(m.group(1));
+                if (num > max) max = num;
+            }
+        }
+    }
+    nextId = allCustomers.isEmpty() ? 1 : nextId + 1;
+    nextAccountNumber = String.format("CUST%06d", max + 1);
+%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -225,12 +247,77 @@
                 <i class="fa fa-user-shield"></i> <span>Role: <%= user.getRole() %></span>
             </div>
         </div>
+        <div style="display: flex; justify-content: center; gap: 16px; margin-bottom: 24px; max-width: 700px; margin-left: auto; margin-right: auto;">
+    <div style="
+        flex: 1;
+        background: #f5f8ff;
+        border: 1.5px solid #dbeafe;
+        border-radius: 10px;
+        padding: 10px 0 6px 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: 120px;
+        box-shadow: 0 2px 8px #0001;
+        justify-content: center;
+        height: 48px;
+    ">
+        <span style="font-size:0.98em;color:#555;font-weight:500;margin-bottom:2px;display:flex;align-items:center;">
+            <i class="fa fa-id-badge" style="color:#1976d2;margin-right:5px;"></i>
+            Next Customer ID
+        </span>
+        <span style="font-size:1.15em;color:#1976d2;font-weight:700;"><%= nextId %></span>
+    </div>
+    <div style="
+        flex: 1;
+        background: #f5f8ff;
+        border: 1.5px solid #dbeafe;
+        border-radius: 10px;
+        padding: 10px 0 6px 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: 120px;
+        box-shadow: 0 2px 8px #0001;
+        justify-content: center;
+        height: 48px;
+    ">
+        <span style="font-size:0.98em;color:#555;font-weight:500;margin-bottom:2px;display:flex;align-items:center;">
+            <i class="fa fa-hashtag" style="color:#1976d2;margin-right:5px;"></i>
+            Next Account Number
+        </span>
+        <span style="font-size:1.15em;color:#1976d2;font-weight:700;"><%= nextAccountNumber %></span>
+    </div>
+    <a href="ViewCustomersServlet"
+       style="
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background:#1976d2;
+        color:#fff;
+        font-weight:600;
+        border:none;
+        border-radius:10px;
+        font-size:1.02em;
+        text-decoration:none;
+        transition:background 0.2s;
+        height: 48px;
+        min-width: 120px;
+        box-shadow: 0 2px 8px #0001;
+        text-align: center;
+    ">
+        View Customers
+    </a>
+</div>
+<% if (request.getAttribute("message") != null && "success".equals(request.getAttribute("messageType"))) { %>
+    <div style="background:#d4edda; color:#155724; border:1px solid #c3e6cb; padding:12px 24px; border-radius:7px; margin-bottom:18px; font-weight:600; text-align:center; max-width:400px; margin-left:auto; margin-right:auto;">
+        <i class="fa fa-check-circle" style="color:#21b701;margin-right:8px;"></i>
+        <%= request.getAttribute("message") %>
+    </div>
+<% } %>
         <div style="display: flex; justify-content: center; align-items: flex-start; min-height: 60vh;">
             <form class="form-area" action="addCustomer" method="post">
-                <div class="input-card">
-                    <label for="accountNumber">Account Number</label>
-                    <input type="text" id="accountNumber" name="accountNumber" required>
-                </div>
                 <div class="input-card">
                     <label for="name">Name</label>
                     <input type="text" id="name" name="name" required>
@@ -249,10 +336,5 @@
             </form>
         </div>
     </div>
-    <% if (request.getAttribute("message") != null && "success".equals(request.getAttribute("messageType"))) { %>
-        <script>
-            alert("customer saved successfully");
-        </script>
-    <% } %>
 </body>
 </html> 
