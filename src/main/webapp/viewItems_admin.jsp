@@ -81,6 +81,11 @@
             <div style="display: flex; justify-content: flex-start; margin-bottom: 12px; gap: 12px;">
                 <a href="ViewItemsServlet" style="background:#21b701; color:#fff; font-weight:600; border:none; border-radius:5px; padding:10px 22px; font-size:1.08em; text-decoration:none; transition:background 0.2s;">All Item List</a>
                 <a href="addItems_admin.jsp" style="background:#1976d2; color:#fff; font-weight:600; border:none; border-radius:5px; padding:10px 22px; font-size:1.08em; text-decoration:none; transition:background 0.2s;">Add Items</a>
+                <form method="get" action="ViewItemsServlet" style="display:inline; margin:0; padding:0;">
+                    <button type="submit" title="Sync" style="background:#ff9800; color:#fff; font-weight:600; border:none; border-radius:5px; padding:10px 22px; font-size:1.08em; margin-left:0; cursor:pointer; display:inline-flex; align-items:center; gap:7px;">
+                        <i class="fa fa-sync-alt"></i> Sync
+                    </button>
+                </form>
             </div>
             <form method="get" action="ViewItemsServlet" style="display: flex; gap: 16px; align-items: flex-end; margin-bottom: 18px; flex-wrap: wrap;">
                 <div style="display: flex; flex-direction: column;">

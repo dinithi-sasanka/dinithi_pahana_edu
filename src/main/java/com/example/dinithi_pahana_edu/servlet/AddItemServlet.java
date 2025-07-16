@@ -37,6 +37,12 @@ public class AddItemServlet extends HttpServlet {
             message = "Invalid price or stock value.";
         }
         request.setAttribute("message", message);
-        request.getRequestDispatcher("addItems_admin.jsp").forward(request, response);
+        javax.servlet.http.HttpSession session = request.getSession(false);
+        com.example.dinithi_pahana_edu.model.User user = (session != null) ? (com.example.dinithi_pahana_edu.model.User) session.getAttribute("user") : null;
+        String forwardPage = "addItems_admin.jsp";
+        if (user != null && "coadmin".equalsIgnoreCase(user.getRole())) {
+            forwardPage = "addItems_coadmin.jsp";
+        }
+        request.getRequestDispatcher(forwardPage).forward(request, response);
     }
 } 

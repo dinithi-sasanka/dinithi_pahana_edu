@@ -15,6 +15,7 @@ import java.util.List;
 public class ViewItemsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        com.example.dinithi_pahana_edu.model.User user = (com.example.dinithi_pahana_edu.model.User) request.getSession().getAttribute("user");
         ItemService itemService = new ItemService();
         String name = request.getParameter("name");
         String category = request.getParameter("category");
@@ -30,6 +31,12 @@ public class ViewItemsServlet extends HttpServlet {
             itemList = itemService.getAllItems();
         }
         request.setAttribute("itemList", itemList);
-        request.getRequestDispatcher("viewItems_admin.jsp").forward(request, response);
+        String message = request.getParameter("message");
+        if (message != null) request.setAttribute("message", message);
+        if (user != null && "coadmin".equalsIgnoreCase(user.getRole())) {
+            request.getRequestDispatcher("viewItems_coadmin.jsp").forward(request, response);
+        } else {
+            request.getRequestDispatcher("viewItems_admin.jsp").forward(request, response);
+        }
     }
 } 
