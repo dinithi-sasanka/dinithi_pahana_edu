@@ -3,6 +3,8 @@ package com.example.dinithi_pahana_edu.service;
 import com.example.dinithi_pahana_edu.dao.CustomerDAO;
 import com.example.dinithi_pahana_edu.model.Customer;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CustomerService {
     private CustomerDAO customerDAO;
@@ -13,27 +15,42 @@ public class CustomerService {
     
     // Add a new customer with validation
     public boolean addCustomer(Customer customer) {
-        // Validate customer data
-        if (customer == null || 
-            customer.getAccountNumber() == null || customer.getAccountNumber().trim().isEmpty() ||
+        // Validate customer data (remove account number check)
+        if (customer == null ||
             customer.getName() == null || customer.getName().trim().isEmpty() ||
             customer.getAddress() == null || customer.getAddress().trim().isEmpty() ||
             customer.getTelephone() == null || customer.getTelephone().trim().isEmpty()) {
             return false;
         }
-        
-        // Check if account number already exists
-        if (customerDAO.isAccountNumberExists(customer.getAccountNumber().trim())) {
-            return false;
-        }
-        
+
+        // Auto-generate unique account number
+        String nextAccountNumber = generateNextAccountNumber();
+        customer.setAccountNumber(nextAccountNumber);
+
         // Trim whitespace from all fields
-        customer.setAccountNumber(customer.getAccountNumber().trim());
         customer.setName(customer.getName().trim());
         customer.setAddress(customer.getAddress().trim());
         customer.setTelephone(customer.getTelephone().trim());
-        
+
         return customerDAO.addCustomer(customer);
+    }
+
+    // Generate the next unique account number in the format CUST000001
+    private String generateNextAccountNumber() {
+        List<Customer> allCustomers = customerDAO.getAllCustomers();
+        int max = 0;
+        Pattern pattern = Pattern.compile("CUST(\\d{6})");
+        for (Customer c : allCustomers) {
+            String acc = c.getAccountNumber();
+            if (acc != null) {
+                Matcher m = pattern.matcher(acc);
+                if (m.matches()) {
+                    int num = Integer.parseInt(m.group(1));
+                    if (num > max) max = num;
+                }
+            }
+        }
+        return String.format("CUST%06d", max + 1);
     }
     
     // Get all customers
