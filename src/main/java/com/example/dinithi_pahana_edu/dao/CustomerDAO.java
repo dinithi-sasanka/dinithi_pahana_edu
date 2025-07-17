@@ -238,4 +238,36 @@ public class CustomerDAO {
         }
         return null;
     }
+
+    // Search customer by any field (id, account number, name, address, email, telephone)
+    public Customer searchCustomerByAnyField(String searchTerm) {
+        String sql = "SELECT * FROM customers WHERE id = ? OR account_number = ? OR LOWER(name) LIKE ? OR LOWER(address) LIKE ? OR telephone = ? LIMIT 1";
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            int id = -1;
+            try { id = Integer.parseInt(searchTerm); } catch (NumberFormatException ignored) {}
+            String lowerTerm = searchTerm.toLowerCase();
+            System.out.println("[DEBUG] SQL: " + sql);
+            System.out.println("[DEBUG] Parameters: id=" + id + ", account_number=" + searchTerm + ", name LIKE %" + lowerTerm + "% , address LIKE %" + lowerTerm + "% , telephone=" + searchTerm);
+            pstmt.setInt(1, id);
+            pstmt.setString(2, searchTerm);
+            pstmt.setString(3, "%" + lowerTerm + "%");
+            pstmt.setString(4, "%" + lowerTerm + "%");
+            pstmt.setString(5, searchTerm);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                Customer customer = new Customer();
+                customer.setId(rs.getInt("id"));
+                customer.setAccountNumber(rs.getString("account_number"));
+                customer.setName(rs.getString("name"));
+                customer.setAddress(rs.getString("address"));
+                customer.setTelephone(rs.getString("telephone"));
+                customer.setCreatedAt(rs.getString("created_at"));
+                return customer;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 } 

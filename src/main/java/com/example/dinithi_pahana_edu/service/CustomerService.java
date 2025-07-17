@@ -122,4 +122,10 @@ public class CustomerService {
     public Customer searchCustomer(String accountNumber, String name, String telephone) {
         return customerDAO.searchCustomer(accountNumber, name, telephone);
     }
+
+    // Search customer by any field (id, account number, name, address, email, telephone)
+    public Customer searchCustomerByAnyField(String searchTerm) {
+        if (searchTerm == null || searchTerm.trim().isEmpty()) return null;
+        return customerDAO.searchCustomerByAnyField(searchTerm.trim());
+    }
 } 
