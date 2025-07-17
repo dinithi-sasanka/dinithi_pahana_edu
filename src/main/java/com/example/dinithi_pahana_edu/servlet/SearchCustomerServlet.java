@@ -17,34 +17,22 @@ public class SearchCustomerServlet extends HttpServlet {
     private CustomerService customerService = new CustomerService();
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String accountNumber = request.getParameter("searchAccountNumber");
-        String name = request.getParameter("searchName");
-        String telephone = request.getParameter("searchTelephone");
-
-        Customer customer = customerService.searchCustomer(accountNumber, name, telephone);
-
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String searchTerm = request.getParameter("searchTerm");
+        Customer customer = customerService.searchCustomerByAnyField(searchTerm);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        java.io.PrintWriter out = response.getWriter();
         if (customer != null) {
-            request.setAttribute("accountNumber", customer.getAccountNumber());
-            request.setAttribute("name", customer.getName());
-            request.setAttribute("address", customer.getAddress());
-            request.setAttribute("telephone", customer.getTelephone());
+            String json = String.format(
+                "{\"id\":\"%s\",\"accountNumber\":\"%s\",\"name\":\"%s\",\"address\":\"%s\",\"telephone\":\"%s\"}",
+                customer.getId(), customer.getAccountNumber(), customer.getName(),
+                customer.getAddress(), customer.getTelephone()
+            );
+            out.print(json);
         } else {
-            request.setAttribute("message", "No customer found.");
-            request.setAttribute("messageType", "error");
+            out.print("{}");
         }
-
-        // Forward back to the correct JSP based on user role
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
-        String forwardPage = "editCustomer_admin.jsp";
-        if (user != null) {
-            if ("coadmin".equalsIgnoreCase(user.getRole())) {
-                forwardPage = "editCustomer_coadmin.jsp";
-            } else if ("staff".equalsIgnoreCase(user.getRole())) {
-                forwardPage = "editCustomer_staff.jsp";
-            }
-        }
-        request.getRequestDispatcher(forwardPage).forward(request, response);
+        out.flush();
     }
 } 
