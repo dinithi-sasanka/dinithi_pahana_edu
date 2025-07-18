@@ -58,7 +58,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="billNumber">Bill Number:</label>
-                        <input type="text" class="form-control" id="billNumber" name="billNumber" placeholder="Enter bill number" required/>
+                        <input type="text" class="form-control" id="billNumber" name="billNumber" placeholder="Enter bill number" required value="<%= request.getAttribute("nextBillNumber") != null ? request.getAttribute("nextBillNumber") : "" %>"/>
                     </div>
                 </div>
                 <div class="col-md-6">

@@ -50,4 +50,19 @@ public class BillDAO {
         }
         return false;
     }
+
+    // Get the maximum bill number as integer (assuming bill_number is numeric or can be parsed as int)
+    public int getMaxBillNumber() {
+        String sql = "SELECT MAX(CAST(bill_number AS UNSIGNED)) AS max_bill_number FROM bills";
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt("max_bill_number");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0; // If no bills, start from 0
+    }
 } 
