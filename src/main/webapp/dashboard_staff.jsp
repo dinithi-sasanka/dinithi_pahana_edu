@@ -155,7 +155,7 @@
             <li><a href="calculateBill.jsp"><i class="fa fa-calculator"></i> Calculate Bill</a></li>
             <li><a href="printBill.jsp"><i class="fa fa-print"></i> Print/View Bills</a></li>
             <li><a href="help.jsp"><i class="fa fa-question-circle"></i> Help</a></li>
-            <li><a href="logout"><i class="fa fa-sign-out-alt"></i> Logout</a></li>
+            <li><a href="#" onclick="confirmLogout()"><i class="fa fa-sign-out-alt"></i> Logout</a></li>
         </ul>
     </div>
     <div class="main-content">
@@ -176,11 +176,15 @@
             <div class="card" onclick="location.href='calculateBill.jsp'"><i class="fa fa-calculator"></i><div>Calculate Bill</div></div>
             <div class="card" onclick="location.href='printBill.jsp'"><i class="fa fa-print"></i><div>Print/View Previous Bills</div></div>
             <div class="card" onclick="location.href='help.jsp'"><i class="fa fa-question-circle"></i><div>Help Section</div></div>
-            <div class="card" onclick="location.href='logout'"><i class="fa fa-sign-out-alt"></i><div>Logout</div></div>
+            <div class="card" onclick="confirmLogout()"><i class="fa fa-sign-out-alt"></i><div>Logout</div></div>
         </div>
     </div>
     <script>
-        // Optional: Highlight active menu item or add more interactivity here
+        function confirmLogout() {
+            if (confirm("Are you sure you want to logout from the system?")) {
+                window.location.href = 'logout';
+            }
+        }
     </script>
 </body>
 </html> 
