@@ -25,6 +25,8 @@ public class CalculateBillServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Item> items = itemService.getAllItems();
         request.setAttribute("items", items);
+        int nextBillNumber = billService.getNextBillNumber();
+        request.setAttribute("nextBillNumber", nextBillNumber);
         request.getRequestDispatcher("calculateBills_admin.jsp").forward(request, response);
     }
 
