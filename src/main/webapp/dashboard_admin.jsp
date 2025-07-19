@@ -156,7 +156,7 @@
             <li><a href="printBill.jsp"><i class="fa fa-print"></i> Print/View Bills</a></li>
             <li><a href="help.jsp"><i class="fa fa-question-circle"></i> Help</a></li>
             <li><a href="useRoleManage_admin.jsp"><i class="fa fa-users-cog"></i> User Roles/Settings</a></li>
-            <li><a href="logout"><i class="fa fa-sign-out-alt"></i> Logout</a></li>
+            <li><a href="#" onclick="confirmLogout()"><i class="fa fa-sign-out-alt"></i> Logout</a></li>
         </ul>
     </div>
     <div class="main-content">
@@ -178,8 +178,16 @@
             <div class="card" onclick="location.href='printBill.jsp'"><i class="fa fa-print"></i><div>Print/View Previous Bills</div></div>
             <div class="card" onclick="location.href='help.jsp'"><i class="fa fa-question-circle"></i><div>Help Section</div></div>
             <div class="card" onclick="location.href='useRoleManage_admin.jsp'"><i class="fa fa-users-cog"></i><div>Manage User Roles/Settings</div></div>
-            <div class="card" onclick="location.href='logout'"><i class="fa fa-sign-out-alt"></i><div>Logout</div></div>
+            <div class="card" onclick="confirmLogout()"><i class="fa fa-sign-out-alt"></i><div>Logout</div></div>
         </div>
     </div>
+    
+    <script>
+        function confirmLogout() {
+            if (confirm("Are you sure you want to logout from the system?")) {
+                window.location.href = 'logout';
+            }
+        }
+    </script>
 </body>
 </html> 
