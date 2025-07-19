@@ -15,4 +15,8 @@ public class BillService {
     public boolean addBillItems(List<BillItem> items) {
         return billDAO.addBillItems(items);
     }
+
+    public int getNextBillNumber() {
+        return billDAO.getMaxBillNumber() + 1;
+    }
 } 

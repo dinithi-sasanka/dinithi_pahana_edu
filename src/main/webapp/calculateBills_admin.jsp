@@ -10,14 +10,172 @@
     <title>Calculate Bill (Admin)</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .info-box { border: 1px solid #ccc; border-radius: 5px; padding: 10px; margin: 5px; display: inline-block; min-width: 180px; }
+        body {
+            margin: 0;
+            font-family: 'Roboto', Arial, sans-serif;
+            background: linear-gradient(120deg, #232b3e, #1a2233);
+            color: #d7dee5;
+            min-height: 100vh;
+        }
+        .sidebar {
+            position: fixed;
+            left: 0; top: 0; bottom: 0;
+            width: 220px;
+            background: #232b3e;
+            padding: 30px 0 0 0;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            z-index: 10;
+        }
+        .sidebar h2 {
+            color: #fff;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1.7rem;
+            letter-spacing: 1px;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .sidebar ul li {
+            margin: 18px 0;
+        }
+        .sidebar ul li a {
+            color: #21b701;
+            text-decoration: none;
+            font-size: 1.1em;
+            padding: 10px 30px;
+            display: block;
+            border-radius: 6px;
+            transition: background 0.2s, color 0.2s, border-color 0.2s;
+            border-left: 4px solid transparent;
+        }
+        .sidebar ul li a:hover {
+            background: #fcfbfb;
+            color: #232b3e;
+            border-left: 4px solid #232b3e;
+        }
+        .sidebar ul li a i {
+            color: #acacac;
+            margin-right: 10px;
+            transition: color 0.2s;
+        }
+        .sidebar ul li a:hover i {
+            color: #21b701;
+        }
+        .main-content {
+            margin-left: 240px;
+            padding: 40px 30px;
+            background: #fff;
+            min-height: 100vh;
+            color: #232b3e;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #232b3e;
+            font-size: 2rem;
+            margin: 0;
+        }
+        .user-info {
+            font-size: 1.1em;
+            color: #21b701;
+            background: #27304a;
+            padding: 8px 18px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        @media (max-width: 800px) {
+            .sidebar { width: 60px; padding: 20px 0 0 0; }
+            .sidebar h2 { display: none; }
+            .sidebar ul li a { padding: 10px 10px; font-size: 1.2em; text-align: center; }
+            .main-content { margin-left: 70px; padding: 20px 10px; }
+        }
+        @media (max-width: 600px) {
+            .main-content { margin-left: 0; padding: 10px 2vw; }
+            .sidebar { position: static; width: 100%; height: auto; flex-direction: row; }
+            .sidebar ul { display: flex; flex-direction: row; justify-content: space-around; }
+            .sidebar ul li { margin: 0; }
+        }
+        .info-box {
+            background: #f8f9fa;
+            color: #232b3e;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 5px;
+            display: inline-block;
+            min-width: 180px;
+        }
         .icon-btn { background: none; border: none; font-size: 1.2em; cursor: pointer; }
         .icon-btn:focus { outline: none; }
-        .bill-header { background-color: #f8f9fa; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
+        .bill-header {
+            background: #f8f9fa;
+            color: #232b3e;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .bill-summary {
+            background: #f8f9fa;
+            color: #232b3e;
+        }
+        label, .form-group label {
+            color: #232b3e !important;
+        }
+        .form-control, .table, .table th, .table td {
+            background: #fff !important;
+            border-color: #dbeafe;
+        }
+        ::placeholder {
+            color: #888 !important;
+            opacity: 1;
+        }
+        input[readonly], input[disabled] {
+            background: #f4f4f4 !important;
+            color: #232b3e !important;
+        }
+        .icon-btn.add-row i {
+            color: #21b701;
+            font-size: 1.4em;
+        }
+        .icon-btn.remove-row i {
+            color: #dc3545;
+            font-size: 1.4em;
+        }
+        .icon-btn.remove-row {
+            margin-left: 8px;
+        }
     </style>
 </head>
 <body>
+    <div class="sidebar">
+        <h2>Admin</h2>
+        <ul>
+            <li><a href="dashboard_admin.jsp"><i class="fa fa-chart-line"></i> Dashboards</a></li>
+            <li><a href="addCustomer_admin.jsp"><i class="fa fa-user-plus"></i> Add Customer</a></li>
+            <li><a href="editCustomer_admin.jsp"><i class="fa fa-user-edit"></i> Edit Customer</a></li>
+            <li><a href="viewAccount.jsp"><i class="fa fa-id-card"></i> View Account</a></li>
+            <li><a href="addItems_admin.jsp"><i class="fa fa-boxes"></i> Manage Items</a></li>
+            <li><a href="calculateBill"><i class="fa fa-calculator"></i> Calculate Bill</a></li>
+            <li><a href="printBill.jsp"><i class="fa fa-print"></i> Print/View Bills</a></li>
+            <li><a href="help.jsp"><i class="fa fa-question-circle"></i> Help</a></li>
+            <li><a href="useRoleManage_admin.jsp"><i class="fa fa-users-cog"></i> User Roles/Settings</a></li>
+            <li><a href="logout"><i class="fa fa-sign-out-alt"></i> Logout</a></li>
+        </ul>
+    </div>
+    <div class="main-content">
 <div class="container mt-4">
     <!-- Success/Error Message -->
     <% if (request.getAttribute("message") != null) { %>
@@ -58,7 +216,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="billNumber">Bill Number:</label>
-                        <input type="text" class="form-control" id="billNumber" name="billNumber" placeholder="Enter bill number" required/>
+                        <input type="text" class="form-control" id="billNumber" name="billNumber" placeholder="Enter bill number" required value="<%= request.getAttribute("nextBillNumber") != null ? request.getAttribute("nextBillNumber") : "" %>"/>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -101,8 +259,10 @@
                     <td><input type="text" class="form-control unit-price" name="unitPrice[]" readonly/></td>
                     <td><input type="text" class="form-control total-price" name="totalPrice[]" readonly/></td>
                     <td>
-                        <button type="button" class="icon-btn add-row" title="Add Row">+</button>
-                        <button type="button" class="icon-btn remove-row" title="Remove Row">🗑️</button>
+                        <div style="display: flex; align-items: center;">
+                            <button type="button" class="icon-btn add-row" title="Add Item"><i class="fa fa-plus-circle"></i></button>
+                            <button type="button" class="icon-btn remove-row" title="Remove Item"><i class="fa fa-trash"></i></button>
+                        </div>
                     </td>
                 </tr>
             </tbody>
@@ -133,7 +293,10 @@
             </div>
         </div>
         
-        <button type="submit" class="btn btn-success">Save Bill</button>
+        <div class="d-flex" style="gap: 12px;">
+            <button type="submit" class="btn btn-success">Save Bill</button>
+            <button type="button" class="btn btn-secondary" onclick="window.print();"><i class="fa fa-print"></i> Print Bill</button>
+        </div>
     </form>
 </div>
 <script>
@@ -287,5 +450,6 @@ $(function() {
     });
 });
 </script>
+</div>
 </body>
 </html> 
