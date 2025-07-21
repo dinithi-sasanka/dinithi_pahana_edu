@@ -159,20 +159,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="sidebar">
-        <h2>Staff</h2>
-        <ul>
-            <li><a href="dashboard_staff.jsp"><i class="fa fa-chart-line"></i> Dashboards</a></li>
-            <li><a href="addCustomer_staff.jsp"><i class="fa fa-user-plus"></i> Add Customer</a></li>
-            <li><a href="editCustomer_staff.jsp"><i class="fa fa-user-edit"></i> Edit Customer</a></li>
-            <li><a href="viewItems_staff.jsp"><i class="fa fa-boxes"></i> View Items</a></li>
-            <li><a href="calculateBill"><i class="fa fa-calculator"></i> Calculate Bill</a></li>
-            <li><a href="printBill.jsp"><i class="fa fa-print"></i> Print/View Bills</a></li>
-            <li><a href="help.jsp"><i class="fa fa-question-circle"></i> Help</a></li>
-            <li><a href="viewCustomer_staff.jsp"><i class="fa fa-id-card"></i> View Account</a></li>
-            <li><a href="#" onclick="confirmLogout()"><i class="fa fa-sign-out-alt"></i> Logout</a></li>
-        </ul>
-    </div>
+    <jsp:include page="sidebar_staff.jspf" />
     <div class="main-content">
         <div class="header">
             <div>

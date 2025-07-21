@@ -9,6 +9,7 @@
         <li><a href="printBill.jsp"><i class="fa fa-print"></i> Print/View Bills</a></li>
         <li><a href="help.jsp"><i class="fa fa-question-circle"></i> Help</a></li>
         <li><a href="viewCustomerAccount_staff.jsp"><i class="fa fa-id-card"></i> View Account</a></li>
+        <li><a href="currentStock"><i class="fa fa-warehouse"></i> Check Current Stock</a></li>
         <li><a href="#" onclick="confirmLogout()"><i class="fa fa-sign-out-alt"></i> Logout</a></li>
     </ul>
 </div>
@@ -19,3 +20,66 @@
         }
     }
 </script> 
+<style>
+.sidebar {
+    position: fixed;
+    left: 0; top: 0; bottom: 0;
+    width: 220px;
+    background: #232b3e;
+    padding: 30px 0 0 0;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+    border-right: 1.5px solid #1a2233;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #232b3e #1a2233;
+}
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.sidebar ul li {
+    margin: 18px 0;
+}
+.sidebar ul li a {
+    color: #21b701;
+    text-decoration: none;
+    font-size: 1.1em;
+    padding: 12px 30px;
+    display: flex;
+    align-items: center;
+    border-radius: 6px;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+    border-left: 4px solid transparent;
+    font-weight: 500;
+}
+.sidebar ul li a:hover, .sidebar ul li a.active {
+    background: #fcfbfb;
+    color: #232b3e;
+    border-left: 4px solid #21b701;
+}
+.sidebar ul li a i {
+    color: #acacac;
+    margin-right: 14px;
+    font-size: 1.3em;
+    transition: color 0.2s;
+}
+.sidebar ul li a:hover i, .sidebar ul li a.active i {
+    color: #21b701;
+}
+.sidebar h2 {
+    color: #fff;
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 1.7rem;
+    letter-spacing: 1px;
+}
+@media (max-width: 800px) {
+    .sidebar { width: 60px; padding: 20px 0 0 0; }
+    .sidebar h2 { display: none; }
+    .sidebar ul li a { padding: 10px 10px; font-size: 1.2em; text-align: center; }
+}
+</style> 

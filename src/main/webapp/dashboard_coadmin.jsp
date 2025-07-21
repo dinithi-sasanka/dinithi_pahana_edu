@@ -9,6 +9,17 @@
         response.sendRedirect("error.jsp");
         return;
     }
+    ItemService itemService = new ItemService();
+    java.util.List<Item> allLowStock = itemService.getLowStockItems(20);
+    java.util.List<Item> redStock = new java.util.ArrayList<>();
+    java.util.List<Item> yellowStock = new java.util.ArrayList<>();
+    java.util.List<Item> greenStock = new java.util.ArrayList<>();
+    for (Item item : allLowStock) {
+        int stock = item.getStock();
+        if (stock < 5) redStock.add(item);
+        else if (stock < 10) yellowStock.add(item);
+        else if (stock < 20) greenStock.add(item);
+    }
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -148,20 +159,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="sidebar">
-        <h2>Coadmin</h2>
-        <ul>
-            <li><a href="dashboard_coadmin.jsp"><i class="fa fa-chart-line"></i> Dashboards</a></li>
-            <li><a href="addCustomer_coadmin.jsp"><i class="fa fa-user-plus"></i> Add Customer</a></li>
-            <li><a href="editCustomer_coadmin.jsp"><i class="fa fa-user-edit"></i> Edit Customer</a></li>
-            <li><a href="addItems_coadmin.jsp"><i class="fa fa-boxes"></i> Manage Items</a></li>
-            <li><a href="calculateBill"><i class="fa fa-calculator"></i> Calculate Bill</a></li>
-            <li><a href="printBill.jsp"><i class="fa fa-print"></i> Print/View Bills</a></li>
-            <li><a href="help.jsp"><i class="fa fa-question-circle"></i> Help</a></li>
-            <li><a href="viewCustomerAccount_coadmin.jsp"><i class="fa fa-id-card"></i> View Account</a></li>
-            <li><a href="#" onclick="confirmLogout()"><i class="fa fa-sign-out-alt"></i> Logout</a></li>
-        </ul>
-    </div>
+    <jsp:include page="sidebar_coadmin.jspf" />
     <div class="main-content">
         <div class="header">
             <div>
