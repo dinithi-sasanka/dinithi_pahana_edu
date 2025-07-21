@@ -91,6 +91,8 @@ public class CalculateBillServlet extends HttpServlet {
         if (billId > 0) {
             for (BillItem item : billItems) {
                 item.setBillId(billId);
+                // Decrement stock for each item
+                itemService.decrementStock(item.getItemId(), item.getQuantity());
             }
             billService.addBillItems(billItems);
             request.setAttribute("message", "Bill saved successfully! Bill Number: " + billNumber);

@@ -7,6 +7,7 @@ public class Item {
     private String description;
     private double price;
     private int stock;
+    private int currentStock;
 
     public Item() {}
 
@@ -39,4 +40,6 @@ public class Item {
     public void setPrice(double price) { this.price = price; }
     public int getStock() { return stock; }
     public void setStock(int stock) { this.stock = stock; }
+    public int getCurrentStock() { return currentStock; }
+    public void setCurrentStock(int currentStock) { this.currentStock = currentStock; }
 } 
