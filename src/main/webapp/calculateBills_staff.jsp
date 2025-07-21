@@ -44,6 +44,7 @@
 <body>
     <jsp:include page="sidebar_staff.jspf" />
     <div class="main-content">
+        <div id="save-message" style="margin-bottom: 16px;"></div>
         <div class="container mt-4">
             <!-- Success/Error Message -->
             <% if (request.getAttribute("message") != null) { %>
@@ -309,44 +310,21 @@
                 }
             });
             
-            // Update form validation to require user input for bill number
-            $('#bill-form').on('submit', function(e) {
-                // Check if customer is selected
-                if (!$('#customerId').val()) {
-                    alert('Please select a customer first.');
-                    e.preventDefault();
-                    return false;
-                }
-                // Check if bill number is entered
-                if (!$('#billNumber').val()) {
-                    alert('Please enter a bill number.');
-                    e.preventDefault();
-                    return false;
-                }
-                // Check if bill date time is set
-                if (!$('#billDateTime').val()) {
-                    alert('Please select a customer to generate bill information.');
-                    e.preventDefault();
-                    return false;
-                }
-                // Check if at least one item is selected
-                var hasValidItem = false;
-                $('#items-table tbody tr').each(function() {
-                    var itemId = $(this).find('.item-select').val();
-                    var quantity = $(this).find('.qty-input').val();
-                    var unitPrice = $(this).find('.unit-price').val();
-                    if (itemId && quantity && unitPrice && 
-                        itemId !== '' && quantity !== '' && unitPrice !== '') {
-                        hasValidItem = true;
-                        return false; // break the loop
+            // AJAX Save Bill
+            $('#bill-form').off('submit').on('submit', function(e) {
+                e.preventDefault();
+                var formData = $(this).serialize();
+                $.ajax({
+                    url: 'calculateBill',
+                    type: 'POST',
+                    data: formData,
+                    success: function(response) {
+                        $('#save-message').html('<div class="alert alert-success">Bill saved successfully!</div>');
+                    },
+                    error: function(xhr) {
+                        $('#save-message').html('<div class="alert alert-danger">Error saving bill. Please try again.</div>');
                     }
                 });
-                if (!hasValidItem) {
-                    alert('Please select at least one item with valid quantity and price.');
-                    e.preventDefault();
-                    return false;
-                }
-                return true; // allow form submission
             });
         });
         </script>
