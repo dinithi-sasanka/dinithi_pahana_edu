@@ -29,4 +29,16 @@ public class ItemService {
     public boolean deleteItem(int id) {
         return itemDAO.deleteItem(id);
     }
+
+    public java.util.List<Item> getLowStockItems(int threshold) {
+        return itemDAO.getLowStockItems(threshold);
+    }
+
+    public boolean decrementStock(int itemId, int quantity) {
+        return itemDAO.decrementStock(itemId, quantity);
+    }
+
+    public java.util.List<Item> getAllItemsWithCurrentStock() {
+        return itemDAO.getAllItemsWithCurrentStock();
+    }
 } 

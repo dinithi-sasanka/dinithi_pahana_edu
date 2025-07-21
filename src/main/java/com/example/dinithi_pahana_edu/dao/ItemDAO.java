@@ -130,4 +130,64 @@ public class ItemDAO {
             return false;
         }
     }
+
+    public List<Item> getLowStockItems(int threshold) {
+        List<Item> items = new ArrayList<>();
+        String sql = "SELECT i.*, s.current_stock FROM items i JOIN stock s ON i.id = s.item_id WHERE s.current_stock < ? ORDER BY s.current_stock ASC";
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, threshold);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Item item = new Item();
+                item.setId(rs.getInt("id"));
+                item.setName(rs.getString("name"));
+                item.setCategory(rs.getString("category"));
+                item.setDescription(rs.getString("description"));
+                item.setPrice(rs.getDouble("price"));
+                item.setStock(rs.getInt("current_stock")); // Use stock from stock table
+                items.add(item);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return items;
+    }
+
+    public boolean decrementStock(int itemId, int quantity) {
+        String sql = "UPDATE stock SET current_stock = current_stock - ? WHERE item_id = ? AND current_stock >= ?";
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, quantity);
+            stmt.setInt(2, itemId);
+            stmt.setInt(3, quantity);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public List<Item> getAllItemsWithCurrentStock() {
+        List<Item> items = new ArrayList<>();
+        String sql = "SELECT i.*, s.current_stock FROM items i JOIN stock s ON i.id = s.item_id ORDER BY i.id DESC";
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                Item item = new Item();
+                item.setId(rs.getInt("id"));
+                item.setName(rs.getString("name"));
+                item.setCategory(rs.getString("category"));
+                item.setDescription(rs.getString("description"));
+                item.setPrice(rs.getDouble("price"));
+                item.setStock(rs.getInt("stock")); // original stock
+                item.setCurrentStock(rs.getInt("current_stock")); // current stock from stock table
+                items.add(item);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return items;
+    }
 } 

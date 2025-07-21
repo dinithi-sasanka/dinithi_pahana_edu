@@ -27,4 +27,12 @@ public class BillService {
     public List<BillItem> getBillItemsByBillId(int billId) {
         return billDAO.getBillItemsByBillId(billId);
     }
+
+    public List<Bill> getAllBills() {
+        return billDAO.getAllBills();
+    }
+
+    public List<Bill> searchBills(String searchTerm, String fromDate, String toDate) {
+        return billDAO.searchBills(searchTerm, fromDate, toDate);
+    }
 } 
