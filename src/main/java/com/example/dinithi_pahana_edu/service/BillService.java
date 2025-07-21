@@ -19,4 +19,12 @@ public class BillService {
     public int getNextBillNumber() {
         return billDAO.getMaxBillNumber() + 1;
     }
+    
+    public List<Bill> getBillsByCustomerId(int customerId) {
+        return billDAO.getBillsByCustomerId(customerId);
+    }
+    
+    public List<BillItem> getBillItemsByBillId(int billId) {
+        return billDAO.getBillItemsByBillId(billId);
+    }
 } 
