@@ -1,9 +1,24 @@
 <%@ page session="true" %>
+<%@ page import="com.example.dinithi_pahana_edu.service.ItemService" %>
+<%@ page import="com.example.dinithi_pahana_edu.model.Item" %>
 <%
     com.example.dinithi_pahana_edu.model.User user = (com.example.dinithi_pahana_edu.model.User) session.getAttribute("user");
     if (user == null || !"staff".equalsIgnoreCase(user.getRole())) {
         response.sendRedirect("error.jsp");
         return;
+    }
+%>
+<%
+    ItemService itemService = new ItemService();
+    java.util.List<Item> allLowStock = itemService.getLowStockItems(20);
+    java.util.List<Item> redStock = new java.util.ArrayList<>();
+    java.util.List<Item> yellowStock = new java.util.ArrayList<>();
+    java.util.List<Item> greenStock = new java.util.ArrayList<>();
+    for (Item item : allLowStock) {
+        int stock = item.getStock();
+        if (stock < 5) redStock.add(item);
+        else if (stock < 10) yellowStock.add(item);
+        else if (stock < 20) greenStock.add(item);
     }
 %>
 <!DOCTYPE html>
@@ -162,6 +177,36 @@
         <div class="header">
             <div>
                 <h1>Pahana Edu Bookshop Management System</h1>
+                <% if (!redStock.isEmpty()) { %>
+                    <div style="background: #f8d7da; color: #721c24; border: 1.5px solid #f5c6cb; border-radius: 8px; padding: 18px 28px; margin: 18px 0 12px 0; font-size: 1.15em; box-shadow: 0 2px 8px #0001;">
+                        <strong style="font-size:1.2em;"><i class="fa fa-exclamation-triangle" style="color:#c82333;"></i> Critical Stock Alert</strong>
+                        <ul style="margin-bottom:0;">
+                        <% for (Item item : redStock) { %>
+                            <li><b><%= item.getName() %></b> (<span style="color:#c82333; font-weight:bold;">Stock: <%= item.getStock() %></span>)</li>
+                        <% } %>
+                        </ul>
+                    </div>
+                <% } %>
+                <% if (!yellowStock.isEmpty()) { %>
+                    <div style="background: #fff3cd; color: #856404; border: 1.5px solid #ffeeba; border-radius: 8px; padding: 18px 28px; margin: 18px 0 12px 0; font-size: 1.15em; box-shadow: 0 2px 8px #0001;">
+                        <strong style="font-size:1.2em;"><i class="fa fa-exclamation-circle" style="color:#856404;"></i> Low Stock Alert</strong>
+                        <ul style="margin-bottom:0;">
+                        <% for (Item item : yellowStock) { %>
+                            <li><b><%= item.getName() %></b> (<span style="color:#856404; font-weight:bold;">Stock: <%= item.getStock() %></span>)</li>
+                        <% } %>
+                        </ul>
+                    </div>
+                <% } %>
+                <% if (!greenStock.isEmpty()) { %>
+                    <div style="background: #d4edda; color: #155724; border: 1.5px solid #c3e6cb; border-radius: 8px; padding: 18px 28px; margin: 18px 0 24px 0; font-size: 1.15em; box-shadow: 0 2px 8px #0001;">
+                        <strong style="font-size:1.2em;"><i class="fa fa-info-circle" style="color:#218838;"></i> Stock Notice</strong>
+                        <ul style="margin-bottom:0;">
+                        <% for (Item item : greenStock) { %>
+                            <li><b><%= item.getName() %></b> (<span style="color:#218838; font-weight:bold;">Stock: <%= item.getStock() %></span>)</li>
+                        <% } %>
+                        </ul>
+                    </div>
+                <% } %>
             </div>
             <div class="user-info">
                 <i class="fa fa-user-shield"></i> <span>Role: <%= user.getRole() %></span>
@@ -176,6 +221,7 @@
             <div class="card" onclick="location.href='printBill.jsp'"><i class="fa fa-print"></i><div>Print/View Previous Bills</div></div>
             <div class="card" onclick="location.href='help.jsp'"><i class="fa fa-question-circle"></i><div>Help Section</div></div>
             <div class="card" onclick="location.href='viewCustomerAccount_staff.jsp'"><i class="fa fa-id-card"></i><div>View Customer Account</div></div>
+            <div class="card" onclick="location.href='currentStock'"><i class="fa fa-warehouse"></i><div>Check Current Stock</div></div>
             <div class="card" onclick="confirmLogout()"><i class="fa fa-sign-out-alt"></i><div>Logout</div></div>
         </div>
     </div>

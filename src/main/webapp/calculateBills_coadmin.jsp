@@ -163,9 +163,37 @@
                 
                 <div class="d-flex" style="gap: 12px;">
                     <button type="submit" class="btn btn-success">Save Bill</button>
-                    <button type="button" class="btn btn-secondary" onclick="window.print();"><i class="fa fa-print"></i> Print Bill</button>
+                    <button type="button" class="btn btn-secondary" onclick="printBill()">Print Bill</button>
                 </div>
             </form>
+        </div>
+        <!-- Hidden Printable Bill Section -->
+        <div id="printableBill" style="display:none;">
+            <div style="text-align:center; margin-bottom:20px;">
+                <h2>Pahana Edu Bookshop</h2>
+                <h4>Bill Receipt</h4>
+            </div>
+            <div>
+                <b>Bill Number:</b> <span id="print-billNumber"></span><br/>
+                <b>Date & Time:</b> <span id="print-billDateTime"></span><br/>
+                <b>Customer:</b> <span id="print-customerName"></span> (<span id="print-customerAccount"></span>)<br/>
+                <b>Phone:</b> <span id="print-customerPhone"></span><br/>
+                <b>Address:</b> <span id="print-customerAddress"></span><br/>
+            </div>
+            <hr/>
+            <table border="1" width="100%" style="border-collapse:collapse;">
+                <thead>
+                    <tr><th>Item</th><th>Qty</th><th>Unit Price</th><th>Total</th></tr>
+                </thead>
+                <tbody id="print-items"></tbody>
+            </table>
+            <hr/>
+            <div style="text-align:right;">
+                <b>Total:</b> <span id="print-totalAmount"></span><br/>
+                <b>Paid:</b> <span id="print-paidAmount"></span><br/>
+                <b>Balance:</b> <span id="print-balance"></span>
+            </div>
+            <div style="text-align:center; margin-top:20px;">Thank you for your purchase!</div>
         </div>
         <script>
         $(function() {
@@ -320,6 +348,47 @@
                 return true; // allow form submission
             });
         });
+        </script>
+        <script>
+        function printBill() {
+            // Fill printable bill with current values
+            document.getElementById('print-billNumber').innerText = document.getElementById('billNumber').value;
+            document.getElementById('print-billDateTime').innerText = document.getElementById('billDateTimeDisplay').value;
+            document.getElementById('print-customerName').innerText = document.getElementById('info-name') ? document.getElementById('info-name').innerText : '';
+            document.getElementById('print-customerAccount').innerText = document.getElementById('info-account') ? document.getElementById('info-account').innerText : '';
+            document.getElementById('print-customerPhone').innerText = document.getElementById('info-phone') ? document.getElementById('info-phone').innerText : '';
+            document.getElementById('print-customerAddress').innerText = document.getElementById('info-address') ? document.getElementById('info-address').innerText : '';
+            document.getElementById('print-totalAmount').innerText = document.getElementById('totalAmount').value;
+            document.getElementById('print-paidAmount').innerText = document.getElementById('paidAmount').value;
+            document.getElementById('print-balance').innerText = document.getElementById('balanceAmount').value; // Use balanceAmount for balance
+            // Items
+            var itemsTable = document.getElementById('print-items');
+            itemsTable.innerHTML = '';
+            var rows = document.querySelectorAll('#items-table tbody tr');
+            rows.forEach(function(row) {
+                var item = row.querySelector('select, input[name^="itemId"]'); // Changed to itemId
+                var qty = row.querySelector('input[name^="quantity"]');
+                var price = row.querySelector('input[name^="unitPrice"]');
+                var total = row.querySelector('input[name^="totalPrice"]'); // Changed to totalPrice
+                if(item && qty && price && total) {
+                    var tr = document.createElement('tr');
+                    tr.innerHTML = '<td>' + item.value + '</td><td>' + qty.value + '</td><td>' + price.value + '</td><td>' + total.value + '</td>';
+                    itemsTable.appendChild(tr);
+                }
+            });
+            // Print only the bill
+            var printContents = document.getElementById('printableBill').innerHTML;
+            var win = window.open('', '', 'height=700,width=900');
+            win.document.write('<html><head><title>Print Bill</title>');
+            win.document.write('<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>' );
+            win.document.write('</head><body>');
+            win.document.write(printContents);
+            win.document.write('</body></html>');
+            win.document.close();
+            win.focus();
+            win.print();
+            win.close();
+        }
         </script>
     </div>
 </body>
