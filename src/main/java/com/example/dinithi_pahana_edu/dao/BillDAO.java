@@ -117,4 +117,74 @@ public class BillDAO {
         }
         return items;
     }
+
+    public List<Bill> getAllBills() {
+        List<Bill> bills = new ArrayList<>();
+        String sql = "SELECT * FROM bills ORDER BY bill_date DESC";
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+            while (rs.next()) {
+                Bill bill = new Bill();
+                bill.setId(rs.getInt("id"));
+                bill.setCustomerId(rs.getInt("customer_id"));
+                bill.setBillNumber(rs.getString("bill_number"));
+                bill.setBillDate(rs.getTimestamp("bill_date"));
+                bill.setBillDateTime(rs.getString("bill_date_time"));
+                bill.setTotalAmount(rs.getDouble("total_amount"));
+                bill.setPaidAmount(rs.getDouble("paid_amount"));
+                bill.setBalance(rs.getDouble("balance"));
+                bills.add(bill);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return bills;
+    }
+
+    public List<Bill> searchBills(String searchTerm, String fromDate, String toDate) {
+        List<Bill> bills = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("SELECT b.* FROM bills b LEFT JOIN customers c ON b.customer_id = c.id WHERE 1=1");
+        List<Object> params = new ArrayList<>();
+        if (searchTerm != null && !searchTerm.trim().isEmpty()) {
+            sql.append(" AND (");
+            sql.append("b.bill_number LIKE ? OR c.name LIKE ? OR c.account_number LIKE ?");
+            sql.append(")");
+            String likeTerm = "%" + searchTerm.trim() + "%";
+            params.add(likeTerm);
+            params.add(likeTerm);
+            params.add(likeTerm);
+        }
+        if (fromDate != null && !fromDate.isEmpty()) {
+            sql.append(" AND DATE(b.bill_date) >= ?");
+            params.add(fromDate);
+        }
+        if (toDate != null && !toDate.isEmpty()) {
+            sql.append(" AND DATE(b.bill_date) <= ?");
+            params.add(toDate);
+        }
+        sql.append(" ORDER BY b.bill_date DESC");
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql.toString())) {
+            for (int i = 0; i < params.size(); i++) {
+                pstmt.setObject(i + 1, params.get(i));
+            }
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Bill bill = new Bill();
+                bill.setId(rs.getInt("id"));
+                bill.setCustomerId(rs.getInt("customer_id"));
+                bill.setBillNumber(rs.getString("bill_number"));
+                bill.setBillDate(rs.getTimestamp("bill_date"));
+                bill.setBillDateTime(rs.getString("bill_date_time"));
+                bill.setTotalAmount(rs.getDouble("total_amount"));
+                bill.setPaidAmount(rs.getDouble("paid_amount"));
+                bill.setBalance(rs.getDouble("balance"));
+                bills.add(bill);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return bills;
+    }
 } 

@@ -206,7 +206,7 @@
             <div class="card" onclick="location.href='viewCustomerAccount_admin.jsp'"><i class="fa fa-id-card"></i><div>View Customer Account</div></div>
             <div class="card" onclick="location.href='addItems_admin.jsp'"><i class="fa fa-boxes"></i><div>Add/Update/Delete Items</div></div>
             <div class="card" onclick="location.href='calculateBill'"><i class="fa fa-calculator"></i><div>Calculate Bill</div></div>
-            <div class="card" onclick="location.href='printBill.jsp'"><i class="fa fa-print"></i><div>Print/View Previous Bills</div></div>
+            <div class="card" onclick="location.href='viewBills'"><i class="fa fa-print"></i><div>Print/View Previous Bills</div></div>
             <div class="card" onclick="location.href='help.jsp'"><i class="fa fa-question-circle"></i><div>Help Section</div></div>
             <div class="card" onclick="location.href='useRoleManage_admin.jsp'"><i class="fa fa-users-cog"></i><div>Manage User Roles/Settings</div></div>
             <div class="card" onclick="location.href='currentStock'"><i class="fa fa-warehouse"></i><div>Check Current Stock</div></div>
