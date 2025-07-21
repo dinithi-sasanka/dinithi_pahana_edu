@@ -27,7 +27,19 @@ public class CalculateBillServlet extends HttpServlet {
         request.setAttribute("items", items);
         int nextBillNumber = billService.getNextBillNumber();
         request.setAttribute("nextBillNumber", nextBillNumber);
-        request.getRequestDispatcher("calculateBills_admin.jsp").forward(request, response);
+        javax.servlet.http.HttpSession session = request.getSession(false);
+        String jspPage = "calculateBills_admin.jsp";
+        if (session != null) {
+            com.example.dinithi_pahana_edu.model.User user = (com.example.dinithi_pahana_edu.model.User) session.getAttribute("user");
+            if (user != null) {
+                if ("coadmin".equalsIgnoreCase(user.getRole())) {
+                    jspPage = "calculateBills_coadmin.jsp";
+                } else if ("staff".equalsIgnoreCase(user.getRole())) {
+                    jspPage = "calculateBills_staff.jsp";
+                }
+            }
+        }
+        request.getRequestDispatcher(jspPage).forward(request, response);
     }
 
     @Override
