@@ -1,0 +1,21 @@
+<div class="sidebar">
+    <h2>Coadmin</h2>
+    <ul>
+        <li><a href="dashboard_coadmin.jsp"><i class="fa fa-chart-line"></i> Dashboards</a></li>
+        <li><a href="addCustomer_coadmin.jsp"><i class="fa fa-user-plus"></i> Add Customer</a></li>
+        <li><a href="editCustomer_coadmin.jsp"><i class="fa fa-user-edit"></i> Edit Customer</a></li>
+        <li><a href="addItems_coadmin.jsp"><i class="fa fa-boxes"></i> Manage Items</a></li>
+        <li><a href="calculateBill.jsp"><i class="fa fa-calculator"></i> Calculate Bill</a></li>
+        <li><a href="printBill.jsp"><i class="fa fa-print"></i> Print/View Bills</a></li>
+        <li><a href="help.jsp"><i class="fa fa-question-circle"></i> Help</a></li>
+        <li><a href="viewCustomerAccount_coadmin.jsp"><i class="fa fa-id-card"></i> View Account</a></li>
+        <li><a href="#" onclick="confirmLogout()"><i class="fa fa-sign-out-alt"></i> Logout</a></li>
+    </ul>
+</div>
+<script>
+    function confirmLogout() {
+        if (confirm("Are you sure you want to logout from the system?")) {
+            window.location.href = 'logout';
+        }
+    }
+</script> 

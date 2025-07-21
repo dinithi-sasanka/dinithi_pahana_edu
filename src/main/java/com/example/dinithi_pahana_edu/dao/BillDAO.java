@@ -65,4 +65,56 @@ public class BillDAO {
         }
         return 0; // If no bills, start from 0
     }
+    
+    // Get all bills for a specific customer
+    public List<Bill> getBillsByCustomerId(int customerId) {
+        List<Bill> bills = new ArrayList<>();
+        String sql = "SELECT * FROM bills WHERE customer_id = ? ORDER BY bill_date DESC";
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, customerId);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Bill bill = new Bill();
+                bill.setId(rs.getInt("id"));
+                bill.setCustomerId(rs.getInt("customer_id"));
+                bill.setBillNumber(rs.getString("bill_number"));
+                bill.setBillDate(rs.getTimestamp("bill_date"));
+                bill.setBillDateTime(rs.getString("bill_date_time"));
+                bill.setTotalAmount(rs.getDouble("total_amount"));
+                bill.setPaidAmount(rs.getDouble("paid_amount"));
+                bill.setBalance(rs.getDouble("balance"));
+                bills.add(bill);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return bills;
+    }
+    
+    // Get bill items for a specific bill
+    public List<BillItem> getBillItemsByBillId(int billId) {
+        List<BillItem> items = new ArrayList<>();
+        String sql = "SELECT bi.*, i.name as item_name FROM bill_items bi " +
+                    "JOIN items i ON bi.item_id = i.id " +
+                    "WHERE bi.bill_id = ?";
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, billId);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                BillItem item = new BillItem();
+                item.setId(rs.getInt("id"));
+                item.setBillId(rs.getInt("bill_id"));
+                item.setItemId(rs.getInt("item_id"));
+                item.setQuantity(rs.getInt("quantity"));
+                item.setPrice(rs.getDouble("price"));
+                item.setItemName(rs.getString("item_name"));
+                items.add(item);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return items;
+    }
 } 
