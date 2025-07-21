@@ -150,12 +150,12 @@
             <li><a href="dashboard_staff.jsp"><i class="fa fa-chart-line"></i> Dashboards</a></li>
             <li><a href="addCustomer_staff.jsp"><i class="fa fa-user-plus"></i> Add Customer</a></li>
             <li><a href="editCustomer_staff.jsp"><i class="fa fa-user-edit"></i> Edit Customer</a></li>
-            <li><a href="viewAccount.jsp"><i class="fa fa-id-card"></i> View Account</a></li>
             <li><a href="viewItems_staff.jsp"><i class="fa fa-boxes"></i> View Items</a></li>
-            <li><a href="calculateBill.jsp"><i class="fa fa-calculator"></i> Calculate Bill</a></li>
+            <li><a href="calculateBill"><i class="fa fa-calculator"></i> Calculate Bill</a></li>
             <li><a href="printBill.jsp"><i class="fa fa-print"></i> Print/View Bills</a></li>
             <li><a href="help.jsp"><i class="fa fa-question-circle"></i> Help</a></li>
-            <li><a href="logout"><i class="fa fa-sign-out-alt"></i> Logout</a></li>
+            <li><a href="viewCustomer_staff.jsp"><i class="fa fa-id-card"></i> View Account</a></li>
+            <li><a href="#" onclick="confirmLogout()"><i class="fa fa-sign-out-alt"></i> Logout</a></li>
         </ul>
     </div>
     <div class="main-content">
@@ -171,16 +171,20 @@
             <div class="card" onclick="window.location.href='dashboard_staff.jsp'"><i class="fa fa-chart-line"></i><div>View Dashboards</div></div>
             <div class="card" onclick="location.href='addCustomer_staff.jsp'"><i class="fa fa-user-plus"></i><div>Add New Customer</div></div>
             <div class="card" onclick="location.href='editCustomer_staff.jsp'"><i class="fa fa-user-edit"></i><div>Edit Customer Info</div></div>
-            <div class="card" onclick="location.href='viewAccount.jsp'"><i class="fa fa-id-card"></i><div>View Customer Account</div></div>
             <div class="card" onclick="location.href='viewItems_staff.jsp'"><i class="fa fa-boxes"></i><div>View Items</div></div>
-            <div class="card" onclick="location.href='calculateBill.jsp'"><i class="fa fa-calculator"></i><div>Calculate Bill</div></div>
+            <div class="card" onclick="location.href='calculateBill'"><i class="fa fa-calculator"></i><div>Calculate Bill</div></div>
             <div class="card" onclick="location.href='printBill.jsp'"><i class="fa fa-print"></i><div>Print/View Previous Bills</div></div>
             <div class="card" onclick="location.href='help.jsp'"><i class="fa fa-question-circle"></i><div>Help Section</div></div>
-            <div class="card" onclick="location.href='logout'"><i class="fa fa-sign-out-alt"></i><div>Logout</div></div>
+            <div class="card" onclick="location.href='viewCustomerAccount_staff.jsp'"><i class="fa fa-id-card"></i><div>View Customer Account</div></div>
+            <div class="card" onclick="confirmLogout()"><i class="fa fa-sign-out-alt"></i><div>Logout</div></div>
         </div>
     </div>
     <script>
-        // Optional: Highlight active menu item or add more interactivity here
+        function confirmLogout() {
+            if (confirm("Are you sure you want to logout from the system?")) {
+                window.location.href = 'logout';
+            }
+        }
     </script>
 </body>
 </html> 

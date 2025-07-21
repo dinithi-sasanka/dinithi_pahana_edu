@@ -1,6 +1,7 @@
 package com.example.dinithi_pahana_edu.model;
 
 import java.util.Date;
+import java.util.List;
 
 public class Bill {
     private int id;
@@ -11,6 +12,7 @@ public class Bill {
     private double totalAmount;
     private double paidAmount;
     private double balance;
+    private List<BillItem> billItems; // For display purposes
 
     public Bill() {}
 
@@ -57,4 +59,6 @@ public class Bill {
     public void setPaidAmount(double paidAmount) { this.paidAmount = paidAmount; }
     public double getBalance() { return balance; }
     public void setBalance(double balance) { this.balance = balance; }
+    public List<BillItem> getBillItems() { return billItems; }
+    public void setBillItems(List<BillItem> billItems) { this.billItems = billItems; }
 } 
