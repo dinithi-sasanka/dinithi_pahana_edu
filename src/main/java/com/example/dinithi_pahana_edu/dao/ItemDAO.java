@@ -168,6 +168,19 @@ public class ItemDAO {
         }
     }
 
+    public boolean incrementStock(int itemId, int quantity) {
+        String sql = "UPDATE stock SET current_stock = current_stock + ? WHERE item_id = ?";
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, quantity);
+            stmt.setInt(2, itemId);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public List<Item> getAllItemsWithCurrentStock() {
         List<Item> items = new ArrayList<>();
         String sql = "SELECT i.*, s.current_stock FROM items i JOIN stock s ON i.id = s.item_id ORDER BY i.id DESC";

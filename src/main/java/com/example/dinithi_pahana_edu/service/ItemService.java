@@ -38,6 +38,10 @@ public class ItemService {
         return itemDAO.decrementStock(itemId, quantity);
     }
 
+    public boolean incrementStock(int itemId, int quantity) {
+        return itemDAO.incrementStock(itemId, quantity);
+    }
+
     public java.util.List<Item> getAllItemsWithCurrentStock() {
         return itemDAO.getAllItemsWithCurrentStock();
     }

@@ -15,6 +15,7 @@
     <title>All Bills (Staff)</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 </head>
 <body>
     <jsp:include page="sidebar_staff.jspf" />
@@ -56,6 +57,9 @@
                                   <button class="btn btn-primary btn-sm" onclick="printBill('<%= bill.getId() %>')">
                                     <i class="fa fa-print"></i> Print
                                   </button>
+                                  <a class="btn btn-warning btn-sm" href="updateBill?billId=<%= bill.getId() %>">
+                                    <i class="fa fa-edit"></i> Update
+                                  </a>
                                 </td>
                             </tr>
                     <%  } 
