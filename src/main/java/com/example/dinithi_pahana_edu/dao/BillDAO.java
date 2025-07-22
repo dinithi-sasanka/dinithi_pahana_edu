@@ -187,4 +187,52 @@ public class BillDAO {
         }
         return bills;
     }
+
+    public boolean updateBill(Bill bill) {
+        String sql = "UPDATE bills SET customer_id=?, bill_number=?, bill_date=?, bill_date_time=?, total_amount=?, paid_amount=?, balance=? WHERE id=?";
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, bill.getCustomerId());
+            pstmt.setString(2, bill.getBillNumber());
+            pstmt.setTimestamp(3, new Timestamp(bill.getBillDate().getTime()));
+            pstmt.setString(4, bill.getBillDateTime());
+            pstmt.setDouble(5, bill.getTotalAmount());
+            pstmt.setDouble(6, bill.getPaidAmount());
+            pstmt.setDouble(7, bill.getBalance());
+            pstmt.setInt(8, bill.getId());
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean deleteBillItemsByBillId(int billId) {
+        String sql = "DELETE FROM bill_items WHERE bill_id = ?";
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, billId);
+            pstmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean deleteBillById(int billId) {
+        try (Connection conn = DBConnection.getInstance().getConnection()) {
+            try (PreparedStatement pstmt1 = conn.prepareStatement("DELETE FROM bill_items WHERE bill_id = ?")) {
+                pstmt1.setInt(1, billId);
+                pstmt1.executeUpdate();
+            }
+            try (PreparedStatement pstmt2 = conn.prepareStatement("DELETE FROM bills WHERE id = ?")) {
+                pstmt2.setInt(1, billId);
+                return pstmt2.executeUpdate() > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 } 

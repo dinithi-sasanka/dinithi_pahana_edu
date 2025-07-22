@@ -35,4 +35,15 @@ public class BillService {
     public List<Bill> searchBills(String searchTerm, String fromDate, String toDate) {
         return billDAO.searchBills(searchTerm, fromDate, toDate);
     }
+
+    public boolean updateBill(Bill bill) {
+        return billDAO.updateBill(bill);
+    }
+    public boolean deleteBillItemsByBillId(int billId) {
+        return billDAO.deleteBillItemsByBillId(billId);
+    }
+
+    public boolean deleteBillById(int billId) {
+        return billDAO.deleteBillById(billId);
+    }
 } 
