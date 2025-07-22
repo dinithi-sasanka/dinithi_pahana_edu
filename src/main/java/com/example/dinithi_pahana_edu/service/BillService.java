@@ -46,4 +46,17 @@ public class BillService {
     public boolean deleteBillById(int billId) {
         return billDAO.deleteBillById(billId);
     }
+
+    public List<Object[]> getTopCustomers(int limit) {
+        return billDAO.getTopCustomers(limit);
+    }
+    public List<Object[]> getMostSoldItems(int limit) {
+        return billDAO.getMostSoldItems(limit);
+    }
+    public List<Object[]> getDailySales(int days) {
+        return billDAO.getDailySales(days);
+    }
+    public List<Object[]> getMonthlySales(int months) {
+        return billDAO.getMonthlySales(months);
+    }
 } 

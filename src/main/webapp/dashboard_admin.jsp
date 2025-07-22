@@ -210,6 +210,7 @@
             <div class="card" onclick="location.href='help.jsp'"><i class="fa fa-question-circle"></i><div>Help Section</div></div>
             <div class="card" onclick="location.href='useRoleManage_admin.jsp'"><i class="fa fa-users-cog"></i><div>Manage User Roles/Settings</div></div>
             <div class="card" onclick="location.href='currentStock'"><i class="fa fa-warehouse"></i><div>Check Current Stock</div></div>
+            <div class="card" onclick="location.href='reports_admin.jsp'"><i class="fa fa-chart-bar"></i><div>Manage Reports</div></div>
             <div class="card" onclick="confirmLogout()"><i class="fa fa-sign-out-alt"></i><div>Logout</div></div>
         </div>
     </div>

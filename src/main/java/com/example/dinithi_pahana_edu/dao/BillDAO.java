@@ -235,4 +235,67 @@ public class BillDAO {
             return false;
         }
     }
+
+    public List<Object[]> getTopCustomers(int limit) {
+        List<Object[]> result = new ArrayList<>();
+        String sql = "SELECT c.id, c.name, c.account_number, SUM(b.total_amount) AS total_spent " +
+                "FROM customers c JOIN bills b ON c.id = b.customer_id " +
+                "GROUP BY c.id, c.name, c.account_number " +
+                "ORDER BY total_spent DESC LIMIT ?";
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, limit);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                result.add(new Object[]{rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDouble(4)});
+            }
+        } catch (SQLException e) { e.printStackTrace(); }
+        return result;
+    }
+
+    public List<Object[]> getMostSoldItems(int limit) {
+        List<Object[]> result = new ArrayList<>();
+        String sql = "SELECT i.id, i.name, SUM(bi.quantity) AS total_sold " +
+                "FROM items i JOIN bill_items bi ON i.id = bi.item_id " +
+                "GROUP BY i.id, i.name ORDER BY total_sold DESC LIMIT ?";
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, limit);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                result.add(new Object[]{rs.getInt(1), rs.getString(2), rs.getInt(3)});
+            }
+        } catch (SQLException e) { e.printStackTrace(); }
+        return result;
+    }
+
+    public List<Object[]> getDailySales(int days) {
+        List<Object[]> result = new ArrayList<>();
+        String sql = "SELECT DATE(bill_date) AS day, SUM(total_amount) AS total_sales " +
+                "FROM bills GROUP BY day ORDER BY day DESC LIMIT ?";
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, days);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                result.add(new Object[]{rs.getDate(1), rs.getDouble(2)});
+            }
+        } catch (SQLException e) { e.printStackTrace(); }
+        return result;
+    }
+
+    public List<Object[]> getMonthlySales(int months) {
+        List<Object[]> result = new ArrayList<>();
+        String sql = "SELECT DATE_FORMAT(bill_date, '%Y-%m') AS month, SUM(total_amount) AS total_sales " +
+                "FROM bills GROUP BY month ORDER BY month DESC LIMIT ?";
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, months);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                result.add(new Object[]{rs.getString(1), rs.getDouble(2)});
+            }
+        } catch (SQLException e) { e.printStackTrace(); }
+        return result;
+    }
 } 
