@@ -6,11 +6,12 @@
         <li><a href="editCustomer_admin.jsp"><i class="fa fa-user-edit"></i> Edit Customer</a></li>
         <li><a href="addItems_admin.jsp"><i class="fa fa-boxes"></i> Manage Items</a></li>
         <li><a href="calculateBill"><i class="fa fa-calculator"></i> Calculate Bill</a></li>
-        <li><a href="viewBills"><i class="fa fa-print"></i> Print/View Bills</a></li>
+        <li><a href="printViewBills_admin.jsp"><i class="fa fa-print"></i> Edit/Delete/View Previous Bills</a></li>
         <li><a href="help.jsp"><i class="fa fa-question-circle"></i> Help</a></li>
         <li><a href="viewCustomerAccount_admin.jsp"><i class="fa fa-id-card"></i> View Account</a></li>
         <li><a href="useRoleManage_admin.jsp"><i class="fa fa-users-cog"></i> User Roles/Settings</a></li>
         <li><a href="currentStock"><i class="fa fa-warehouse"></i> Check Current Stock</a></li>
+        <li><a href="reports_admin.jsp"><i class="fa fa-chart-bar"></i> Manage Reports</a></li>
         <li><a href="#" onclick="confirmLogout()"><i class="fa fa-sign-out-alt"></i> Logout</a></li>
     </ul>
 </div>
