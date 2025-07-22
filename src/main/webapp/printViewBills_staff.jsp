@@ -60,9 +60,6 @@
                                   <a class="btn btn-warning btn-sm" href="updateBill?billId=<%= bill.getId() %>">
                                     <i class="fa fa-edit"></i> Update
                                   </a>
-                                  <button class="btn btn-danger btn-sm" onclick="deleteBillAjax('<%= bill.getId() %>', this)">
-                                    <i class="fa fa-trash"></i> Delete
-                                  </button>
                                 </td>
                             </tr>
                     <%  } 
@@ -76,25 +73,6 @@
     <script>
 function printBill(billId) {
     window.open('printBill?billId=' + billId, '_blank', 'width=800,height=600');
-}
-function deleteBillAjax(billId, btn) {
-  if(confirm('Are you sure you want to delete this bill?')) {
-    $.ajax({
-      url: 'deleteBill',
-      type: 'POST',
-      data: { billId: billId },
-      success: function(response) {
-        if(response.trim() === 'success') {
-          $(btn).closest('tr').fadeOut(300, function() { $(this).remove(); });
-        } else {
-          alert('Failed to delete bill.');
-        }
-      },
-      error: function() {
-        alert('Error deleting bill.');
-      }
-    });
-  }
 }
 </script>
 </body>
