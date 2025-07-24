@@ -144,6 +144,49 @@
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+.dashboard-card-header {
+    background: #232d3b;
+    color: #fff;
+    font-weight: bold;
+    font-size: 1.3rem;
+    padding: 1rem 1.5rem;
+    border-top-left-radius: .25rem;
+    border-top-right-radius: .25rem;
+}
+.card i {
+    color: #21b701 !important;
+}
+.card:hover i {
+    color: #232b3e !important;
+}
+.dashboard-cards .card {
+    background: #27304a !important;
+    color: #fff !important;
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s, background 0.2s, color 0.2s, border 0.2s;
+    cursor: pointer;
+    border: 2px solid transparent;
+}
+.dashboard-cards .card i {
+    color: #21b701 !important;
+    font-size: 2.5em;
+    margin-bottom: 12px;
+    transition: color 0.2s;
+}
+.dashboard-cards .card:hover {
+    background: #21b701 !important;
+    color: #232b3e !important;
+    border: 2px solid #21b701;
+    box-shadow: 0 8px 32px rgba(33,183,1,0.10);
+}
+.dashboard-cards .card:hover i {
+    color: #232b3e !important;
+}
+</style>
 </head>
 <body>
     <jsp:include page="sidebar_admin.jspf" />
@@ -211,6 +254,7 @@
             <div class="card" onclick="location.href='useRoleManage_admin.jsp'"><i class="fa fa-users-cog"></i><div>Manage User Roles/Settings</div></div>
             <div class="card" onclick="location.href='currentStock'"><i class="fa fa-warehouse"></i><div>Check Current Stock</div></div>
             <div class="card" onclick="location.href='reports_admin.jsp'"><i class="fa fa-chart-bar"></i><div>Manage Reports</div></div>
+            <div class="card" onclick="window.location.href='profile'"><i class="fa fa-user"></i><div>Profile Management</div></div>
             <div class="card" onclick="confirmLogout()"><i class="fa fa-sign-out-alt"></i><div>Logout</div></div>
         </div>
     </div>
