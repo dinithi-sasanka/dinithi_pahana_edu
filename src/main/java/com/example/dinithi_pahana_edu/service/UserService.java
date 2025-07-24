@@ -3,6 +3,8 @@ package com.example.dinithi_pahana_edu.service;
 import com.example.dinithi_pahana_edu.dao.UserDAO;
 import com.example.dinithi_pahana_edu.model.User;
 
+import java.util.List;
+
 public class UserService {
     private UserDAO userDAO = new UserDAO();
 
