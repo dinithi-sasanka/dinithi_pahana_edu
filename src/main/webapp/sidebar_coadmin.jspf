@@ -7,7 +7,7 @@
         <li><a href="addItems_coadmin.jsp"><i class="fa fa-boxes"></i> Manage Items</a></li>
         <li><a href="calculateBill.jsp"><i class="fa fa-calculator"></i> Calculate Bill</a></li>
         <li><a href="printViewBills_coadmin.jsp"><i class="fa fa-print"></i> Edit/Delete/View Previous Bills</a></li>
-        <li><a href="help.jsp"><i class="fa fa-question-circle"></i> Help</a></li>
+        <li><a href="help_coadmin.jsp"><i class="fa fa-question-circle"></i> Help</a></li>
         <li><a href="viewCustomerAccount_coadmin.jsp"><i class="fa fa-id-card"></i> View Account</a></li>
         <li><a href="currentStock"><i class="fa fa-warehouse"></i> Check Current Stock</a></li>
         <li><a href="profile"><i class="fa fa-user"></i> Profile Management</a></li>
