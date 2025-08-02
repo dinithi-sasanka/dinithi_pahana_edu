@@ -251,6 +251,12 @@
                                        value="<%= request.getAttribute("searchTelephone") != null ? request.getAttribute("searchTelephone") : "" %>"
                                        placeholder="Enter telephone number to search">
                             </div>
+                            <div class="search-input">
+                                <label for="searchEmail">Email Address</label>
+                                <input type="email" id="searchEmail" name="searchEmail" 
+                                       value="<%= request.getAttribute("searchEmail") != null ? request.getAttribute("searchEmail") : "" %>"
+                                       placeholder="Enter email address to search">
+                            </div>
                             <button type="submit" class="search-btn">
                                 <i class="fa fa-search"></i> Search
                             </button>
@@ -282,6 +288,10 @@
                     <div class="input-card">
                         <label for="telephone">Telephone Number</label>
                         <input type="text" id="telephone" name="telephone" value="<%= request.getAttribute("telephone") != null ? request.getAttribute("telephone") : "" %>" required>
+                    </div>
+                    <div class="input-card">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" value="<%= request.getAttribute("email") != null ? request.getAttribute("email") : "" %>" placeholder="customer@example.com">
                     </div>
                     <div class="button-card">
                         <button type="submit" class="submit-btn">

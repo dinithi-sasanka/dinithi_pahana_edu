@@ -268,6 +268,10 @@
                     <label for="telephone">Telephone Number</label>
                     <input type="text" id="telephone" name="telephone" required>
                 </div>
+                <div class="input-card">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="customer@example.com">
+                </div>
                 <div class="button-card">
                     <button type="submit" class="submit-btn">Add Customer</button>
                 </div>

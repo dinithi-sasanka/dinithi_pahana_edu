@@ -59,6 +59,7 @@ public class AddCustomerServlet extends HttpServlet {
         String name = request.getParameter("name");
         String address = request.getParameter("address");
         String telephone = request.getParameter("telephone");
+        String email = request.getParameter("email");
         
         // Create customer object
         Customer customer = new Customer();
@@ -66,6 +67,7 @@ public class AddCustomerServlet extends HttpServlet {
         customer.setName(name);
         customer.setAddress(address);
         customer.setTelephone(telephone);
+        customer.setEmail(email);
         
         // Add customer to database
         boolean success = customerService.addCustomer(customer);
@@ -78,6 +80,7 @@ public class AddCustomerServlet extends HttpServlet {
             request.setAttribute("name", "");
             request.setAttribute("address", "");
             request.setAttribute("telephone", "");
+            request.setAttribute("email", "");
         } else {
             // Check if account number already exists
             if (customerService.isAccountNumberExists(accountNumber)) {
@@ -94,6 +97,7 @@ public class AddCustomerServlet extends HttpServlet {
         request.setAttribute("name", name);
         request.setAttribute("address", address);
         request.setAttribute("telephone", telephone);
+        request.setAttribute("email", email);
         
         // After processing the form and setting request attributes:
         String forwardPage = "addCustomer_admin.jsp";

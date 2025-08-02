@@ -23,21 +23,25 @@ public class SearchCustomerServlet extends HttpServlet {
         String searchAccountNumber = request.getParameter("searchAccountNumber");
         String searchName = request.getParameter("searchName");
         String searchTelephone = request.getParameter("searchTelephone");
+        String searchEmail = request.getParameter("searchEmail");
         
         // Preserve search values for display
         request.setAttribute("searchAccountNumber", searchAccountNumber);
         request.setAttribute("searchName", searchName);
         request.setAttribute("searchTelephone", searchTelephone);
+        request.setAttribute("searchEmail", searchEmail);
         
         Customer customer = null;
         
-        // Search by account number first, then name, then telephone
+        // Search by account number first, then name, then telephone, then email
         if (searchAccountNumber != null && !searchAccountNumber.trim().isEmpty()) {
             customer = customerService.getCustomerByAccountNumber(searchAccountNumber.trim());
         } else if (searchName != null && !searchName.trim().isEmpty()) {
             customer = customerService.searchCustomerByAnyField(searchName.trim());
         } else if (searchTelephone != null && !searchTelephone.trim().isEmpty()) {
             customer = customerService.searchCustomerByAnyField(searchTelephone.trim());
+        } else if (searchEmail != null && !searchEmail.trim().isEmpty()) {
+            customer = customerService.getCustomerByEmail(searchEmail.trim());
         }
         
         if (customer != null) {
@@ -46,6 +50,7 @@ public class SearchCustomerServlet extends HttpServlet {
             request.setAttribute("name", customer.getName());
             request.setAttribute("address", customer.getAddress());
             request.setAttribute("telephone", customer.getTelephone());
+            request.setAttribute("email", customer.getEmail());
             request.setAttribute("message", "Customer found successfully! You can now edit the details below.");
             request.setAttribute("messageType", "success");
         } else {
@@ -54,10 +59,12 @@ public class SearchCustomerServlet extends HttpServlet {
             request.setAttribute("name", "");
             request.setAttribute("address", "");
             request.setAttribute("telephone", "");
+            request.setAttribute("email", "");
             
             if ((searchAccountNumber != null && !searchAccountNumber.trim().isEmpty()) ||
                 (searchName != null && !searchName.trim().isEmpty()) ||
-                (searchTelephone != null && !searchTelephone.trim().isEmpty())) {
+                (searchTelephone != null && !searchTelephone.trim().isEmpty()) ||
+                (searchEmail != null && !searchEmail.trim().isEmpty())) {
                 request.setAttribute("message", "Customer not found. Please try different search criteria.");
                 request.setAttribute("messageType", "error");
             }
@@ -87,9 +94,9 @@ public class SearchCustomerServlet extends HttpServlet {
         if (customer != null) {
             int nextBillNumber = billService.getNextBillNumber();
             String json = String.format(
-                "{\"id\":\"%s\",\"accountNumber\":\"%s\",\"name\":\"%s\",\"address\":\"%s\",\"telephone\":\"%s\",\"nextBillNumber\":\"%s\"}",
+                "{\"id\":\"%s\",\"accountNumber\":\"%s\",\"name\":\"%s\",\"address\":\"%s\",\"telephone\":\"%s\",\"email\":\"%s\",\"nextBillNumber\":\"%s\"}",
                 customer.getId(), customer.getAccountNumber(), customer.getName(),
-                customer.getAddress(), customer.getTelephone(), nextBillNumber
+                customer.getAddress(), customer.getTelephone(), customer.getEmail(), nextBillNumber
             );
             out.print(json);
         } else {

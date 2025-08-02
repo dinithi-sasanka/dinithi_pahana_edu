@@ -52,6 +52,7 @@
                         <th>Name</th>
                         <th>Address</th>
                         <th>Telephone</th>
+                        <th>Email</th>
                         <th>Created At</th>
                         <th>Action</th>
                     </tr>
@@ -64,6 +65,7 @@
                         <td><%= customer.getName() %></td>
                         <td><%= customer.getAddress() %></td>
                         <td><%= customer.getTelephone() %></td>
+                        <td><%= customer.getEmail() != null ? customer.getEmail() : "" %></td>
                         <td><%= customer.getCreatedAt() %></td>
                         <td>
                             <form action="DeleteCustomerServlet" method="post" style="display:inline;" onsubmit="return confirm('Are you sure to delete this customer?');">
@@ -76,7 +78,7 @@
                     </tr>
                 <%  } 
                 } else { %>
-                    <tr><td colspan="6" style="text-align:center; color:#888;">No customers found.</td></tr>
+                    <tr><td colspan="7" style="text-align:center; color:#888;">No customers found.</td></tr>
                 <% } %>
                 </tbody>
             </table>

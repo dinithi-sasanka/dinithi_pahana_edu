@@ -90,6 +90,7 @@
                         <div class="info-box">Name: <span><%= customer.getName() %></span></div>
                         <div class="info-box">Address: <span><%= customer.getAddress() %></span></div>
                         <div class="info-box">Phone: <span><%= customer.getTelephone() %></span></div>
+                <div class="info-box">Email: <span><%= customer.getEmail() != null ? customer.getEmail() : "" %></span></div>
                     </div>
                     <button class="btn btn-secondary mt-2" id="change-customer-btn">Change Customer</button>
                 </div>

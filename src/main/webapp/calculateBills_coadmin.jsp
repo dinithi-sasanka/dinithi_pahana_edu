@@ -63,6 +63,7 @@
                     <div class="info-box">Name: <span id="info-name"></span></div>
                     <div class="info-box">Address: <span id="info-address"></span></div>
                     <div class="info-box">Phone: <span id="info-phone"></span></div>
+                    <div class="info-box">Email: <span id="info-email"></span></div>
                 </div>
                 <button class="btn btn-secondary mt-2" id="change-customer-btn">Change Customer</button>
             </div>
@@ -169,6 +170,7 @@
                 <b>Date & Time:</b> <span id="print-billDateTime"></span><br/>
                 <b>Customer:</b> <span id="print-customerName"></span> (<span id="print-customerAccount"></span>)<br/>
                 <b>Phone:</b> <span id="print-customerPhone"></span><br/>
+                <b>Email:</b> <span id="print-customerEmail"></span><br/>
                 <b>Address:</b> <span id="print-customerAddress"></span><br/>
             </div>
             <hr/>
@@ -215,6 +217,7 @@
                         $('#info-name').text(data.name);
                         $('#info-address').text(data.address);
                         $('#info-phone').text(data.telephone);
+                        $('#info-email').text(data.email || '');
                         $('#customerId').val(data.id);
                         $('#customer-search-section').hide();
                         $('#customer-info-section').show();
@@ -325,6 +328,7 @@
             document.getElementById('print-customerName').innerText = document.getElementById('info-name') ? document.getElementById('info-name').innerText : '';
             document.getElementById('print-customerAccount').innerText = document.getElementById('info-account') ? document.getElementById('info-account').innerText : '';
             document.getElementById('print-customerPhone').innerText = document.getElementById('info-phone') ? document.getElementById('info-phone').innerText : '';
+            document.getElementById('print-customerEmail').innerText = document.getElementById('info-email') ? document.getElementById('info-email').innerText : '';
             document.getElementById('print-customerAddress').innerText = document.getElementById('info-address') ? document.getElementById('info-address').innerText : '';
             document.getElementById('print-totalAmount').innerText = document.getElementById('totalAmount').value;
             document.getElementById('print-paidAmount').innerText = document.getElementById('paidAmount').value;
