@@ -24,55 +24,6 @@
             color: #d7dee5;
             min-height: 100vh;
         }
-        .sidebar {
-            position: fixed;
-            left: 0; top: 0; bottom: 0;
-            width: 220px;
-            background: #232b3e;
-            padding: 30px 0 0 0;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-            display: flex;
-            flex-direction: column;
-            z-index: 10;
-        }
-        .sidebar h2 {
-            color: #fff;
-            text-align: center;
-            margin-bottom: 2rem;
-            font-size: 1.7rem;
-            letter-spacing: 1px;
-        }
-        .sidebar ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        .sidebar ul li {
-            margin: 18px 0;
-        }
-        .sidebar ul li a {
-            color: #21b701;
-            text-decoration: none;
-            font-size: 1.1em;
-            padding: 10px 30px;
-            display: block;
-            border-radius: 6px;
-            transition: background 0.2s, color 0.2s, border-color 0.2s;
-            border-left: 4px solid transparent;
-        }
-        .sidebar ul li a:hover {
-            background: #fcfbfb;
-            color: #232b3e;
-            border-left: 4px solid #232b3e;
-        }
-        .sidebar ul li a i {
-            color: #acacac;
-            margin-right: 10px;
-            transition: color 0.2s;
-        }
-        .sidebar ul li a:hover i {
-            color: #21b701;
-        }
         .main-content {
             margin-left: 240px;
             padding: 40px 30px;

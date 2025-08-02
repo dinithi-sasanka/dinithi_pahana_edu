@@ -149,7 +149,207 @@
             color: #0c5460;
             border: 1px solid #bee5eb;
         }
-    </style>
+        .d-flex {
+            display: flex;
+        }
+        .justify-content-between {
+            justify-content: space-between;
+        }
+        .align-items-center {
+            align-items: center;
+        }
+        .mb-3 {
+            margin-bottom: 1rem;
+        }
+        .mb-4 {
+            margin-bottom: 1.5rem;
+        }
+        .mb-2 {
+            margin-bottom: 0.5rem;
+        }
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin-right: -15px;
+            margin-left: -15px;
+        }
+        .col-md-6 {
+            flex: 0 0 50%;
+            max-width: 50%;
+            padding-right: 15px;
+            padding-left: 15px;
+        }
+        .col-md-12 {
+            flex: 0 0 100%;
+            max-width: 100%;
+            padding-right: 15px;
+            padding-left: 15px;
+        }
+        .card-body {
+            padding: 1.25rem;
+        }
+        .card-title {
+            margin-bottom: 0.75rem;
+            color: #232b3e;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #232b3e;
+            font-weight: 500;
+        }
+        .bill-header {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(44,62,80,0.10);
+            border: 1px solid #e0e0e0;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .bill-header h5 {
+            color: #232b3e;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        .bill-summary {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .bill-summary h5 {
+            color: #232b3e;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        .bill-summary .row {
+            margin-bottom: 0.5rem;
+        }
+        .bill-summary strong {
+            color: #232b3e;
+        }
+        .icon-btn {
+            background: #21b701;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 12px;
+            cursor: pointer;
+            margin-right: 5px;
+            transition: background 0.2s;
+        }
+        .icon-btn:hover {
+            background: #1a9e01;
+        }
+        .icon-btn.remove-row {
+            background: #dc3545;
+        }
+        .icon-btn.remove-row:hover {
+            background: #c82333;
+        }
+        .icon-btn.add-row {
+            background: #007bff;
+        }
+        .icon-btn.add-row:hover {
+            background: #0056b3;
+        }
+        ::placeholder {
+            color: #6c757d;
+            opacity: 1;
+        }
+                 input[readonly], input[disabled] {
+             background-color: #e9ecef;
+             opacity: 1;
+         }
+         /* Customer Details Styling */
+         #customer-info-section .card-body span {
+             color: #232b3e !important;
+             font-weight: 500;
+         }
+         #customer-info-section .card-body strong {
+             color: #232b3e !important;
+             font-weight: 600;
+         }
+         /* Table Styling */
+         .table {
+             border-collapse: collapse;
+             width: 100%;
+             margin-top: 10px;
+         }
+         .table-bordered {
+             border: 1px solid #dee2e6;
+         }
+         .table th, .table td {
+             border: 1px solid #dee2e6;
+             padding: 12px 10px;
+             text-align: left;
+             color: #232b3e;
+         }
+         .table th {
+             background: #f4f4f4;
+             font-weight: 700;
+         }
+         /* Button Styling */
+         .btn-sm {
+             padding: 6px 12px;
+             font-size: 0.875rem;
+         }
+         .btn-outline-success {
+             background: transparent;
+             color: #21b701;
+             border: 1px solid #21b701;
+         }
+         .btn-outline-success:hover {
+             background: #21b701;
+             color: #fff;
+         }
+         .btn-outline-danger {
+             background: transparent;
+             color: #dc3545;
+             border: 1px solid #dc3545;
+         }
+         .btn-outline-danger:hover {
+             background: #dc3545;
+             color: #fff;
+         }
+         .btn-secondary {
+             background: #6c757d;
+             color: #fff;
+         }
+         .btn-secondary:hover {
+             background: #5a6268;
+         }
+         .mx-1 {
+             margin-left: 0.25rem;
+             margin-right: 0.25rem;
+         }
+         .mt-4 {
+             margin-top: 1.5rem;
+         }
+         /* Heading Styling */
+         h3 {
+             color: #232b3e !important;
+             font-weight: 600;
+             font-size: 1.5rem;
+             margin-bottom: 1rem;
+         }
+         h4 {
+             color: #232b3e !important;
+             font-weight: 600;
+             font-size: 1.25rem;
+             margin-bottom: 1rem;
+         }
+         /* Form Area Styling */
+         .form-area h3, .form-area h4 {
+             color: #232b3e !important;
+             font-weight: 600;
+         }
+     </style>
 </head>
 <body>
     <jsp:include page="sidebar_admin.jspf" />
