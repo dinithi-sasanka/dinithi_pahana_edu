@@ -19,6 +19,65 @@ public class SearchCustomerServlet extends HttpServlet {
     private BillService billService = new BillService();
 
     @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String searchAccountNumber = request.getParameter("searchAccountNumber");
+        String searchName = request.getParameter("searchName");
+        String searchTelephone = request.getParameter("searchTelephone");
+        
+        // Preserve search values for display
+        request.setAttribute("searchAccountNumber", searchAccountNumber);
+        request.setAttribute("searchName", searchName);
+        request.setAttribute("searchTelephone", searchTelephone);
+        
+        Customer customer = null;
+        
+        // Search by account number first, then name, then telephone
+        if (searchAccountNumber != null && !searchAccountNumber.trim().isEmpty()) {
+            customer = customerService.getCustomerByAccountNumber(searchAccountNumber.trim());
+        } else if (searchName != null && !searchName.trim().isEmpty()) {
+            customer = customerService.searchCustomerByAnyField(searchName.trim());
+        } else if (searchTelephone != null && !searchTelephone.trim().isEmpty()) {
+            customer = customerService.searchCustomerByAnyField(searchTelephone.trim());
+        }
+        
+        if (customer != null) {
+            // Set customer data for the form
+            request.setAttribute("accountNumber", customer.getAccountNumber());
+            request.setAttribute("name", customer.getName());
+            request.setAttribute("address", customer.getAddress());
+            request.setAttribute("telephone", customer.getTelephone());
+            request.setAttribute("message", "Customer found successfully! You can now edit the details below.");
+            request.setAttribute("messageType", "success");
+        } else {
+            // Clear any previous customer data
+            request.setAttribute("accountNumber", "");
+            request.setAttribute("name", "");
+            request.setAttribute("address", "");
+            request.setAttribute("telephone", "");
+            
+            if ((searchAccountNumber != null && !searchAccountNumber.trim().isEmpty()) ||
+                (searchName != null && !searchName.trim().isEmpty()) ||
+                (searchTelephone != null && !searchTelephone.trim().isEmpty())) {
+                request.setAttribute("message", "Customer not found. Please try different search criteria.");
+                request.setAttribute("messageType", "error");
+            }
+        }
+        
+        // Forward back to the correct JSP based on user role
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        String forwardPage = "editCustomer_admin.jsp";
+        if (user != null) {
+            if ("coadmin".equalsIgnoreCase(user.getRole())) {
+                forwardPage = "editCustomer_coadmin.jsp";
+            } else if ("staff".equalsIgnoreCase(user.getRole())) {
+                forwardPage = "editCustomer_staff.jsp";
+            }
+        }
+        request.getRequestDispatcher(forwardPage).forward(request, response);
+    }
+
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String searchTerm = request.getParameter("searchTerm");
         Customer customer = customerService.searchCustomerByAnyField(searchTerm);
