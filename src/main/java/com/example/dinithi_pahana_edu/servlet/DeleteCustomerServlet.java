@@ -17,6 +17,17 @@ public class DeleteCustomerServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        User user = (session != null) ? (User) session.getAttribute("user") : null;
+        
+        // Check if user is authenticated and has appropriate role
+        if (user == null || (!"admin".equalsIgnoreCase(user.getRole()) && 
+            !"coadmin".equalsIgnoreCase(user.getRole()) && 
+            !"staff".equalsIgnoreCase(user.getRole()))) {
+            response.sendRedirect("error.jsp");
+            return;
+        }
+        
         String idStr = request.getParameter("id");
         boolean deleted = false;
         if (idStr != null) {
@@ -27,8 +38,7 @@ public class DeleteCustomerServlet extends HttpServlet {
                 // ignore, will show error message
             }
         }
-        HttpSession session = request.getSession(false);
-        User user = (session != null) ? (User) session.getAttribute("user") : null;
+        
         String message = deleted ? "Customer deleted successfully!" : "Failed to delete customer.";
         String forwardPage = "ViewCustomersServlet?message=" + java.net.URLEncoder.encode(message, "UTF-8");
         response.sendRedirect(forwardPage);

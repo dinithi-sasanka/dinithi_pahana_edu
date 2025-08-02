@@ -11,7 +11,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Customer - Pahana Edu</title>
+    <title>Edit Customer - Staff</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -21,55 +21,6 @@
             background: linear-gradient(120deg, #232b3e, #1a2233);
             color: #d7dee5;
             min-height: 100vh;
-        }
-        .sidebar {
-            position: fixed;
-            left: 0; top: 0; bottom: 0;
-            width: 220px;
-            background: #232b3e;
-            padding: 30px 0 0 0;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-            display: flex;
-            flex-direction: column;
-            z-index: 10;
-        }
-        .sidebar h2 {
-            color: #fff;
-            text-align: center;
-            margin-bottom: 2rem;
-            font-size: 1.7rem;
-            letter-spacing: 1px;
-        }
-        .sidebar ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        .sidebar ul li {
-            margin: 18px 0;
-        }
-        .sidebar ul li a {
-            color: #21b701;
-            text-decoration: none;
-            font-size: 1.1em;
-            padding: 10px 30px;
-            display: block;
-            border-radius: 6px;
-            transition: background 0.2s, color 0.2s, border-color 0.2s;
-            border-left: 4px solid transparent;
-        }
-        .sidebar ul li a:hover {
-            background: #fcfbfb;
-            color: #232b3e;
-            border-left: 4px solid #232b3e;
-        }
-        .sidebar ul li a i {
-            color: #acacac;
-            margin-right: 10px;
-            transition: color 0.2s;
-        }
-        .sidebar ul li a:hover i {
-            color: #21b701;
         }
         .main-content {
             margin-left: 240px;
@@ -152,47 +103,23 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 15px;
         }
-        .submit-btn, .search-btn {
+        .submit-btn {
+            width: 100%;
             background: #21b701;
             color: #fff;
             border-radius: 6px;
             font-size: 1.18rem;
             font-weight: 700;
             border: none;
-            padding: 15px 25px;
+            padding: 15px;
             transition: background 0.2s, color 0.2s;
             box-shadow: 0 2px 6px rgba(33,183,1,0.07);
             font-family: system-ui, Arial, sans-serif;
-            cursor: pointer;
         }
-        .submit-btn:hover, .search-btn:hover {
+        .submit-btn:hover {
             background: #43e97b;
             color: #232b3e;
-        }
-        .search-btn {
-            background: #007bff;
-        }
-        .search-btn:hover {
-            background: #0056b3;
-        }
-        .message {
-            padding: 15px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-            font-weight: 500;
-            text-align: center;
-        }
-        .message.success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-        .message.error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
         }
         .search-section {
             background: #fff;
@@ -200,27 +127,36 @@
             box-shadow: 0 2px 8px rgba(44,62,80,0.10);
             border: 1px solid #e0e0e0;
             padding: 22px 28px 16px 28px;
-            margin-bottom: 22px;
+            margin-bottom: 20px;
         }
         .search-section h3 {
             color: #232b3e;
-            font-size: 1.2rem;
-            margin-bottom: 15px;
+            font-size: 1.3rem;
             font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .search-section h3 i {
+            color: #21b701;
         }
         .search-row {
             display: flex;
+            flex-wrap: wrap;
             gap: 15px;
-            align-items: end;
+            align-items: flex-end;
         }
         .search-input {
             flex: 1;
+            min-width: 200px;
         }
         .search-input label {
             color: #232b3e;
             font-size: 1.08rem;
             font-weight: 500;
             margin-bottom: 7px;
+            display: block;
             font-family: system-ui, Arial, sans-serif;
         }
         .search-input input {
@@ -239,39 +175,48 @@
             border-color: #21b701;
             outline: none;
         }
-        @media (max-width: 800px) {
-            .sidebar { width: 60px; padding: 20px 0 0 0; }
-            .sidebar h2 { display: none; }
-            .sidebar ul li a { padding: 10px 10px; font-size: 1.2em; text-align: center; }
-            .main-content { margin-left: 70px; padding: 20px 10px; }
+        .search-input input::placeholder {
+            color: #666;
+            opacity: 1;
         }
-        @media (max-width: 600px) {
-            .main-content { margin-left: 0; padding: 10px 2vw; }
-            .sidebar { position: static; width: 100%; height: auto; flex-direction: row; }
-            .sidebar ul { display: flex; flex-direction: row; justify-content: space-around; }
-            .sidebar ul li { margin: 0; }
-            .search-row {
-                flex-direction: column;
-                gap: 10px;
-            }
+        .search-btn {
+            background: #21b701;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            padding: 12px 24px;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+        .search-btn:hover {
+            background: #1a9e01;
+        }
+        .message {
+            padding: 12px;
+            border-radius: 6px;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+        .message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
         }
     </style>
 </head>
 <body>
-    <div class="sidebar">
-        <h2>Staff</h2>
-        <ul>
-            <li><a href="dashboard_staff.jsp"><i class="fa fa-chart-line"></i> Dashboards</a></li>
-            <li><a href="addCustomer_staff.jsp"><i class="fa fa-user-plus"></i> Add Customer</a></li>
-            <li><a href="editCustomer_staff.jsp"><i class="fa fa-user-edit"></i> Edit Customer</a></li>
-            <li><a href="viewAccount.jsp"><i class="fa fa-id-card"></i> View Account</a></li>
-            <li><a href="viewItems.jsp"><i class="fa fa-boxes"></i> View Items</a></li>
-            <li><a href="calculateBill.jsp"><i class="fa fa-calculator"></i> Calculate Bill</a></li>
-            <li><a href="printBill.jsp"><i class="fa fa-print"></i> Print/View Bills</a></li>
-            <li><a href="help.jsp"><i class="fa fa-question-circle"></i> Help</a></li>
-            <li><a href="logout"><i class="fa fa-sign-out-alt"></i> Logout</a></li>
-        </ul>
-    </div>
+    <jsp:include page="sidebar_staff.jspf" />
     <div class="main-content">
         <div class="header">
             <div>
@@ -286,19 +231,25 @@
                 <!-- Search Section -->
                 <div class="search-section">
                     <h3><i class="fa fa-search"></i> Search Customer</h3>
-                    <form action="searchCustomer" method="post">
+                    <form action="searchCustomer" method="get">
                         <div class="search-row">
                             <div class="search-input">
                                 <label for="searchAccountNumber">Account Number</label>
-                                <input type="text" id="searchAccountNumber" name="searchAccountNumber" placeholder="Enter account number to search">
+                                <input type="text" id="searchAccountNumber" name="searchAccountNumber" 
+                                       value="<%= request.getAttribute("searchAccountNumber") != null ? request.getAttribute("searchAccountNumber") : "" %>"
+                                       placeholder="Enter account number to search">
                             </div>
                             <div class="search-input">
                                 <label for="searchName">Customer Name</label>
-                                <input type="text" id="searchName" name="searchName" placeholder="Enter customer name to search">
+                                <input type="text" id="searchName" name="searchName" 
+                                       value="<%= request.getAttribute("searchName") != null ? request.getAttribute("searchName") : "" %>"
+                                       placeholder="Enter customer name to search">
                             </div>
                             <div class="search-input">
                                 <label for="searchTelephone">Telephone Number</label>
-                                <input type="text" id="searchTelephone" name="searchTelephone" placeholder="Enter telephone number to search">
+                                <input type="text" id="searchTelephone" name="searchTelephone" 
+                                       value="<%= request.getAttribute("searchTelephone") != null ? request.getAttribute("searchTelephone") : "" %>"
+                                       placeholder="Enter telephone number to search">
                             </div>
                             <button type="submit" class="search-btn">
                                 <i class="fa fa-search"></i> Search
@@ -306,6 +257,13 @@
                         </div>
                     </form>
                 </div>
+
+                <!-- Message Display -->
+                <% if (request.getAttribute("message") != null) { %>
+                    <div class="message <%= request.getAttribute("messageType") %>" style="margin-bottom: 20px; padding: 12px; border-radius: 6px; font-weight: 500;">
+                        <%= request.getAttribute("message") %>
+                    </div>
+                <% } %>
 
                 <!-- Edit Customer Form -->
                 <form action="updateCustomer" method="post">
@@ -334,15 +292,5 @@
             </div>
         </div>
     </div>
-    <% if (request.getAttribute("message") != null && "success".equals(request.getAttribute("messageType"))) { %>
-        <script>
-            alert("Customer updated successfully");
-        </script>
-    <% } %>
-    <% if (request.getAttribute("message") != null && "error".equals(request.getAttribute("messageType"))) { %>
-        <script>
-            alert("Error: <%= request.getAttribute("message") %>");
-        </script>
-    <% } %>
 </body>
 </html> 

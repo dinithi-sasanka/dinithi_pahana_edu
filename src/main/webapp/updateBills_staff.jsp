@@ -7,7 +7,6 @@
 <%@ page import="java.time.LocalDateTime" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
 <%-- This page is for updating an existing bill. All fields are pre-filled. --%>
-<jsp:include page="sidebar_staff.jspf" />
 <% Bill bill = (Bill) request.getAttribute("bill");
    Customer customer = (Customer) request.getAttribute("customer");
    List<BillItem> billItems = (List<BillItem>) request.getAttribute("billItems");
@@ -25,6 +24,7 @@
     </style>
 </head>
 <body>
+    <jsp:include page="sidebar_staff.jspf" />
     <div class="main-content">
 <div class="container mt-4">
     <% if (request.getAttribute("message") != null) { %>
