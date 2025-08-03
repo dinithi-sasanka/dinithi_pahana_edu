@@ -44,55 +44,6 @@
             color: #d7dee5;
             min-height: 100vh;
         }
-        .sidebar {
-            position: fixed;
-            left: 0; top: 0; bottom: 0;
-            width: 220px;
-            background: #232b3e;
-            padding: 30px 0 0 0;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-            display: flex;
-            flex-direction: column;
-            z-index: 10;
-        }
-        .sidebar h2 {
-            color: #fff;
-            text-align: center;
-            margin-bottom: 2rem;
-            font-size: 1.7rem;
-            letter-spacing: 1px;
-        }
-        .sidebar ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        .sidebar ul li {
-            margin: 18px 0;
-        }
-        .sidebar ul li a {
-            color: #21b701;
-            text-decoration: none;
-            font-size: 1.1em;
-            padding: 10px 30px;
-            display: block;
-            border-radius: 6px;
-            transition: background 0.2s, color 0.2s, border-color 0.2s;
-            border-left: 4px solid transparent;
-        }
-        .sidebar ul li a:hover {
-            background: #fcfbfb;
-            color: #232b3e;
-            border-left: 4px solid #232b3e;
-        }
-        .sidebar ul li a i {
-            color: #acacac;
-            margin-right: 10px;
-            transition: color 0.2s;
-        }
-        .sidebar ul li a:hover i {
-            color: #21b701;
-        }
         .main-content {
             margin-left: 240px;
             padding: 40px 30px;
@@ -209,35 +160,10 @@
             color: #721c24;
             border: 1px solid #f5c6cb;
         }
-        @media (max-width: 800px) {
-            .sidebar { width: 60px; padding: 20px 0 0 0; }
-            .sidebar h2 { display: none; }
-            .sidebar ul li a { padding: 10px 10px; font-size: 1.2em; text-align: center; }
-            .main-content { margin-left: 70px; padding: 20px 10px; }
-        }
-        @media (max-width: 600px) {
-            .main-content { margin-left: 0; padding: 10px 2vw; }
-            .sidebar { position: static; width: 100%; height: auto; flex-direction: row; }
-            .sidebar ul { display: flex; flex-direction: row; justify-content: space-around; }
-            .sidebar ul li { margin: 0; }
-        }
     </style>
 </head>
 <body>
-    <div class="sidebar">
-        <h2>Coadmin</h2>
-        <ul>
-            <li><a href="dashboard_coadmin.jsp"><i class="fa fa-chart-line"></i> Dashboards</a></li>
-            <li><a href="addCustomer_coadmin.jsp"><i class="fa fa-user-plus"></i> Add Customer</a></li>
-            <li><a href="editCustomer.jsp"><i class="fa fa-user-edit"></i> Edit Customer</a></li>
-            <li><a href="viewAccount.jsp"><i class="fa fa-id-card"></i> View Account</a></li>
-            <li><a href="addItems_admin.jsp"><i class="fa fa-boxes"></i> Manage Items</a></li>
-            <li><a href="calculateBill.jsp"><i class="fa fa-calculator"></i> Calculate Bill</a></li>
-            <li><a href="printBill.jsp"><i class="fa fa-print"></i> Print/View Bills</a></li>
-            <li><a href="help.jsp"><i class="fa fa-question-circle"></i> Help</a></li>
-            <li><a href="logout"><i class="fa fa-sign-out-alt"></i> Logout</a></li>
-        </ul>
-    </div>
+    <jsp:include page="sidebar_coadmin.jspf" />
     <div class="main-content">
         <div class="header">
             <div>
@@ -248,74 +174,74 @@
             </div>
         </div>
         <div style="display: flex; justify-content: center; gap: 16px; margin-bottom: 24px; max-width: 700px; margin-left: auto; margin-right: auto;">
-    <div style="
-        flex: 1;
-        background: #f5f8ff;
-        border: 1.5px solid #dbeafe;
-        border-radius: 10px;
-        padding: 10px 0 6px 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        min-width: 120px;
-        box-shadow: 0 2px 8px #0001;
-        justify-content: center;
-        height: 48px;
-    ">
-        <span style="font-size:0.98em;color:#555;font-weight:500;margin-bottom:2px;display:flex;align-items:center;">
-            <i class="fa fa-id-badge" style="color:#1976d2;margin-right:5px;"></i>
-            Next Customer ID
-        </span>
-        <span style="font-size:1.15em;color:#1976d2;font-weight:700;"><%= nextId %></span>
-    </div>
-    <div style="
-        flex: 1;
-        background: #f5f8ff;
-        border: 1.5px solid #dbeafe;
-        border-radius: 10px;
-        padding: 10px 0 6px 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        min-width: 120px;
-        box-shadow: 0 2px 8px #0001;
-        justify-content: center;
-        height: 48px;
-    ">
-        <span style="font-size:0.98em;color:#555;font-weight:500;margin-bottom:2px;display:flex;align-items:center;">
-            <i class="fa fa-hashtag" style="color:#1976d2;margin-right:5px;"></i>
-            Next Account Number
-        </span>
-        <span style="font-size:1.15em;color:#1976d2;font-weight:700;"><%= nextAccountNumber %></span>
-    </div>
-    <a href="ViewCustomersServlet"
-       style="
-        flex: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background:#1976d2;
-        color:#fff;
-        font-weight:600;
-        border:none;
-        border-radius:10px;
-        font-size:1.02em;
-        text-decoration:none;
-        transition:background 0.2s;
-        height: 48px;
-        min-width: 120px;
-        box-shadow: 0 2px 8px #0001;
-        text-align: center;
-    ">
-        View Customers
-    </a>
-</div>
-<% if (request.getAttribute("message") != null && "success".equals(request.getAttribute("messageType"))) { %>
-    <div style="background:#d4edda; color:#155724; border:1px solid #c3e6cb; padding:12px 24px; border-radius:7px; margin-bottom:18px; font-weight:600; text-align:center; max-width:400px; margin-left:auto; margin-right:auto;">
-        <i class="fa fa-check-circle" style="color:#21b701;margin-right:8px;"></i>
-        <%= request.getAttribute("message") %>
-    </div>
-<% } %>
+            <div style="
+                flex: 1;
+                background: #f5f8ff;
+                border: 1.5px solid #dbeafe;
+                border-radius: 10px;
+                padding: 10px 0 6px 0;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                min-width: 120px;
+                box-shadow: 0 2px 8px #0001;
+                justify-content: center;
+                height: 48px;
+            ">
+                <span style="font-size:0.98em;color:#555;font-weight:500;margin-bottom:2px;display:flex;align-items:center;">
+                    <i class="fa fa-id-badge" style="color:#1976d2;margin-right:5px;"></i>
+                    Next Customer ID
+                </span>
+                <span style="font-size:1.15em;color:#1976d2;font-weight:700;"><%= nextId %></span>
+            </div>
+            <div style="
+                flex: 1;
+                background: #f5f8ff;
+                border: 1.5px solid #dbeafe;
+                border-radius: 10px;
+                padding: 10px 0 6px 0;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                min-width: 120px;
+                box-shadow: 0 2px 8px #0001;
+                justify-content: center;
+                height: 48px;
+            ">
+                <span style="font-size:0.98em;color:#555;font-weight:500;margin-bottom:2px;display:flex;align-items:center;">
+                    <i class="fa fa-hashtag" style="color:#1976d2;margin-right:5px;"></i>
+                    Next Account Number
+                </span>
+                <span style="font-size:1.15em;color:#1976d2;font-weight:700;"><%= nextAccountNumber %></span>
+            </div>
+            <a href="ViewCustomersServlet"
+               style="
+                flex: 1;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background:#1976d2;
+                color:#fff;
+                font-weight:600;
+                border:none;
+                border-radius:10px;
+                font-size:1.02em;
+                text-decoration:none;
+                transition:background 0.2s;
+                height: 48px;
+                min-width: 120px;
+                box-shadow: 0 2px 8px #0001;
+                text-align: center;
+            ">
+                View Customers
+            </a>
+        </div>
+        <% if (request.getAttribute("message") != null && "success".equals(request.getAttribute("messageType"))) { %>
+            <div style="background:#d4edda; color:#155724; border:1px solid #c3e6cb; padding:12px 24px; border-radius:7px; margin-bottom:18px; font-weight:600; text-align:center; max-width:400px; margin-left:auto; margin-right:auto;">
+                <i class="fa fa-check-circle" style="color:#21b701;margin-right:8px;"></i>
+                <%= request.getAttribute("message") %>
+            </div>
+        <% } %>
         <div style="display: flex; justify-content: center; align-items: flex-start; min-height: 60vh;">
             <form class="form-area" action="addCustomer" method="post">
                 <div class="input-card">
@@ -329,6 +255,10 @@
                 <div class="input-card">
                     <label for="telephone">Telephone Number</label>
                     <input type="text" id="telephone" name="telephone" required>
+                </div>
+                <div class="input-card">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="customer@example.com">
                 </div>
                 <div class="button-card">
                     <button type="submit" class="submit-btn">Add Customer</button>

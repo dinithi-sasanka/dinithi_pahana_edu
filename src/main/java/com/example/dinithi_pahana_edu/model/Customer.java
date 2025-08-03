@@ -6,6 +6,7 @@ public class Customer {
     private String name;
     private String address;
     private String telephone;
+    private String email;
     private String createdAt;
 
     // Default constructor
@@ -13,20 +14,22 @@ public class Customer {
     }
 
     // Constructor with all fields
-    public Customer(String accountNumber, String name, String address, String telephone) {
+    public Customer(String accountNumber, String name, String address, String telephone, String email) {
         this.accountNumber = accountNumber;
         this.name = name;
         this.address = address;
         this.telephone = telephone;
+        this.email = email;
     }
 
     // Constructor with all fields including id
-    public Customer(int id, String accountNumber, String name, String address, String telephone, String createdAt) {
+    public Customer(int id, String accountNumber, String name, String address, String telephone, String email, String createdAt) {
         this.id = id;
         this.accountNumber = accountNumber;
         this.name = name;
         this.address = address;
         this.telephone = telephone;
+        this.email = email;
         this.createdAt = createdAt;
     }
 
@@ -71,6 +74,14 @@ public class Customer {
         this.telephone = telephone;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getCreatedAt() {
         return createdAt;
     }
@@ -87,6 +98,7 @@ public class Customer {
                 ", name='" + name + '\'' +
                 ", address='" + address + '\'' +
                 ", telephone='" + telephone + '\'' +
+                ", email='" + email + '\'' +
                 ", createdAt='" + createdAt + '\'' +
                 '}';
     }

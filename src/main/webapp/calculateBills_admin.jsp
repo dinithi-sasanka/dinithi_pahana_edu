@@ -4,12 +4,23 @@
 <%@ page import="com.example.dinithi_pahana_edu.model.Customer" %>
 <%@ page import="java.time.LocalDateTime" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
+<%@ page session="true" %>
+<%
+    com.example.dinithi_pahana_edu.model.User user = (com.example.dinithi_pahana_edu.model.User) session.getAttribute("user");
+    if (user == null || !"admin".equalsIgnoreCase(user.getRole())) {
+        response.sendRedirect("error.jsp");
+        return;
+    }
+%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Calculate Bill (Admin)</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculate Bill - Admin</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
@@ -18,55 +29,6 @@
             background: linear-gradient(120deg, #232b3e, #1a2233);
             color: #d7dee5;
             min-height: 100vh;
-        }
-        .sidebar {
-            position: fixed;
-            left: 0; top: 0; bottom: 0;
-            width: 220px;
-            background: #232b3e;
-            padding: 30px 0 0 0;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-            display: flex;
-            flex-direction: column;
-            z-index: 10;
-        }
-        .sidebar h2 {
-            color: #fff;
-            text-align: center;
-            margin-bottom: 2rem;
-            font-size: 1.7rem;
-            letter-spacing: 1px;
-        }
-        .sidebar ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        .sidebar ul li {
-            margin: 18px 0;
-        }
-        .sidebar ul li a {
-            color: #21b701;
-            text-decoration: none;
-            font-size: 1.1em;
-            padding: 10px 30px;
-            display: block;
-            border-radius: 6px;
-            transition: background 0.2s, color 0.2s, border-color 0.2s;
-            border-left: 4px solid transparent;
-        }
-        .sidebar ul li a:hover {
-            background: #fcfbfb;
-            color: #232b3e;
-            border-left: 4px solid #232b3e;
-        }
-        .sidebar ul li a i {
-            color: #acacac;
-            margin-right: 10px;
-            transition: color 0.2s;
-        }
-        .sidebar ul li a:hover i {
-            color: #21b701;
         }
         .main-content {
             margin-left: 240px;
@@ -96,18 +58,6 @@
             align-items: center;
             gap: 10px;
         }
-        @media (max-width: 800px) {
-            .sidebar { width: 60px; padding: 20px 0 0 0; }
-            .sidebar h2 { display: none; }
-            .sidebar ul li a { padding: 10px 10px; font-size: 1.2em; text-align: center; }
-            .main-content { margin-left: 70px; padding: 20px 10px; }
-        }
-        @media (max-width: 600px) {
-            .main-content { margin-left: 0; padding: 10px 2vw; }
-            .sidebar { position: static; width: 100%; height: auto; flex-direction: row; }
-            .sidebar ul { display: flex; flex-direction: row; justify-content: space-around; }
-            .sidebar ul li { margin: 0; }
-        }
         .info-box {
             background: #f8f9fa;
             color: #232b3e;
@@ -118,8 +68,15 @@
             display: inline-block;
             min-width: 180px;
         }
-        .icon-btn { background: none; border: none; font-size: 1.2em; cursor: pointer; }
-        .icon-btn:focus { outline: none; }
+        .icon-btn {
+            background: none;
+            border: none;
+            font-size: 1.2em;
+            cursor: pointer;
+        }
+        .icon-btn:focus {
+            outline: none;
+        }
         .bill-header {
             background: #f8f9fa;
             color: #232b3e;
@@ -160,342 +117,344 @@
     </style>
 </head>
 <body>
-    <div class="sidebar">
-        <h2>Admin</h2>
-        <ul>
-            <li><a href="dashboard_admin.jsp"><i class="fa fa-chart-line"></i> Dashboards</a></li>
-            <li><a href="addCustomer_admin.jsp"><i class="fa fa-user-plus"></i> Add Customer</a></li>
-            <li><a href="editCustomer_admin.jsp"><i class="fa fa-user-edit"></i> Edit Customer</a></li>
-            <li><a href="viewAccount.jsp"><i class="fa fa-id-card"></i> View Account</a></li>
-            <li><a href="addItems_admin.jsp"><i class="fa fa-boxes"></i> Manage Items</a></li>
-            <li><a href="calculateBill"><i class="fa fa-calculator"></i> Calculate Bill</a></li>
-            <li><a href="printBill.jsp"><i class="fa fa-print"></i> Print/View Bills</a></li>
-            <li><a href="help.jsp"><i class="fa fa-question-circle"></i> Help</a></li>
-            <li><a href="useRoleManage_admin.jsp"><i class="fa fa-users-cog"></i> User Roles/Settings</a></li>
-            <li><a href="logout"><i class="fa fa-sign-out-alt"></i> Logout</a></li>
-        </ul>
-    </div>
+    <jsp:include page="sidebar_admin.jspf" />
     <div class="main-content">
-<div class="container mt-4">
-    <!-- Success/Error Message -->
-    <% if (request.getAttribute("message") != null) { %>
-        <div class="alert alert-info alert-dismissible fade show" role="alert">
-            <%= request.getAttribute("message") %>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    <% } %>
-    
-    <!-- Customer Search Section -->
-    <div id="customer-search-section" <% if (request.getAttribute("customer") != null) { %> style="display:none;" <% } %>>
-        <h4>Search Customer</h4>
-        <div class="form-inline mb-3">
-            <input type="text" class="form-control mr-2" id="customerSearchBox" placeholder="Type phone, name, account number, etc."/>
-            <button type="button" class="btn btn-primary" id="loadCustomerBtn">Load</button>
-        </div>
-    </div>
-    <!-- Customer Info Boxes -->
-    <div id="customer-info-section" style="display:none;">
-        <h5>Customer Details</h5>
-        <div class="d-flex flex-wrap">
-            <div class="info-box">ID: <span id="info-id"></span></div>
-            <div class="info-box">Account #: <span id="info-account"></span></div>
-            <div class="info-box">Name: <span id="info-name"></span></div>
-            <div class="info-box">Address: <span id="info-address"></span></div>
-            <div class="info-box">Phone: <span id="info-phone"></span></div>
-        </div>
-        <button class="btn btn-secondary mt-2" id="change-customer-btn">Change Customer</button>
-    </div>
-    
-    <form id="bill-form" method="post" action="calculateBill">
-        <!-- Bill Header Information -->
-        <div class="bill-header" id="bill-header-section" style="display:none;">
-            <h5>Bill Information</h5>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="billNumber">Bill Number:</label>
-                        <input type="text" class="form-control" id="billNumber" name="billNumber" placeholder="Enter bill number" required value="<%= request.getAttribute("nextBillNumber") != null ? request.getAttribute("nextBillNumber") : "" %>"/>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="billDateTimeDisplay">Bill Date & Time:</label>
-                        <input type="text" class="form-control" id="billDateTimeDisplay" readonly/>
-                        <input type="hidden" id="billDateTime" name="billDateTime"/>
-                    </div>
-                </div>
+        <div class="header">
+            <div>
+                <h1>Pahana Edu Bookshop Management System</h1>
+            </div>
+            <div class="user-info">
+                <i class="fa fa-user-shield"></i> <span>Role: <%= user.getRole() %></span>
             </div>
         </div>
-        <input type="hidden" name="customerId" id="customerId" value="<%= request.getAttribute("customer") != null ? ((Customer)request.getAttribute("customer")).getId() : "" %>"/>
-        <h4 class="mt-4">Add Items</h4>
-        <table class="table table-bordered" id="items-table">
-            <thead>
-                <tr>
-                    <th>Item</th>
-                    <th>Quantity</th>
-                    <th>Unit Price</th>
-                    <th>Total</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- First row template -->
-                <tr>
-                    <td>
-                        <select class="form-control item-select" name="itemId[]">
-                            <option value="">Select Item</option>
-                            <% 
-                            List<Item> items = (List<Item>)request.getAttribute("items");
-                            if (items != null) {
-                                for (Item item : items) { %>
-                                    <option value="<%= item.getId() %>" data-price="<%= item.getPrice() %>"><%= item.getName() %></option>
-                            <%  }
-                            } %>
-                        </select>
-                    </td>
-                    <td><input type="number" class="form-control qty-input" name="quantity[]" min="1" value="1"/></td>
-                    <td><input type="text" class="form-control unit-price" name="unitPrice[]" readonly/></td>
-                    <td><input type="text" class="form-control total-price" name="totalPrice[]" readonly/></td>
-                    <td>
-                        <div style="display: flex; align-items: center;">
-                            <button type="button" class="icon-btn add-row" title="Add Item"><i class="fa fa-plus-circle"></i></button>
-                            <button type="button" class="icon-btn remove-row" title="Remove Item"><i class="fa fa-trash"></i></button>
+        <div id="save-message" style="margin-bottom: 16px;"></div>
+        <div class="container mt-4">
+            <!-- Success/Error Message -->
+            <% if (request.getAttribute("message") != null) { %>
+                <div class="alert alert-info alert-dismissible fade show" role="alert">
+                    <%= request.getAttribute("message") %>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            <% } %>
+            
+            <!-- Customer Search Section -->
+            <div id="customer-search-section" <% if (request.getAttribute("customer") != null) { %> style="display:none;" <% } %>>
+                <h4>Search Customer</h4>
+                <div class="form-inline mb-3">
+                    <input type="text" class="form-control mr-2" id="customerSearchBox" placeholder="Type phone, name, account number, etc."/>
+                    <button type="button" class="btn btn-primary" id="loadCustomerBtn">Load</button>
+                </div>
+            </div>
+            <!-- Customer Info Boxes -->
+            <div id="customer-info-section" style="display:none;">
+                <h5>Customer Details</h5>
+                <div class="d-flex flex-wrap">
+                    <div class="info-box">ID: <span id="info-id"></span></div>
+                    <div class="info-box">Account #: <span id="info-account"></span></div>
+                    <div class="info-box">Name: <span id="info-name"></span></div>
+                    <div class="info-box">Address: <span id="info-address"></span></div>
+                    <div class="info-box">Phone: <span id="info-phone"></span></div>
+                    <div class="info-box">Email: <span id="info-email"></span></div>
+                </div>
+                <button class="btn btn-secondary mt-2" id="change-customer-btn">Change Customer</button>
+            </div>
+            
+            <form id="bill-form" method="post" action="calculateBill">
+                <!-- Bill Header Information -->
+                <div class="bill-header" id="bill-header-section" style="display:none;">
+                    <h5>Bill Information</h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="billNumber">Bill Number:</label>
+                                <input type="text" class="form-control" id="billNumber" name="billNumber" placeholder="Enter bill number" required value="<%= request.getAttribute("nextBillNumber") != null ? request.getAttribute("nextBillNumber") : "" %>"/>
+                            </div>
                         </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        
-        <!-- Bill Summary Section -->
-        <div class="bill-summary mt-4" id="bill-summary-section" style="display:none;">
-            <h5>Bill Summary</h5>
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="totalAmount">Total Amount:</label>
-                        <input type="text" class="form-control" id="totalAmount" name="totalAmount" readonly style="font-weight: bold; font-size: 1.1em; color: #28a745;"/>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="billDateTimeDisplay">Bill Date & Time:</label>
+                                <input type="text" class="form-control" id="billDateTimeDisplay" readonly/>
+                                <input type="hidden" id="billDateTime" name="billDateTime"/>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="paidAmount">Paid Amount:</label>
-                        <input type="number" class="form-control" id="paidAmount" name="paidAmount" min="0" step="0.01" placeholder="Enter paid amount"/>
+                <input type="hidden" name="customerId" id="customerId" value="<%= request.getAttribute("customer") != null ? ((Customer)request.getAttribute("customer")).getId() : "" %>"/>
+                <h4 class="mt-4">Add Items</h4>
+                <table class="table table-bordered" id="items-table">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Quantity</th>
+                            <th>Unit Price</th>
+                            <th>Total</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- First row template -->
+                        <tr>
+                            <td>
+                                <select class="form-control item-select" name="itemId[]">
+                                    <option value="">Select Item</option>
+                                    <% 
+                                    List<Item> items = (List<Item>)request.getAttribute("items");
+                                    if (items != null) {
+                                        for (Item item : items) { %>
+                                            <option value="<%= item.getId() %>" data-price="<%= item.getPrice() %>"><%= item.getName() %></option>
+                                    <%  }
+                                    } %>
+                                </select>
+                            </td>
+                            <td><input type="number" class="form-control qty-input" name="quantity[]" min="1" value="1"/></td>
+                            <td><input type="text" class="form-control unit-price" name="unitPrice[]" readonly/></td>
+                            <td><input type="text" class="form-control total-price" name="totalPrice[]" readonly/></td>
+                            <td>
+                                <div style="display: flex; align-items: center;">
+                                    <button type="button" class="icon-btn add-row" title="Add Item"><i class="fa fa-plus-circle"></i></button>
+                                    <button type="button" class="icon-btn remove-row" title="Remove Item"><i class="fa fa-trash"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <!-- Bill Summary Section -->
+                <div class="bill-summary mt-4" id="bill-summary-section" style="display:none;">
+                    <h5>Bill Summary</h5>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="totalAmount">Total Amount:</label>
+                                <input type="text" class="form-control" id="totalAmount" name="totalAmount" readonly style="font-weight: bold; font-size: 1.1em; color: #28a745;"/>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="paidAmount">Paid Amount:</label>
+                                <input type="number" class="form-control" id="paidAmount" name="paidAmount" min="0" step="0.01" placeholder="Enter paid amount"/>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="balanceAmount">Balance:</label>
+                                <input type="text" class="form-control" id="balanceAmount" name="balanceAmount" readonly style="font-weight: bold; font-size: 1.1em;"/>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="balanceAmount">Balance:</label>
-                        <input type="text" class="form-control" id="balanceAmount" name="balanceAmount" readonly style="font-weight: bold; font-size: 1.1em;"/>
-                    </div>
+                
+                <div class="d-flex" style="gap: 12px;">
+                    <button type="submit" class="btn btn-success">Save Bill</button>
+                    <button type="button" class="btn btn-secondary" onclick="printBill()">Print Bill</button>
                 </div>
+            </form>
+        </div>
+        <!-- Hidden Printable Bill Section -->
+        <div id="printableBill" style="display:none;">
+            <div style="text-align:center; margin-bottom:20px;">
+                <h2>Pahana Edu Bookshop</h2>
+                <h4>Bill Receipt</h4>
             </div>
+            <div>
+                <b>Bill Number:</b> <span id="print-billNumber"></span><br/>
+                <b>Date & Time:</b> <span id="print-billDateTime"></span><br/>
+                <b>Customer:</b> <span id="print-customerName"></span> (<span id="print-customerAccount"></span>)<br/>
+                <b>Phone:</b> <span id="print-customerPhone"></span><br/>
+                <b>Email:</b> <span id="print-customerEmail"></span><br/>
+                <b>Address:</b> <span id="print-customerAddress"></span><br/>
+            </div>
+            <hr/>
+            <table border="1" width="100%" style="border-collapse:collapse;">
+                <thead>
+                    <tr><th>Item</th><th>Qty</th><th>Unit Price</th><th>Total</th></tr>
+                </thead>
+                <tbody id="print-items"></tbody>
+            </table>
+            <hr/>
+            <div style="text-align:right;">
+                <b>Total:</b> <span id="print-totalAmount"></span><br/>
+                <b>Paid:</b> <span id="print-paidAmount"></span><br/>
+                <b>Balance:</b> <span id="print-balance"></span>
+            </div>
+            <div style="text-align:center; margin-top:20px;">Thank you for your purchase!</div>
         </div>
-        
-        <div class="d-flex" style="gap: 12px;">
-            <button type="submit" class="btn btn-success">Save Bill</button>
-            <button type="button" class="btn btn-secondary" onclick="printBill()">Print Bill</button>
-        </div>
-    </form>
-</div>
-<div id="save-message" style="margin-bottom: 16px;"></div>
-<!-- Hidden Printable Bill Section -->
-<div id="printableBill" style="display:none;">
-    <div style="text-align:center; margin-bottom:20px;">
-        <h2>Pahana Edu Bookshop</h2>
-        <h4>Bill Receipt</h4>
-    </div>
-    <div>
-        <b>Bill Number:</b> <span id="print-billNumber"></span><br/>
-        <b>Date & Time:</b> <span id="print-billDateTime"></span><br/>
-        <b>Customer:</b> <span id="print-customerName"></span> (<span id="print-customerAccount"></span>)<br/>
-        <b>Phone:</b> <span id="print-customerPhone"></span><br/>
-        <b>Address:</b> <span id="print-customerAddress"></span><br/>
-    </div>
-    <hr/>
-    <table border="1" width="100%" style="border-collapse:collapse;">
-        <thead>
-            <tr><th>Item</th><th>Qty</th><th>Unit Price</th><th>Total</th></tr>
-        </thead>
-        <tbody id="print-items"></tbody>
-    </table>
-    <hr/>
-    <div style="text-align:right;">
-        <b>Total:</b> <span id="print-totalAmount"></span><br/>
-        <b>Paid:</b> <span id="print-paidAmount"></span><br/>
-        <b>Balance:</b> <span id="print-balance"></span>
-    </div>
-    <div style="text-align:center; margin-top:20px;">Thank you for your purchase!</div>
-</div>
-<script>
-$(function() {
-    // Set current date time
-    function setCurrentDateTime() {
-        var now = new Date();
-        var dateTimeString = now.toLocaleDateString() + ' ' + now.toLocaleTimeString();
-        $('#billDateTime').val(dateTimeString);
-    }
-    
-    // Show/hide customer sections
-    $('#change-customer-btn').click(function() {
-        $('#customer-info-section').hide();
-        $('#customer-search-section').show();
-        $('#customerId').val('');
-        $('#bill-header-section').hide();
-    });
-    
-    // Remove bill number auto-generation and syncing
-    // Only set bill date/time when customer is loaded
-    $('#loadCustomerBtn').click(function() {
-        var searchTerm = $('#customerSearchBox').val();
-        if (!searchTerm) { alert('Please enter a search term.'); return; }
-        $.post('searchCustomer', { searchTerm: searchTerm }, function(data) {
-            if (data && data.id) {
-                $('#info-id').text(data.id);
-                $('#info-account').text(data.accountNumber);
-                $('#info-name').text(data.name);
-                $('#info-address').text(data.address);
-                $('#info-phone').text(data.telephone);
-                $('#customerId').val(data.id);
-                $('#customer-search-section').hide();
-                $('#customer-info-section').show();
-                // Only set bill date/time
-                var billDT = new Date();
-                var dateTimeString = billDT.toLocaleDateString() + ' ' + billDT.toLocaleTimeString();
-                $('#billDateTimeDisplay').val(dateTimeString);
+        <script>
+        $(function() {
+            // Set current date time
+            function setCurrentDateTime() {
+                var now = new Date();
+                var dateTimeString = now.toLocaleDateString() + ' ' + now.toLocaleTimeString();
                 $('#billDateTime').val(dateTimeString);
-                $('#bill-header-section').show();
-                $('#bill-summary-section').show();
-                calculateTotalAmount(); // Initial calculation
-            } else {
-                alert('Customer not found!');
             }
-        }, 'json');
-    });
-    
-    // Item dropdown: set unit price and total
-    function updateRow(row) {
-        var price = parseFloat(row.find('.item-select option:selected').data('price')) || 0;
-        var qty = parseInt(row.find('.qty-input').val()) || 1;
-        row.find('.unit-price').val(price.toFixed(2));
-        row.find('.total-price').val((price * qty).toFixed(2));
-        calculateTotalAmount();
-    }
-    
-    // Calculate total amount for all items
-    function calculateTotalAmount() {
-        var total = 0;
-        $('#items-table tbody tr').each(function() {
-            var rowTotal = parseFloat($(this).find('.total-price').val()) || 0;
-            total += rowTotal;
-        });
-        $('#totalAmount').val(total.toFixed(2));
-        calculateBalance();
-    }
-    
-    // Calculate balance based on paid amount
-    function calculateBalance() {
-        var total = parseFloat($('#totalAmount').val()) || 0;
-        var paid = parseFloat($('#paidAmount').val()) || 0;
-        var balance = total - paid;
-        $('#balanceAmount').val(balance.toFixed(2));
-        
-        // Color code the balance
-        if (balance < 0) {
-            $('#balanceAmount').css('color', '#dc3545'); // Red for overpayment
-        } else if (balance === 0) {
-            $('#balanceAmount').css('color', '#28a745'); // Green for fully paid
-        } else {
-            $('#balanceAmount').css('color', '#ffc107'); // Yellow for partial payment
-        }
-    }
-    
-    $('#items-table').on('change', '.item-select', function() {
-        updateRow($(this).closest('tr'));
-    });
-    $('#items-table').on('input', '.qty-input', function() {
-        updateRow($(this).closest('tr'));
-    });
-    
-    // Handle paid amount input
-    $('#paidAmount').on('input', function() {
-        calculateBalance();
-    });
-    
-    // Add row
-    $('#items-table').on('click', '.add-row', function() {
-        var row = $(this).closest('tr').clone();
-        row.find('input, select').val('');
-        row.find('.unit-price, .total-price').val('');
-        $('#items-table tbody').append(row);
-    });
-    // Remove row
-    $('#items-table').on('click', '.remove-row', function() {
-        if ($('#items-table tbody tr').length > 1) {
-            $(this).closest('tr').remove();
-            calculateTotalAmount();
-        }
-    });
-    
-    // AJAX Save Bill
-    $('#bill-form').off('submit').on('submit', function(e) {
-        e.preventDefault();
-        var formData = $(this).serialize();
-        $.ajax({
-            url: 'calculateBill',
-            type: 'POST',
-            data: formData,
-            success: function(response) {
-                $('#save-message').html('<div class="alert alert-success">Bill saved successfully!</div>');
-            },
-            error: function(xhr) {
-                $('#save-message').html('<div class="alert alert-danger">Error saving bill. Please try again.</div>');
+            
+            // Show/hide customer sections
+            $('#change-customer-btn').click(function() {
+                $('#customer-info-section').hide();
+                $('#customer-search-section').show();
+                $('#customerId').val('');
+                $('#bill-header-section').hide();
+            });
+            
+            // Remove bill number auto-generation and syncing
+            // Only set bill date/time when customer is loaded
+            $('#loadCustomerBtn').click(function() {
+                var searchTerm = $('#customerSearchBox').val();
+                if (!searchTerm) { alert('Please enter a search term.'); return; }
+                $.post('searchCustomer', { searchTerm: searchTerm }, function(data) {
+                    if (data && data.id) {
+                        $('#info-id').text(data.id);
+                        $('#info-account').text(data.accountNumber);
+                        $('#info-name').text(data.name);
+                        $('#info-address').text(data.address);
+                        $('#info-phone').text(data.telephone);
+                        $('#info-email').text(data.email || '');
+                        $('#customerId').val(data.id);
+                        $('#customer-search-section').hide();
+                        $('#customer-info-section').show();
+                        // Only set bill date/time
+                        var billDT = new Date();
+                        var dateTimeString = billDT.toLocaleDateString() + ' ' + billDT.toLocaleTimeString();
+                        $('#billDateTimeDisplay').val(dateTimeString);
+                        $('#billDateTime').val(dateTimeString);
+                        $('#bill-header-section').show();
+                        $('#bill-summary-section').show();
+                        calculateTotalAmount(); // Initial calculation
+                        if (data.nextBillNumber) {
+                            $('#billNumber').val(data.nextBillNumber);
+                        }
+                    } else {
+                        alert('Customer not found!');
+                    }
+                }, 'json');
+            });
+            
+            // Item dropdown: set unit price and total
+            function updateRow(row) {
+                var price = parseFloat(row.find('.item-select option:selected').data('price')) || 0;
+                var qty = parseInt(row.find('.qty-input').val()) || 1;
+                row.find('.unit-price').val(price.toFixed(2));
+                row.find('.total-price').val((price * qty).toFixed(2));
+                calculateTotalAmount();
             }
+            
+            // Calculate total amount for all items
+            function calculateTotalAmount() {
+                var total = 0;
+                $('#items-table tbody tr').each(function() {
+                    var rowTotal = parseFloat($(this).find('.total-price').val()) || 0;
+                    total += rowTotal;
+                });
+                $('#totalAmount').val(total.toFixed(2));
+                calculateBalance();
+            }
+            
+            // Calculate balance based on paid amount
+            function calculateBalance() {
+                var total = parseFloat($('#totalAmount').val()) || 0;
+                var paid = parseFloat($('#paidAmount').val()) || 0;
+                var balance = total - paid;
+                $('#balanceAmount').val(balance.toFixed(2));
+                
+                // Color code the balance
+                if (balance < 0) {
+                    $('#balanceAmount').css('color', '#dc3545'); // Red for overpayment
+                } else if (balance === 0) {
+                    $('#balanceAmount').css('color', '#28a745'); // Green for fully paid
+                } else {
+                    $('#balanceAmount').css('color', '#ffc107'); // Yellow for partial payment
+                }
+            }
+            
+            $('#items-table').on('change', '.item-select', function() {
+                updateRow($(this).closest('tr'));
+            });
+            $('#items-table').on('input', '.qty-input', function() {
+                updateRow($(this).closest('tr'));
+            });
+            
+            // Handle paid amount input
+            $('#paidAmount').on('input', function() {
+                calculateBalance();
+            });
+            
+            // Add row
+            $('#items-table').on('click', '.add-row', function() {
+                var row = $(this).closest('tr').clone();
+                row.find('input, select').val('');
+                row.find('.unit-price, .total-price').val('');
+                $('#items-table tbody').append(row);
+            });
+            // Remove row
+            $('#items-table').on('click', '.remove-row', function() {
+                if ($('#items-table tbody tr').length > 1) {
+                    $(this).closest('tr').remove();
+                    calculateTotalAmount();
+                }
+            });
+            
+            // AJAX Save Bill
+            $('#bill-form').off('submit').on('submit', function(e) {
+                e.preventDefault();
+                var formData = $(this).serialize();
+                $.ajax({
+                    url: 'calculateBill',
+                    type: 'POST',
+                    data: formData,
+                    success: function(response) {
+                        $('#save-message').html('<div class="alert alert-success">Bill saved successfully!</div>');
+                    },
+                    error: function(xhr) {
+                        $('#save-message').html('<div class="alert alert-danger">Error saving bill. Please try again.</div>');
+                    }
+                });
+            });
         });
-    });
-});
-
-function printBill() {
-    // Fill printable bill with current values
-    document.getElementById('print-billNumber').innerText = document.getElementById('billNumber').value;
-    document.getElementById('print-billDateTime').innerText = document.getElementById('billDateTimeDisplay').value;
-    document.getElementById('print-customerName').innerText = document.getElementById('info-name') ? document.getElementById('info-name').innerText : '';
-    document.getElementById('print-customerAccount').innerText = document.getElementById('info-account') ? document.getElementById('info-account').innerText : '';
-    document.getElementById('print-customerPhone').innerText = document.getElementById('info-phone') ? document.getElementById('info-phone').innerText : '';
-    document.getElementById('print-customerAddress').innerText = document.getElementById('info-address') ? document.getElementById('info-address').innerText : '';
-    document.getElementById('print-totalAmount').innerText = document.getElementById('totalAmount').value;
-    document.getElementById('print-paidAmount').innerText = document.getElementById('paidAmount').value;
-    document.getElementById('print-balance').innerText = document.getElementById('balanceAmount').value;
-    // Items
-    var itemsTable = document.getElementById('print-items');
-    itemsTable.innerHTML = '';
-    var rows = document.querySelectorAll('#items-table tbody tr');
-    rows.forEach(function(row) {
-        var item = row.querySelector('select, input[name^="itemId"]');
-        var qty = row.querySelector('input[name^="quantity"]');
-        var price = row.querySelector('input[name^="unitPrice"]');
-        var total = row.querySelector('input[name^="totalPrice"]');
-        if(item && qty && price && total) {
-            var tr = document.createElement('tr');
-            tr.innerHTML = '<td>' + item.value + '</td><td>' + qty.value + '</td><td>' + price.value + '</td><td>' + total.value + '</td>';
-            itemsTable.appendChild(tr);
+        </script>
+        <script>
+        function printBill() {
+            // Fill printable bill with current values
+            document.getElementById('print-billNumber').innerText = document.getElementById('billNumber').value;
+            document.getElementById('print-billDateTime').innerText = document.getElementById('billDateTimeDisplay').value;
+            document.getElementById('print-customerName').innerText = document.getElementById('info-name') ? document.getElementById('info-name').innerText : '';
+            document.getElementById('print-customerAccount').innerText = document.getElementById('info-account') ? document.getElementById('info-account').innerText : '';
+            document.getElementById('print-customerPhone').innerText = document.getElementById('info-phone') ? document.getElementById('info-phone').innerText : '';
+            document.getElementById('print-customerEmail').innerText = document.getElementById('info-email') ? document.getElementById('info-email').innerText : '';
+            document.getElementById('print-customerAddress').innerText = document.getElementById('info-address') ? document.getElementById('info-address').innerText : '';
+            document.getElementById('print-totalAmount').innerText = document.getElementById('totalAmount').value;
+            document.getElementById('print-paidAmount').innerText = document.getElementById('paidAmount').value;
+            document.getElementById('print-balance').innerText = document.getElementById('balanceAmount').value; // Use balanceAmount for balance
+            // Items
+            var itemsTable = document.getElementById('print-items');
+            itemsTable.innerHTML = '';
+            var rows = document.querySelectorAll('#items-table tbody tr');
+            rows.forEach(function(row) {
+                var item = row.querySelector('select, input[name^="itemId"]'); // Changed to itemId
+                var qty = row.querySelector('input[name^="quantity"]');
+                var price = row.querySelector('input[name^="unitPrice"]');
+                var total = row.querySelector('input[name^="totalPrice"]'); // Changed to totalPrice
+                if(item && qty && price && total) {
+                    var tr = document.createElement('tr');
+                    tr.innerHTML = '<td>' + item.value + '</td><td>' + qty.value + '</td><td>' + price.value + '</td><td>' + total.value + '</td>';
+                    itemsTable.appendChild(tr);
+                }
+            });
+            // Print only the bill
+            var printContents = document.getElementById('printableBill').innerHTML;
+            var win = window.open('', '', 'height=700,width=900');
+            win.document.write('<html><head><title>Print Bill</title>');
+            win.document.write('<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>' );
+            win.document.write('</head><body>');
+            win.document.write(printContents);
+            win.document.write('</body></html>');
+            win.document.close();
+            win.focus();
+            win.print();
+            win.close();
         }
-    });
-    // Print only the bill
-    var printContents = document.getElementById('printableBill').innerHTML;
-    var win = window.open('', '', 'height=700,width=900');
-    win.document.write('<html><head><title>Print Bill</title>');
-    win.document.write('<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>' );
-    win.document.write('</head><body>');
-    win.document.write(printContents);
-    win.document.write('</body></html>');
-    win.document.close();
-    win.focus();
-    win.print();
-    win.close();
-}
-</script>
-</div>
+        </script>
+    </div>
 </body>
 </html> 

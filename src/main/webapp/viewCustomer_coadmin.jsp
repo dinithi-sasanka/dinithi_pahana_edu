@@ -17,8 +17,106 @@
     <title>View Customers - Coadmin</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Roboto', Arial, sans-serif;
+            background: linear-gradient(120deg, #232b3e, #1a2233);
+            color: #d7dee5;
+            min-height: 100vh;
+        }
+        .main-content {
+            margin-left: 240px;
+            padding: 40px 30px;
+            background: #ffffffe7;
+            min-height: 100vh;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #232b3e;
+            font-size: 2rem;
+            margin: 0;
+        }
+        .user-info {
+            font-size: 1.1em;
+            color: #21b701;
+            background: #27304a;
+            padding: 8px 18px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .table-area {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(44,62,80,0.10);
+            padding: 30px 30px 20px 30px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            background: #fff;
+        }
+        th, td {
+            padding: 12px 10px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+            color: #232b3e;
+        }
+        th {
+            background: #f4f4f4;
+            font-weight: 700;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        .view-users-btn {
+            background: #21b701;
+            color: #fff;
+            border-radius: 6px;
+            font-size: 1.08rem;
+            font-weight: 600;
+            border: none;
+            padding: 10px 22px;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.2s, color 0.2s;
+            box-shadow: 0 2px 6px rgba(33,183,1,0.07);
+            margin-bottom: 0;
+        }
+        .view-users-btn:hover {
+            background: #43e97b;
+            color: #232b3e;
+            text-decoration: none;
+        }
+        .back-btn {
+            display: inline-block;
+            background: #1976d2;
+            color: #fff;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.08em;
+            text-decoration: none;
+            padding: 12px 32px;
+            transition: background 0.2s;
+            box-shadow: 0 2px 8px #0001;
+        }
+        .back-btn:hover {
+            background: #1565c0;
+            color: #fff;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
     <jsp:include page="sidebar_coadmin.jspf" />
@@ -31,6 +129,12 @@
                 <i class="fa fa-user-shield"></i> <span>Role: <%= user.getRole() %></span>
             </div>
         </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; max-width: 1100px; margin: 0 auto 30px auto;">
+            <div></div>
+            <a href="ViewCustomersServlet" class="view-users-btn">
+                <i class="fa fa-users"></i> All Item List
+            </a>
+        </div>
         <div class="table-area">
             <h2 style="color:#232b3e;">All Customers</h2>
             <table>
@@ -40,6 +144,7 @@
                         <th>Name</th>
                         <th>Address</th>
                         <th>Telephone</th>
+                        <th>Email</th>
                         <th>Created At</th>
                         <th>Action</th>
                     </tr>
@@ -52,6 +157,7 @@
                         <td><%= customer.getName() %></td>
                         <td><%= customer.getAddress() %></td>
                         <td><%= customer.getTelephone() %></td>
+                        <td><%= customer.getEmail() != null ? customer.getEmail() : "" %></td>
                         <td><%= customer.getCreatedAt() %></td>
                         <td>
                             <form action="DeleteCustomerServlet" method="post" style="display:inline;" onsubmit="return confirm('Are you sure to delete this customer?');">
@@ -64,13 +170,13 @@
                     </tr>
                 <%  } 
                 } else { %>
-                    <tr><td colspan="6" style="text-align:center; color:#888;">No customers found.</td></tr>
+                    <tr><td colspan="7" style="text-align:center; color:#888;">No customers found.</td></tr>
                 <% } %>
                 </tbody>
             </table>
         </div>
         <div style="text-align:center; margin-top:24px;">
-            <a href="addCustomer_coadmin.jsp" style="display:inline-block; background:#1976d2; color:#fff; font-weight:600; border:none; border-radius:8px; font-size:1.08em; text-decoration:none; padding:12px 32px; transition:background 0.2s; box-shadow:0 2px 8px #0001;">
+            <a href="addCustomer_coadmin.jsp" class="back-btn">
                 <i class="fa fa-arrow-left" style="margin-right:8px;"></i>Back
             </a>
         </div>

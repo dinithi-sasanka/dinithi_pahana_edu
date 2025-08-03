@@ -10,17 +10,77 @@
     List<Bill> bills = (List<Bill>) request.getAttribute("bills");
 %>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>All Bills (Admin)</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Bills - Admin</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Roboto', Arial, sans-serif;
+            background: linear-gradient(120deg, #232b3e, #1a2233);
+            color: #d7dee5;
+            min-height: 100vh;
+        }
+        .main-content {
+            margin-left: 240px;
+            padding: 40px 30px;
+            background: #fff;
+            min-height: 100vh;
+            color: #232b3e;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #232b3e;
+            font-size: 2rem;
+            margin: 0;
+        }
+        .user-info {
+            font-size: 1.1em;
+            color: #21b701;
+            background: #27304a;
+            padding: 8px 18px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .table {
+            background: #fff;
+        }
+        .table th, .table td {
+            color: #232b3e;
+        }
+        .form-control {
+            border-color: #dbeafe;
+        }
+        .btn {
+            border-radius: 4px;
+        }
+    </style>
 </head>
 <body>
     <jsp:include page="sidebar_admin.jspf" />
     <div class="main-content">
-        <div class="container mt-5">
+        <div class="header">
+            <div>
+                <h1>Pahana Edu Bookshop Management System</h1>
+            </div>
+            <div class="user-info">
+                <i class="fa fa-user-shield"></i> <span>Role: <%= user.getRole() %></span>
+            </div>
+        </div>
+        <div class="container mt-4">
             <h2>All Bills</h2>
             <form class="form-inline mb-3" method="get" action="viewBills">
                 <input type="text" class="form-control mr-2" name="search" placeholder="Search bill number, customer name, or account" value="<%= request.getParameter("search") != null ? request.getParameter("search") : "" %>"/>
@@ -67,7 +127,7 @@
                             </tr>
                     <%  } 
                     } else { %>
-                        <tr><td colspan="6">No bills found.</td></tr>
+                        <tr><td colspan="7" style="text-align: center; color: #666; font-style: italic;">No bills found.</td></tr>
                     <% } %>
                 </tbody>
             </table>

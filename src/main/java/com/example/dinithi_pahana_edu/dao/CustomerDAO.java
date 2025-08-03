@@ -9,7 +9,7 @@ public class CustomerDAO {
     
     // Add a new customer
     public boolean addCustomer(Customer customer) {
-        String sql = "INSERT INTO customers (account_number, name, address, telephone, created_at) VALUES (?, ?, ?, ?, NOW())";
+        String sql = "INSERT INTO customers (account_number, name, address, telephone, email, created_at) VALUES (?, ?, ?, ?, ?, NOW())";
         
         try (Connection conn = DBConnection.getInstance().getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -18,6 +18,7 @@ public class CustomerDAO {
             pstmt.setString(2, customer.getName());
             pstmt.setString(3, customer.getAddress());
             pstmt.setString(4, customer.getTelephone());
+            pstmt.setString(5, customer.getEmail());
             
             int rowsAffected = pstmt.executeUpdate();
             return rowsAffected > 0;
@@ -44,6 +45,7 @@ public class CustomerDAO {
                 customer.setName(rs.getString("name"));
                 customer.setAddress(rs.getString("address"));
                 customer.setTelephone(rs.getString("telephone"));
+                customer.setEmail(rs.getString("email"));
                 customer.setCreatedAt(rs.getString("created_at"));
                 customers.add(customer);
             }
@@ -72,6 +74,7 @@ public class CustomerDAO {
                 customer.setName(rs.getString("name"));
                 customer.setAddress(rs.getString("address"));
                 customer.setTelephone(rs.getString("telephone"));
+                customer.setEmail(rs.getString("email"));
                 customer.setCreatedAt(rs.getString("created_at"));
                 return customer;
             }
@@ -100,6 +103,7 @@ public class CustomerDAO {
                 customer.setName(rs.getString("name"));
                 customer.setAddress(rs.getString("address"));
                 customer.setTelephone(rs.getString("telephone"));
+                customer.setEmail(rs.getString("email"));
                 customer.setCreatedAt(rs.getString("created_at"));
                 return customer;
             }
@@ -113,7 +117,7 @@ public class CustomerDAO {
     
     // Update customer
     public boolean updateCustomer(Customer customer) {
-        String sql = "UPDATE customers SET account_number = ?, name = ?, address = ?, telephone = ? WHERE id = ?";
+        String sql = "UPDATE customers SET account_number = ?, name = ?, address = ?, telephone = ?, email = ? WHERE id = ?";
         
         try (Connection conn = DBConnection.getInstance().getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -122,7 +126,8 @@ public class CustomerDAO {
             pstmt.setString(2, customer.getName());
             pstmt.setString(3, customer.getAddress());
             pstmt.setString(4, customer.getTelephone());
-            pstmt.setInt(5, customer.getId());
+            pstmt.setString(5, customer.getEmail());
+            pstmt.setInt(6, customer.getId());
             
             int rowsAffected = pstmt.executeUpdate();
             return rowsAffected > 0;
@@ -190,6 +195,7 @@ public class CustomerDAO {
                 customer.setName(rs.getString("name"));
                 customer.setAddress(rs.getString("address"));
                 customer.setTelephone(rs.getString("telephone"));
+                customer.setEmail(rs.getString("email"));
                 customer.setCreatedAt(rs.getString("created_at"));
                 customers.add(customer);
             }
@@ -230,6 +236,7 @@ public class CustomerDAO {
                 customer.setName(rs.getString("name"));
                 customer.setAddress(rs.getString("address"));
                 customer.setTelephone(rs.getString("telephone"));
+                customer.setEmail(rs.getString("email"));
                 customer.setCreatedAt(rs.getString("created_at"));
                 return customer;
             }
@@ -239,21 +246,51 @@ public class CustomerDAO {
         return null;
     }
 
+    // Search customer by email
+    public Customer getCustomerByEmail(String email) {
+        String sql = "SELECT * FROM customers WHERE email = ?";
+        
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            
+            pstmt.setString(1, email);
+            ResultSet rs = pstmt.executeQuery();
+            
+            if (rs.next()) {
+                Customer customer = new Customer();
+                customer.setId(rs.getInt("id"));
+                customer.setAccountNumber(rs.getString("account_number"));
+                customer.setName(rs.getString("name"));
+                customer.setAddress(rs.getString("address"));
+                customer.setTelephone(rs.getString("telephone"));
+                customer.setEmail(rs.getString("email"));
+                customer.setCreatedAt(rs.getString("created_at"));
+                return customer;
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return null;
+    }
+
     // Search customer by any field (id, account number, name, address, email, telephone)
     public Customer searchCustomerByAnyField(String searchTerm) {
-        String sql = "SELECT * FROM customers WHERE id = ? OR account_number = ? OR LOWER(name) LIKE ? OR LOWER(address) LIKE ? OR telephone = ? LIMIT 1";
+        String sql = "SELECT * FROM customers WHERE id = ? OR account_number = ? OR LOWER(name) LIKE ? OR LOWER(address) LIKE ? OR LOWER(email) LIKE ? OR telephone = ? LIMIT 1";
         try (Connection conn = DBConnection.getInstance().getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             int id = -1;
             try { id = Integer.parseInt(searchTerm); } catch (NumberFormatException ignored) {}
             String lowerTerm = searchTerm.toLowerCase();
             System.out.println("[DEBUG] SQL: " + sql);
-            System.out.println("[DEBUG] Parameters: id=" + id + ", account_number=" + searchTerm + ", name LIKE %" + lowerTerm + "% , address LIKE %" + lowerTerm + "% , telephone=" + searchTerm);
+            System.out.println("[DEBUG] Parameters: id=" + id + ", account_number=" + searchTerm + ", name LIKE %" + lowerTerm + "% , address LIKE %" + lowerTerm + "% , email LIKE %" + lowerTerm + "% , telephone=" + searchTerm);
             pstmt.setInt(1, id);
             pstmt.setString(2, searchTerm);
             pstmt.setString(3, "%" + lowerTerm + "%");
             pstmt.setString(4, "%" + lowerTerm + "%");
-            pstmt.setString(5, searchTerm);
+            pstmt.setString(5, "%" + lowerTerm + "%");
+            pstmt.setString(6, searchTerm);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 Customer customer = new Customer();
@@ -262,6 +299,7 @@ public class CustomerDAO {
                 customer.setName(rs.getString("name"));
                 customer.setAddress(rs.getString("address"));
                 customer.setTelephone(rs.getString("telephone"));
+                customer.setEmail(rs.getString("email"));
                 customer.setCreatedAt(rs.getString("created_at"));
                 return customer;
             }

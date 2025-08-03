@@ -247,7 +247,7 @@
             <div class="card" onclick="location.href='addItems_coadmin.jsp'"><i class="fa fa-boxes"></i><div>Add/Update/Delete Items</div></div>
             <div class="card" onclick="location.href='calculateBill'"><i class="fa fa-calculator"></i><div>Calculate Bill</div></div>
             <div class="card" onclick="location.href='printViewBills_coadmin.jsp'"><i class="fa fa-print"></i><div>Edit/Delete/View Previous Bills</div></div>
-            <div class="card" onclick="location.href='help.jsp'"><i class="fa fa-question-circle"></i><div>Help Section</div></div>
+            <div class="card" onclick="location.href='help_coadmin.jsp'"><i class="fa fa-question-circle"></i><div>Help Section</div></div>
             <div class="card" onclick="location.href='viewCustomerAccount_coadmin.jsp'"><i class="fa fa-id-card"></i><div>View Customer Account</div></div>
             <div class="card" onclick="location.href='currentStock'"><i class="fa fa-warehouse"></i><div>Check Current Stock</div></div>
             <div class="card" onclick="window.location.href='profile'"><i class="fa fa-user"></i><div>Profile Management</div></div>

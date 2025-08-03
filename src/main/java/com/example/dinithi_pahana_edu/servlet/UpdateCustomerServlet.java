@@ -19,12 +19,14 @@ public class UpdateCustomerServlet extends HttpServlet {
         String name = request.getParameter("name");
         String address = request.getParameter("address");
         String telephone = request.getParameter("telephone");
+        String email = request.getParameter("email");
 
         Customer customer = customerService.getCustomerByAccountNumber(accountNumber);
         if (customer != null) {
             customer.setName(name);
             customer.setAddress(address);
             customer.setTelephone(telephone);
+            customer.setEmail(email);
 
             boolean updated = customerService.updateCustomer(customer);
 
@@ -40,6 +42,7 @@ public class UpdateCustomerServlet extends HttpServlet {
             request.setAttribute("name", customer.getName());
             request.setAttribute("address", customer.getAddress());
             request.setAttribute("telephone", customer.getTelephone());
+            request.setAttribute("email", customer.getEmail());
         } else {
             request.setAttribute("message", "Customer not found.");
             request.setAttribute("messageType", "error");
