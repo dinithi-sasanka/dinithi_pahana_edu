@@ -12,6 +12,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Role Management - Admin</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -22,60 +23,12 @@
             color: #d7dee5;
             min-height: 100vh;
         }
-        .sidebar {
-            position: fixed;
-            left: 0; top: 0; bottom: 0;
-            width: 220px;
-            background: #232b3e;
-            padding: 30px 0 0 0;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-            display: flex;
-            flex-direction: column;
-            z-index: 10;
-        }
-        .sidebar h2 {
-            color: #fff;
-            text-align: center;
-            margin-bottom: 2rem;
-            font-size: 1.7rem;
-            letter-spacing: 1px;
-        }
-        .sidebar ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        .sidebar ul li {
-            margin: 18px 0;
-        }
-        .sidebar ul li a {
-            color: #21b701;
-            text-decoration: none;
-            font-size: 1.1em;
-            padding: 10px 30px;
-            display: block;
-            border-radius: 6px;
-            transition: background 0.2s, color 0.2s, border-color 0.2s;
-            border-left: 4px solid transparent;
-        }
-        .sidebar ul li a:hover {
-            background: #fcfbfb;
-            color: #232b3e;
-            border-left: 4px solid #232b3e;
-        }
-        .sidebar ul li a i {
-            color: #acacac;
-            margin-right: 10px;
-            transition: color 0.2s;
-        }
-        .sidebar ul li a:hover i {
-            color: #21b701;
-        }
         .main-content {
             margin-left: 240px;
             padding: 40px 30px;
-            background: #ffffffe7;
+            background: #fff;
             min-height: 100vh;
+            color: #232b3e;
         }
         .header {
             display: flex;
@@ -99,28 +52,22 @@
             gap: 10px;
         }
         .form-area {
-            display: flex;
-            flex-direction: column;
-            gap: 22px;
-            max-width: 700px;
-            width: 100%;
+            max-width: 600px;
             margin: 0 auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(44,62,80,0.10);
+            padding: 30px;
         }
         .input-card {
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(44,62,80,0.10);
-            border: 1px solid #e0e0e0;
-            padding: 22px 28px 16px 28px;
-            display: flex;
-            flex-direction: column;
-            width: 100%;
+            margin-bottom: 20px;
         }
         .input-card label {
             color: #232b3e;
             font-size: 1.08rem;
             font-weight: 500;
             margin-bottom: 7px;
+            display: block;
             font-family: system-ui, Arial, sans-serif;
         }
         .input-card input, .input-card select {
@@ -140,98 +87,67 @@
             outline: none;
         }
         .button-card {
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(44,62,80,0.10);
-            border: 1px solid #e0e0e0;
-            padding: 18px 28px 18px 28px;
             display: flex;
             justify-content: center;
             align-items: center;
+            margin-top: 30px;
         }
         .submit-btn {
-            width: 100%;
             background: #21b701;
             color: #fff;
+            border: none;
             border-radius: 6px;
             font-size: 1.18rem;
             font-weight: 700;
-            border: none;
-            padding: 15px;
-            transition: background 0.2s, color 0.2s;
-            box-shadow: 0 2px 6px rgba(33,183,1,0.07);
+            padding: 15px 40px;
+            cursor: pointer;
+            transition: background 0.2s;
             font-family: system-ui, Arial, sans-serif;
         }
         .submit-btn:hover {
-            background: #43e97b;
-            color: #232b3e;
+            background: #1a9e01;
         }
         .message {
-            padding: 15px;
+            padding: 12px;
             border-radius: 6px;
             margin-bottom: 20px;
             font-weight: 500;
-            text-align: center;
         }
         .message.success {
-            background: #d4edda;
+            background-color: #d4edda;
             color: #155724;
             border: 1px solid #c3e6cb;
         }
-        .message.error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
         .view-users-btn {
-            background: #21b701;
+            background: #007bff;
             color: #fff;
-            border-radius: 6px;
-            font-size: 1.08rem;
-            font-weight: 600;
             border: none;
-            padding: 10px 22px;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            padding: 12px 24px;
+            cursor: pointer;
             text-decoration: none;
-            display: inline-block;
-            transition: background 0.2s, color 0.2s;
-            box-shadow: 0 2px 6px rgba(33,183,1,0.07);
-            margin-bottom: 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.2s;
         }
         .view-users-btn:hover {
-            background: #43e97b;
-            color: #232b3e;
+            background: #0056b3;
+            color: #fff;
             text-decoration: none;
         }
-        @media (max-width: 800px) {
-            .sidebar { width: 60px; padding: 20px 0 0 0; }
-            .sidebar h2 { display: none; }
-            .sidebar ul li a { padding: 10px 10px; font-size: 1.2em; text-align: center; }
-            .main-content { margin-left: 70px; padding: 20px 10px; }
+        .form-control {
+            border-color: #dbeafe;
         }
-        @media (max-width: 600px) {
-            .main-content { margin-left: 0; padding: 10px 2vw; }
-            .sidebar { position: static; width: 100%; height: auto; flex-direction: row; }
-            .sidebar ul { display: flex; flex-direction: row; justify-content: space-around; }
-            .sidebar ul li { margin: 0; }
+        label {
+            color: #232b3e !important;
         }
     </style>
 </head>
 <body>
-    <div class="sidebar">
-        <h2>Admin</h2>
-        <ul>
-            <li><a href="dashboard_admin.jsp"><i class="fa fa-chart-line"></i> Dashboards</a></li>
-            <li><a href="addCustomer_admin.jsp"><i class="fa fa-user-plus"></i> Add Customer</a></li>
-            <li><a href="editCustomer_admin.jsp"><i class="fa fa-user-edit"></i> Edit Customer</a></li>
-            <li><a href="viewAccount.jsp"><i class="fa fa-id-card"></i> View Account</a></li>
-            <li><a href="addItems_admin.jsp"><i class="fa fa-boxes"></i> Manage Items</a></li>
-            <li><a href="calculateBill.jsp"><i class="fa fa-calculator"></i> Calculate Bill</a></li>
-            <li><a href="printBill.jsp"><i class="fa fa-print"></i> Print/View Bills</a></li>
-            <li><a href="help.jsp"><i class="fa fa-question-circle"></i> Help</a></li>
-            <li><a href="useRoleManage_admin.jsp"><i class="fa fa-users-cog"></i> User Roles/Settings</a></li>
-            <li><a href="logout"><i class="fa fa-sign-out-alt"></i> Logout</a></li>
-        </ul>
-    </div>
+    <jsp:include page="sidebar_admin.jspf" />
     <div class="main-content">
         <div class="header">
             <div>
@@ -246,27 +162,29 @@
                 <i class="fa fa-users"></i> View Users
             </a>
         </div>
-        <div style="display: flex; justify-content: center; align-items: flex-start; min-height: 60vh; flex-direction: column; align-items: center;">
-            <form class="form-area" action="AddUserServlet" method="post">
+        <div class="form-area">
+            <h3 style="text-align: center; margin-bottom: 30px; color: #232b3e;">Add New User</h3>
+            <form action="AddUserServlet" method="post">
                 <% String message = (String) request.getAttribute("message");
                    if (message != null) { %>
                     <div class="message success"><%= message %></div>
                 <% } %>
                 <div class="input-card">
                     <label for="use_name">Full Name</label>
-                    <input type="text" id="use_name" name="use_name" required />
+                    <input type="text" id="use_name" name="use_name" class="form-control" required />
                 </div>
                 <div class="input-card">
                     <label for="username">Username</label>
-                    <input type="text" id="username" name="username" required />
+                    <input type="text" id="username" name="username" class="form-control" required />
                 </div>
                 <div class="input-card">
                     <label for="password">Password</label>
-                    <input type="password" id="password" name="password" required />
+                    <input type="password" id="password" name="password" class="form-control" required />
                 </div>
                 <div class="input-card">
                     <label for="role">Role</label>
-                    <select id="role" name="role" required>
+                    <select id="role" name="role" class="form-control" required>
+                        <option value="" selected disabled>Select Role</option>
                         <option value="admin">Admin</option>
                         <option value="coadmin">Coadmin</option>
                         <option value="staff">Staff</option>
@@ -274,14 +192,16 @@
                 </div>
                 <div class="input-card">
                     <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required />
+                    <input type="email" id="email" name="email" class="form-control" required />
                 </div>
                 <div class="input-card">
                     <label for="telephone">Telephone</label>
-                    <input type="text" id="telephone" name="telephone" required />
+                    <input type="text" id="telephone" name="telephone" class="form-control" required />
                 </div>
                 <div class="button-card">
-                    <button type="submit" class="submit-btn">Save</button>
+                    <button type="submit" class="submit-btn">
+                        <i class="fa fa-save"></i> Save User
+                    </button>
                 </div>
             </form>
         </div>

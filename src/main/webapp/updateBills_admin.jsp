@@ -6,27 +6,363 @@
 <%@ page import="com.example.dinithi_pahana_edu.model.Customer" %>
 <%@ page import="java.time.LocalDateTime" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
+<%@ page session="true" %>
+<%
+    com.example.dinithi_pahana_edu.model.User user = (com.example.dinithi_pahana_edu.model.User) session.getAttribute("user");
+    if (user == null || !"admin".equalsIgnoreCase(user.getRole())) {
+        response.sendRedirect("error.jsp");
+        return;
+    }
+%>
 <%-- This page is for updating an existing bill. All fields are pre-filled. --%>
-<jsp:include page="sidebar_admin.jspf" />
 <% Bill bill = (Bill) request.getAttribute("bill");
    Customer customer = (Customer) request.getAttribute("customer");
    List<BillItem> billItems = (List<BillItem>) request.getAttribute("billItems");
    List<Item> items = (List<Item>) request.getAttribute("items");
 %>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Update Bill (Admin)</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Bill - Admin</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <style>
-        /* ... (copy all styles from calculateBills_admin.jsp) ... */
-    </style>
+        body {
+            margin: 0;
+            font-family: 'Roboto', Arial, sans-serif;
+            background: linear-gradient(120deg, #232b3e, #1a2233);
+            color: #d7dee5;
+            min-height: 100vh;
+        }
+        .main-content {
+            margin-left: 240px;
+            padding: 40px 30px;
+            background: #ffffffe7;
+            min-height: 100vh;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #232b3e;
+            font-size: 2rem;
+            margin: 0;
+        }
+        .user-info {
+            font-size: 1.1em;
+            color: #21b701;
+            background: #27304a;
+            padding: 8px 18px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .form-area {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(44,62,80,0.10);
+            padding: 30px;
+        }
+        .card {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(44,62,80,0.10);
+            border: 1px solid #e0e0e0;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .form-control {
+            width: 100%;
+            background: #fff;
+            color: #232b3e;
+            border: 1.5px solid #bdbdbd;
+            font-size: 1.13rem;
+            padding: 12px 14px;
+            border-radius: 6px;
+            transition: border-color 0.2s;
+            box-sizing: border-box;
+        }
+        .form-control:focus {
+            border-color: #21b701;
+            outline: none;
+        }
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.2s;
+        }
+        .btn-primary {
+            background: #007bff;
+            color: white;
+        }
+        .btn-success {
+            background: #21b701;
+            color: white;
+        }
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+        .btn-outline-primary {
+            background: transparent;
+            color: #007bff;
+            border: 1px solid #007bff;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            background: #fff;
+        }
+        th, td {
+            padding: 12px 10px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+            color: #232b3e;
+        }
+        th {
+            background: #f4f4f4;
+            font-weight: 700;
+        }
+        .alert {
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+        .alert-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        .d-flex {
+            display: flex;
+        }
+        .justify-content-between {
+            justify-content: space-between;
+        }
+        .align-items-center {
+            align-items: center;
+        }
+        .mb-3 {
+            margin-bottom: 1rem;
+        }
+        .mb-4 {
+            margin-bottom: 1.5rem;
+        }
+        .mb-2 {
+            margin-bottom: 0.5rem;
+        }
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin-right: -15px;
+            margin-left: -15px;
+        }
+        .col-md-6 {
+            flex: 0 0 50%;
+            max-width: 50%;
+            padding-right: 15px;
+            padding-left: 15px;
+        }
+        .col-md-12 {
+            flex: 0 0 100%;
+            max-width: 100%;
+            padding-right: 15px;
+            padding-left: 15px;
+        }
+        .card-body {
+            padding: 1.25rem;
+        }
+        .card-title {
+            margin-bottom: 0.75rem;
+            color: #232b3e;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #232b3e;
+            font-weight: 500;
+        }
+        .bill-header {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(44,62,80,0.10);
+            border: 1px solid #e0e0e0;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .bill-header h5 {
+            color: #232b3e;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        .bill-summary {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .bill-summary h5 {
+            color: #232b3e;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        .bill-summary .row {
+            margin-bottom: 0.5rem;
+        }
+        .bill-summary strong {
+            color: #232b3e;
+        }
+        .icon-btn {
+            background: #21b701;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 12px;
+            cursor: pointer;
+            margin-right: 5px;
+            transition: background 0.2s;
+        }
+        .icon-btn:hover {
+            background: #1a9e01;
+        }
+        .icon-btn.remove-row {
+            background: #dc3545;
+        }
+        .icon-btn.remove-row:hover {
+            background: #c82333;
+        }
+        .icon-btn.add-row {
+            background: #007bff;
+        }
+        .icon-btn.add-row:hover {
+            background: #0056b3;
+        }
+        ::placeholder {
+            color: #6c757d;
+            opacity: 1;
+        }
+                 input[readonly], input[disabled] {
+             background-color: #e9ecef;
+             opacity: 1;
+         }
+         /* Customer Details Styling */
+         #customer-info-section .card-body span {
+             color: #232b3e !important;
+             font-weight: 500;
+         }
+         #customer-info-section .card-body strong {
+             color: #232b3e !important;
+             font-weight: 600;
+         }
+         /* Table Styling */
+         .table {
+             border-collapse: collapse;
+             width: 100%;
+             margin-top: 10px;
+         }
+         .table-bordered {
+             border: 1px solid #dee2e6;
+         }
+         .table th, .table td {
+             border: 1px solid #dee2e6;
+             padding: 12px 10px;
+             text-align: left;
+             color: #232b3e;
+         }
+         .table th {
+             background: #f4f4f4;
+             font-weight: 700;
+         }
+         /* Button Styling */
+         .btn-sm {
+             padding: 6px 12px;
+             font-size: 0.875rem;
+         }
+         .btn-outline-success {
+             background: transparent;
+             color: #21b701;
+             border: 1px solid #21b701;
+         }
+         .btn-outline-success:hover {
+             background: #21b701;
+             color: #fff;
+         }
+         .btn-outline-danger {
+             background: transparent;
+             color: #dc3545;
+             border: 1px solid #dc3545;
+         }
+         .btn-outline-danger:hover {
+             background: #dc3545;
+             color: #fff;
+         }
+         .btn-secondary {
+             background: #6c757d;
+             color: #fff;
+         }
+         .btn-secondary:hover {
+             background: #5a6268;
+         }
+         .mx-1 {
+             margin-left: 0.25rem;
+             margin-right: 0.25rem;
+         }
+         .mt-4 {
+             margin-top: 1.5rem;
+         }
+         /* Heading Styling */
+         h3 {
+             color: #232b3e !important;
+             font-weight: 600;
+             font-size: 1.5rem;
+             margin-bottom: 1rem;
+         }
+         h4 {
+             color: #232b3e !important;
+             font-weight: 600;
+             font-size: 1.25rem;
+             margin-bottom: 1rem;
+         }
+         /* Form Area Styling */
+         .form-area h3, .form-area h4 {
+             color: #232b3e !important;
+             font-weight: 600;
+         }
+     </style>
 </head>
 <body>
+    <jsp:include page="sidebar_admin.jspf" />
     <div class="main-content">
-<div class="container mt-4">
+        <div class="header">
+            <div>
+                <h1>Pahana Edu Bookshop Management System</h1>
+            </div>
+            <div class="user-info">
+                <i class="fa fa-user-shield"></i> <span>Role: <%= user.getRole() %></span>
+            </div>
+        </div>
+        <div class="form-area">
     <% if (request.getAttribute("message") != null) { %>
         <div class="alert alert-info alert-dismissible fade show" role="alert">
             <%= request.getAttribute("message") %>
@@ -49,6 +385,7 @@
                 <div class="col-md-12 mb-2"><strong>Name:</strong> <span id="info-name"><%= customer != null ? customer.getName() : "" %></span></div>
                 <div class="col-md-12 mb-2"><strong>Address:</strong> <span id="info-address"><%= customer != null ? customer.getAddress() : "" %></span></div>
                 <div class="col-md-12 mb-2"><strong>Phone:</strong> <span id="info-phone"><%= customer != null ? customer.getTelephone() : "" %></span></div>
+                <div class="col-md-12 mb-2"><strong>Email:</strong> <span id="info-email"><%= customer != null ? customer.getEmail() : "" %></span></div>
             </div>
         </div>
     </div>
@@ -228,6 +565,7 @@ function printBill() {
     document.getElementById('print-customerName').innerText = document.getElementById('info-name') ? document.getElementById('info-name').innerText : '';
     document.getElementById('print-customerAccount').innerText = document.getElementById('info-account') ? document.getElementById('info-account').innerText : '';
     document.getElementById('print-customerPhone').innerText = document.getElementById('info-phone') ? document.getElementById('info-phone').innerText : '';
+    document.getElementById('print-customerEmail').innerText = document.getElementById('info-email') ? document.getElementById('info-email').innerText : '';
     document.getElementById('print-customerAddress').innerText = document.getElementById('info-address') ? document.getElementById('info-address').innerText : '';
     document.getElementById('print-totalAmount').innerText = document.getElementById('totalAmount').value;
     document.getElementById('print-paidAmount').innerText = document.getElementById('paidAmount').value;

@@ -165,6 +165,31 @@
                 <b>Tip:</b> Use the sidebar on the left to quickly access any feature.<br>
                 If you need further assistance, please contact your system administrator.
             </div>
+            
+            <div class="tips-section">
+                <h3><i class="fa fa-lightbulb" style="color:#21b701"></i> Tips for Effective Use</h3>
+                <div class="tips-content">
+                    <ul>
+                        <li><strong>Keep Customer and Item Data Up to Date:</strong> Ensure all customer information and item details are current for accurate billing.</li>
+                        <li><strong>Regularly Check Stock Alerts:</strong> Monitor stock levels frequently to prevent selling out-of-stock items.</li>
+                        <li><strong>Always Review Bill Details:</strong> Double-check all bill information before finalizing to avoid errors.</li>
+                        <li><strong>Log Out When You Finish Your Sessions:</strong> Always log out when done to keep the system secure.</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="help-contact">
+                <h3><i class="fa fa-phone" style="color:#21b701"></i> Getting Further Help</h3>
+                <div class="contact-content">
+                    <p>If you encounter any issues or need additional support:</p>
+                    <div class="contact-info">
+                        <strong>Contact Number:</strong> <span class="phone-number">0713441715</span><br>
+                        <strong>Available Hours:</strong> Monday - Friday, 8:00 AM - 6:00 PM<br>
+                        <strong>Response Time:</strong> Within 24 hours during business days
+                    </div>
+                    <p class="contact-note">Please have your user ID and a description of the issue ready when contacting support.</p>
+                </div>
+            </div>
         </div>
     </div>
 </body>
@@ -245,7 +270,73 @@
     color: #232b3e;
     font-size: 1.13em;
 }
-@media (max-width: 700px) {
+            
+            .tips-section, .help-contact {
+                background: #fff;
+                border-radius: 8px;
+                padding: 25px;
+                margin: 30px 0;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                border: 1px solid #e9ecef;
+            }
+            
+            .tips-section h3, .help-contact h3 {
+                color: #232d3b;
+                margin-bottom: 20px;
+                font-size: 1.4rem;
+                font-weight: 600;
+            }
+            
+            .tips-content ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+            
+            .tips-content li {
+                padding: 12px 0;
+                border-bottom: 1px solid #f1f3f4;
+                color: #555;
+                line-height: 1.6;
+            }
+            
+            .tips-content li:last-child {
+                border-bottom: none;
+            }
+            
+            .tips-content strong {
+                color: #232d3b;
+                font-weight: 600;
+            }
+            
+            .contact-content p {
+                color: #555;
+                margin-bottom: 15px;
+                line-height: 1.6;
+            }
+            
+            .contact-info {
+                background: #f8f9fa;
+                padding: 20px;
+                border-radius: 6px;
+                border-left: 4px solid #21b701;
+                margin: 15px 0;
+            }
+            
+            .phone-number {
+                color: #21b701;
+                font-weight: 600;
+                font-size: 1.1rem;
+            }
+            
+            .contact-note {
+                font-style: italic;
+                color: #666;
+                font-size: 0.95rem;
+                margin-top: 15px;
+            }
+            
+            @media (max-width: 768px) {
     .help-guide { padding: 16px 2vw; }
     .feature-card { flex-direction: column; gap: 10px; }
 }

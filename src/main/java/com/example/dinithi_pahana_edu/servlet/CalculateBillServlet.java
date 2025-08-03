@@ -2,8 +2,11 @@ package com.example.dinithi_pahana_edu.servlet;
 
 import com.example.dinithi_pahana_edu.model.Bill;
 import com.example.dinithi_pahana_edu.model.BillItem;
+import com.example.dinithi_pahana_edu.model.Customer;
 import com.example.dinithi_pahana_edu.model.Item;
 import com.example.dinithi_pahana_edu.service.BillService;
+import com.example.dinithi_pahana_edu.service.CustomerService;
+import com.example.dinithi_pahana_edu.service.EmailService;
 import com.example.dinithi_pahana_edu.service.ItemService;
 
 import javax.servlet.ServletException;
@@ -20,6 +23,8 @@ import java.util.List;
 public class CalculateBillServlet extends HttpServlet {
     private BillService billService = new BillService();
     private ItemService itemService = new ItemService();
+    private CustomerService customerService = new CustomerService();
+    private EmailService emailService = new EmailService();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -95,7 +100,43 @@ public class CalculateBillServlet extends HttpServlet {
                 itemService.decrementStock(item.getItemId(), item.getQuantity());
             }
             billService.addBillItems(billItems);
-            request.setAttribute("message", "Bill saved successfully! Bill Number: " + billNumber);
+            
+            // Send bill email to customer
+            try {
+                System.out.println("[EMAIL DEBUG] Attempting to send bill email for bill: " + billNumber);
+                Customer customer = customerService.getCustomerById(customerIdInt);
+                System.out.println("[EMAIL DEBUG] Customer found: " + (customer != null ? "YES" : "NO"));
+                
+                if (customer != null) {
+                    System.out.println("[EMAIL DEBUG] Customer email: " + customer.getEmail());
+                    System.out.println("[EMAIL DEBUG] Customer name: " + customer.getName());
+                }
+                
+                if (customer != null && customer.getEmail() != null && !customer.getEmail().trim().isEmpty()) {
+                    // Get bill items with item names for email
+                    List<BillItem> billItemsWithNames = billService.getBillItemsByBillId(billId);
+                    System.out.println("[EMAIL DEBUG] Bill items count: " + billItemsWithNames.size());
+                    
+                    System.out.println("[EMAIL DEBUG] Calling emailService.sendBillEmail...");
+                    boolean emailSent = emailService.sendBillEmail(customer, bill, billItemsWithNames);
+                    System.out.println("[EMAIL DEBUG] Email sent result: " + emailSent);
+                    
+                    if (emailSent) {
+                        request.setAttribute("message", "Bill saved successfully! Bill Number: " + billNumber + ". Bill email sent to customer: " + customer.getEmail());
+                    } else {
+                        request.setAttribute("message", "Bill saved successfully! Bill Number: " + billNumber + ". Bill email could not be sent.");
+                    }
+                } else {
+                    String reason = customer == null ? "Customer not found" : 
+                                  (customer.getEmail() == null ? "Customer email is null" : "Customer email is empty");
+                    System.out.println("[EMAIL DEBUG] No email sent. Reason: " + reason);
+                    request.setAttribute("message", "Bill saved successfully! Bill Number: " + billNumber + ". No bill email sent (" + reason + ").");
+                }
+            } catch (Exception e) {
+                System.err.println("[EMAIL ERROR] Error sending bill email: " + e.getMessage());
+                e.printStackTrace();
+                request.setAttribute("message", "Bill saved successfully! Bill Number: " + billNumber + ". Bill email could not be sent due to an error: " + e.getMessage());
+            }
         } else {
             request.setAttribute("message", "Failed to save bill.");
         }

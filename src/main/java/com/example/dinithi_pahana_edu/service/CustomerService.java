@@ -71,6 +71,14 @@ public class CustomerService {
         return customerDAO.getCustomerByAccountNumber(accountNumber.trim());
     }
     
+    // Get customer by email
+    public Customer getCustomerByEmail(String email) {
+        if (email == null || email.trim().isEmpty()) {
+            return null;
+        }
+        return customerDAO.getCustomerByEmail(email.trim());
+    }
+    
     // Update customer with validation
     public boolean updateCustomer(Customer customer) {
         // Validate customer data

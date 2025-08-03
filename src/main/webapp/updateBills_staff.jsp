@@ -7,7 +7,6 @@
 <%@ page import="java.time.LocalDateTime" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
 <%-- This page is for updating an existing bill. All fields are pre-filled. --%>
-<jsp:include page="sidebar_staff.jspf" />
 <% Bill bill = (Bill) request.getAttribute("bill");
    Customer customer = (Customer) request.getAttribute("customer");
    List<BillItem> billItems = (List<BillItem>) request.getAttribute("billItems");
@@ -25,6 +24,7 @@
     </style>
 </head>
 <body>
+    <jsp:include page="sidebar_staff.jspf" />
     <div class="main-content">
 <div class="container mt-4">
     <% if (request.getAttribute("message") != null) { %>
@@ -49,6 +49,7 @@
                 <div class="col-md-12 mb-2"><strong>Name:</strong> <span id="info-name"><%= customer != null ? customer.getName() : "" %></span></div>
                 <div class="col-md-12 mb-2"><strong>Address:</strong> <span id="info-address"><%= customer != null ? customer.getAddress() : "" %></span></div>
                 <div class="col-md-12 mb-2"><strong>Phone:</strong> <span id="info-phone"><%= customer != null ? customer.getTelephone() : "" %></span></div>
+                <div class="col-md-12 mb-2"><strong>Email:</strong> <span id="info-email"><%= customer != null ? customer.getEmail() : "" %></span></div>
             </div>
         </div>
     </div>
@@ -224,6 +225,7 @@ function printBill() {
     document.getElementById('print-customerName').innerText = document.getElementById('info-name') ? document.getElementById('info-name').innerText : '';
     document.getElementById('print-customerAccount').innerText = document.getElementById('info-account') ? document.getElementById('info-account').innerText : '';
     document.getElementById('print-customerPhone').innerText = document.getElementById('info-phone') ? document.getElementById('info-phone').innerText : '';
+    document.getElementById('print-customerEmail').innerText = document.getElementById('info-email') ? document.getElementById('info-email').innerText : '';
     document.getElementById('print-customerAddress').innerText = document.getElementById('info-address') ? document.getElementById('info-address').innerText : '';
     document.getElementById('print-totalAmount').innerText = document.getElementById('totalAmount').value;
     document.getElementById('print-paidAmount').innerText = document.getElementById('paidAmount').value;
