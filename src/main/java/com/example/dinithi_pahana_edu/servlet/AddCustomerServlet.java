@@ -3,6 +3,7 @@ package com.example.dinithi_pahana_edu.servlet;
 import com.example.dinithi_pahana_edu.model.Customer;
 import com.example.dinithi_pahana_edu.model.User;
 import com.example.dinithi_pahana_edu.service.CustomerService;
+import com.example.dinithi_pahana_edu.service.EmailService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,10 +16,12 @@ import java.io.IOException;
 @WebServlet("/addCustomer")
 public class AddCustomerServlet extends HttpServlet {
     private CustomerService customerService;
+    private EmailService emailService;
     
     @Override
     public void init() throws ServletException {
         customerService = new CustomerService();
+        emailService = new EmailService();
     }
     
     @Override
@@ -81,6 +84,23 @@ public class AddCustomerServlet extends HttpServlet {
             request.setAttribute("address", "");
             request.setAttribute("telephone", "");
             request.setAttribute("email", "");
+            
+            // Send welcome email to the new customer
+            try {
+                System.out.println("[EMAIL DEBUG] Attempting to send welcome email to: " + customer.getEmail());
+                boolean emailSent = emailService.sendWelcomeEmail(customer);
+                if (emailSent) {
+                    System.out.println("[EMAIL DEBUG] Welcome email sent successfully!");
+                    request.setAttribute("emailMessage", "Welcome email sent to customer: " + customer.getEmail());
+                } else {
+                    System.out.println("[EMAIL DEBUG] Failed to send welcome email.");
+                    request.setAttribute("emailMessage", "Customer added but welcome email could not be sent.");
+                }
+            } catch (Exception e) {
+                System.err.println("[EMAIL ERROR] Error sending welcome email: " + e.getMessage());
+                e.printStackTrace();
+                request.setAttribute("emailMessage", "Customer added but welcome email could not be sent due to an error.");
+            }
         } else {
             // Check if account number already exists
             if (customerService.isAccountNumberExists(accountNumber)) {

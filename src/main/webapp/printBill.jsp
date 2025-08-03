@@ -21,12 +21,14 @@
     </style>
 </head>
 <body onload="window.print()">
+
     <!-- Email message display (non-printable) -->
     <% if (request.getAttribute("emailMessage") != null) { %>
         <div style="position: fixed; top: 10px; right: 10px; background: #21b701; color: white; padding: 10px; border-radius: 5px; z-index: 1000; display: none;">
             <%= request.getAttribute("emailMessage") %>
         </div>
     <% } %>
+
     <div class="print-container">
         <h2>Pahana Edu Bookshop</h2>
         <h4>Bill Receipt</h4>

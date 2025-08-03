@@ -7,6 +7,7 @@ import com.example.dinithi_pahana_edu.model.Item;
 import com.example.dinithi_pahana_edu.model.User;
 import com.example.dinithi_pahana_edu.service.BillService;
 import com.example.dinithi_pahana_edu.service.CustomerService;
+import com.example.dinithi_pahana_edu.service.EmailService;
 import com.example.dinithi_pahana_edu.service.ItemService;
 
 import javax.servlet.ServletException;
@@ -25,6 +26,7 @@ public class UpdateBillServlet extends HttpServlet {
     private BillService billService = new BillService();
     private CustomerService customerService = new CustomerService();
     private ItemService itemService = new ItemService();
+    private EmailService emailService = new EmailService();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -125,7 +127,43 @@ public class UpdateBillServlet extends HttpServlet {
         boolean updated = billService.updateBill(bill);
         if (updated) {
             billService.addBillItems(billItems);
-            request.setAttribute("message", "Bill updated successfully! Bill Number: " + billNumber);
+            
+            // Send updated bill email to customer
+            try {
+                System.out.println("[EMAIL DEBUG] Attempting to send updated bill email for bill: " + billNumber);
+                Customer customer = customerService.getCustomerById(customerIdInt);
+                System.out.println("[EMAIL DEBUG] Customer found: " + (customer != null ? "YES" : "NO"));
+                
+                if (customer != null) {
+                    System.out.println("[EMAIL DEBUG] Customer email: " + customer.getEmail());
+                    System.out.println("[EMAIL DEBUG] Customer name: " + customer.getName());
+                }
+                
+                if (customer != null && customer.getEmail() != null && !customer.getEmail().trim().isEmpty()) {
+                    // Get bill items with item names for email
+                    List<BillItem> billItemsWithNames = billService.getBillItemsByBillId(billId);
+                    System.out.println("[EMAIL DEBUG] Bill items count: " + billItemsWithNames.size());
+                    
+                    System.out.println("[EMAIL DEBUG] Calling emailService.sendBillEmail...");
+                    boolean emailSent = emailService.sendBillEmail(customer, bill, billItemsWithNames);
+                    System.out.println("[EMAIL DEBUG] Email sent result: " + emailSent);
+                    
+                    if (emailSent) {
+                        request.setAttribute("message", "Bill updated successfully! Bill Number: " + billNumber + ". Updated bill email sent to customer: " + customer.getEmail());
+                    } else {
+                        request.setAttribute("message", "Bill updated successfully! Bill Number: " + billNumber + ". Updated bill email could not be sent.");
+                    }
+                } else {
+                    String reason = customer == null ? "Customer not found" : 
+                                  (customer.getEmail() == null ? "Customer email is null" : "Customer email is empty");
+                    System.out.println("[EMAIL DEBUG] No email sent. Reason: " + reason);
+                    request.setAttribute("message", "Bill updated successfully! Bill Number: " + billNumber + ". No updated bill email sent (" + reason + ").");
+                }
+            } catch (Exception e) {
+                System.err.println("[EMAIL ERROR] Error sending updated bill email: " + e.getMessage());
+                e.printStackTrace();
+                request.setAttribute("message", "Bill updated successfully! Bill Number: " + billNumber + ". Updated bill email could not be sent due to an error: " + e.getMessage());
+            }
         } else {
             request.setAttribute("message", "Failed to update bill.");
         }
