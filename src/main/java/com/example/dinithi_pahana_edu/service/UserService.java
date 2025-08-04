@@ -30,4 +30,29 @@ public class UserService {
     public boolean deleteUser(int id) {
         return userDAO.deleteUser(id);
     }
+
+    // Search methods
+    public List<User> searchUsers(String searchTerm) {
+        return userDAO.searchUsers(searchTerm);
+    }
+
+    public List<User> searchUsersByRole(String role) {
+        return userDAO.searchUsersByRole(role);
+    }
+
+    public List<User> searchUsersByName(String name) {
+        return userDAO.searchUsersByName(name);
+    }
+
+    public List<User> searchUsersByUsername(String username) {
+        return userDAO.searchUsersByUsername(username);
+    }
+
+    public List<User> searchUsersByEmail(String email) {
+        return userDAO.searchUsersByEmail(email);
+    }
+
+    public List<User> searchUsersByTelephone(String telephone) {
+        return userDAO.searchUsersByTelephone(telephone);
+    }
 } 

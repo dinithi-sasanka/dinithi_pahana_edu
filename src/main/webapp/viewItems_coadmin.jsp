@@ -157,14 +157,16 @@
                         <td><%= item.getPrice() %></td>
                         <td><%= item.getStock() %></td>
                         <td>
-                            <form action="EditItemServlet" method="get" style="display:inline;">
-                                <input type="hidden" name="id" value="<%= item.getId() %>" />
-                                <button type="submit" style="background:#1976d2; color:#fff; border:none; border-radius:5px; padding:6px 16px; font-size:1em; font-weight:600; margin-right:6px; cursor:pointer;">Edit</button>
-                            </form>
-                            <form action="DeleteItemServlet" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this item?');">
-                                <input type="hidden" name="id" value="<%= item.getId() %>" />
-                                <button type="submit" style="background:#dc3545; color:#fff; border:none; border-radius:5px; padding:6px 16px; font-size:1em; font-weight:600; cursor:pointer;">Delete</button>
-                            </form>
+                            <div style="display: flex; gap: 5px; align-items: center;">
+                                <form action="EditItemServlet" method="get" style="margin: 0;">
+                                    <input type="hidden" name="id" value="<%= item.getId() %>" />
+                                    <button type="submit" style="background:#1976d2; color:#fff; border:none; border-radius:4px; padding:4px 12px; font-size:0.9em; font-weight:600; cursor:pointer; min-width:50px;">Edit</button>
+                                </form>
+                                <form action="DeleteItemServlet" method="post" style="margin: 0;" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                                    <input type="hidden" name="id" value="<%= item.getId() %>" />
+                                    <button type="submit" style="background:#dc3545; color:#fff; border:none; border-radius:4px; padding:4px 12px; font-size:0.9em; font-weight:600; cursor:pointer; min-width:50px;">Delete</button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                 <%  } 

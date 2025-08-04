@@ -10,6 +10,9 @@ import java.util.List;
 
 public class ItemDAO {
     public boolean addItem(Item item) {
+        if (item == null) {
+            return false;
+        }
         String sql = "INSERT INTO items (name, category, description, price, stock) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = DBConnection.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -103,6 +106,9 @@ public class ItemDAO {
     }
 
     public boolean updateItem(Item item) {
+        if (item == null) {
+            return false;
+        }
         String sql = "UPDATE items SET name=?, category=?, description=?, price=?, stock=? WHERE id=?";
         try (Connection conn = DBConnection.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
