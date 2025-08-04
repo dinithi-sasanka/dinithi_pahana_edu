@@ -9,6 +9,9 @@ import java.util.List;
 
 public class BillDAO {
     public int addBill(Bill bill) {
+        if (bill == null) {
+            return -1;
+        }
         String sql = "INSERT INTO bills (customer_id, bill_number, bill_date, bill_date_time, total_amount, paid_amount, balance) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = DBConnection.getInstance().getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
