@@ -9,7 +9,10 @@ public class CustomerDAO {
     
     // Add a new customer
     public boolean addCustomer(Customer customer) {
-        String sql = "INSERT INTO customers (account_number, name, address, telephone, email, created_at) VALUES (?, ?, ?, ?, ?, NOW())";
+        if (customer == null) {
+            return false;
+        }
+        String sql = "INSERT INTO customers (account_number, name, address, telephone, email) VALUES (?, ?, ?, ?, ?)";
         
         try (Connection conn = DBConnection.getInstance().getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -88,6 +91,9 @@ public class CustomerDAO {
     
     // Get customer by account number
     public Customer getCustomerByAccountNumber(String accountNumber) {
+        if (accountNumber == null || accountNumber.trim().isEmpty()) {
+            return null;
+        }
         String sql = "SELECT * FROM customers WHERE account_number = ?";
         
         try (Connection conn = DBConnection.getInstance().getConnection();
@@ -117,6 +123,9 @@ public class CustomerDAO {
     
     // Update customer
     public boolean updateCustomer(Customer customer) {
+        if (customer == null) {
+            return false;
+        }
         String sql = "UPDATE customers SET account_number = ?, name = ?, address = ?, telephone = ?, email = ? WHERE id = ?";
         
         try (Connection conn = DBConnection.getInstance().getConnection();
@@ -158,6 +167,9 @@ public class CustomerDAO {
     
     // Check if account number already exists
     public boolean isAccountNumberExists(String accountNumber) {
+        if (accountNumber == null || accountNumber.trim().isEmpty()) {
+            return false;
+        }
         String sql = "SELECT COUNT(*) FROM customers WHERE account_number = ?";
         
         try (Connection conn = DBConnection.getInstance().getConnection();
@@ -209,6 +221,13 @@ public class CustomerDAO {
 
     // Search customer by account number, name, or telephone (all optional, match if all non-empty fields match)
     public Customer searchCustomer(String accountNumber, String name, String telephone) {
+        // If no criteria provided, return null
+        if ((accountNumber == null || accountNumber.trim().isEmpty()) &&
+            (name == null || name.trim().isEmpty()) &&
+            (telephone == null || telephone.trim().isEmpty())) {
+            return null;
+        }
+        
         StringBuilder sql = new StringBuilder("SELECT * FROM customers WHERE 1=1");
         java.util.List<Object> params = new java.util.ArrayList<>();
         if (accountNumber != null && !accountNumber.trim().isEmpty()) {
@@ -248,6 +267,9 @@ public class CustomerDAO {
 
     // Search customer by email
     public Customer getCustomerByEmail(String email) {
+        if (email == null || email.trim().isEmpty()) {
+            return null;
+        }
         String sql = "SELECT * FROM customers WHERE email = ?";
         
         try (Connection conn = DBConnection.getInstance().getConnection();
@@ -277,6 +299,9 @@ public class CustomerDAO {
 
     // Search customer by any field (id, account number, name, address, email, telephone)
     public Customer searchCustomerByAnyField(String searchTerm) {
+        if (searchTerm == null || searchTerm.trim().isEmpty()) {
+            return null;
+        }
         String sql = "SELECT * FROM customers WHERE id = ? OR account_number = ? OR LOWER(name) LIKE ? OR LOWER(address) LIKE ? OR LOWER(email) LIKE ? OR telephone = ? LIMIT 1";
         try (Connection conn = DBConnection.getInstance().getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
