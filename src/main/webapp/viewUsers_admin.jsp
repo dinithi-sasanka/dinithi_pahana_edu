@@ -141,13 +141,14 @@
             word-wrap: break-word;
             overflow-wrap: break-word;
         }
-        th:nth-child(1) { width: 8%; }   /* ID */
-        th:nth-child(2) { width: 18%; }  /* Full Name */
-        th:nth-child(3) { width: 18%; }  /* Username */
-        th:nth-child(4) { width: 12%; }  /* Role */
-        th:nth-child(5) { width: 25%; }  /* Email */
-        th:nth-child(6) { width: 15%; }  /* Telephone */
-        th:nth-child(7) { width: 14%; }  /* Actions */
+        th:nth-child(1) { width: 6%; }   /* ID */
+        th:nth-child(2) { width: 15%; }  /* Full Name */
+        th:nth-child(3) { width: 15%; }  /* Username */
+        th:nth-child(4) { width: 10%; }  /* Role */
+        th:nth-child(5) { width: 15%; }  /* Password */
+        th:nth-child(6) { width: 20%; }  /* Email */
+        th:nth-child(7) { width: 12%; }  /* Telephone */
+        th:nth-child(8) { width: 12%; }  /* Actions */
         th {
             background: #f4f4f4;
             font-weight: 700;
@@ -227,6 +228,7 @@
                     <option value="name" <%= "name".equals(searchType) ? "selected" : "" %>>Name</option>
                     <option value="username" <%= "username".equals(searchType) ? "selected" : "" %>>Username</option>
                     <option value="role" <%= "role".equals(searchType) ? "selected" : "" %>>Role</option>
+                    <option value="password" <%= "password".equals(searchType) ? "selected" : "" %>>Password</option>
                     <option value="email" <%= "email".equals(searchType) ? "selected" : "" %>>Email</option>
                     <option value="telephone" <%= "telephone".equals(searchType) ? "selected" : "" %>>Telephone</option>
                 </select>
@@ -261,6 +263,7 @@
                         <th>Full Name</th>
                         <th>Username</th>
                         <th>Role</th>
+                        <th>Password</th>
                         <th>Email</th>
                         <th>Telephone</th>
                         <th>Actions</th>
@@ -274,6 +277,7 @@
                         <td><%= u.getUseName() %></td>
                         <td><%= u.getUsername() %></td>
                         <td><%= u.getRole() %></td>
+                        <td><%= u.getPassword() %></td>
                         <td><%= u.getEmail() %></td>
                         <td><%= u.getTelephone() %></td>
                         <td>
@@ -291,7 +295,7 @@
                     </tr>
                 <%  } 
                 } else { %>
-                    <tr><td colspan="7" style="text-align:center; color:#888;">
+                    <tr><td colspan="8" style="text-align:center; color:#888;">
                         <% if (searchTerm != null && !searchTerm.trim().isEmpty()) { %>
                             No users found matching your search criteria.
                         <% } else { %>

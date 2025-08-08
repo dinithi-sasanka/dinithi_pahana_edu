@@ -53,10 +53,19 @@ public class BillService {
     public List<Object[]> getMostSoldItems(int limit) {
         return billDAO.getMostSoldItems(limit);
     }
+    public List<Object[]> getMostSoldItemsBySearch(String searchTerm, int limit) {
+        return billDAO.getMostSoldItemsBySearch(searchTerm, limit);
+    }
     public List<Object[]> getDailySales(int days) {
         return billDAO.getDailySales(days);
     }
     public List<Object[]> getMonthlySales(int months) {
         return billDAO.getMonthlySales(months);
+    }
+    public List<Object[]> getDailySalesByDateRange(String startDate, String endDate) {
+        return billDAO.getDailySalesByDateRange(startDate, endDate);
+    }
+    public List<Object[]> getMonthlySalesByDateRange(String startDate, String endDate) {
+        return billDAO.getMonthlySalesByDateRange(startDate, endDate);
     }
 } 
