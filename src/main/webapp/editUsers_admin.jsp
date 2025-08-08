@@ -111,6 +111,31 @@
         .input-card input[type="password"] {
             font-family: monospace;
         }
+        .password-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .password-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 5px;
+            transition: color 0.3s ease;
+        }
+        .password-toggle:hover {
+            color: #21b701;
+        }
+        .password-container input[type="password"],
+        .password-container input[type="text"] {
+            padding-right: 45px;
+        }
         .button-card {
             margin-top: 20px;
             display: flex;
@@ -265,7 +290,12 @@
                         <label for="password">
                             <i class="fa fa-lock"></i> Password
                         </label>
-                        <input type="password" id="password" name="password" value="<%= editUser.getPassword() %>" required />
+                        <div class="password-container">
+                            <input type="password" id="password" name="password" value="<%= editUser.getPassword() %>" required />
+                            <button type="button" class="password-toggle" id="togglePassword">
+                                <i class="fa fa-eye"></i>
+                            </button>
+                        </div>
                     </div>
                     <div class="input-card">
                         <label for="role">
@@ -305,5 +335,26 @@
             </form>
         </div>
     </div>
+    
+    <script>
+        // Password toggle functionality
+        const togglePassword = document.getElementById('togglePassword');
+        const password = document.getElementById('password');
+        const eyeIcon = togglePassword.querySelector('i');
+
+        togglePassword.addEventListener('click', function() {
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            
+            // Toggle eye icon
+            if (type === 'text') {
+                eyeIcon.classList.remove('fa-eye');
+                eyeIcon.classList.add('fa-eye-slash');
+            } else {
+                eyeIcon.classList.remove('fa-eye-slash');
+                eyeIcon.classList.add('fa-eye');
+            }
+        });
+    </script>
 </body>
 </html> 

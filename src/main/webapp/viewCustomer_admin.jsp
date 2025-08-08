@@ -8,6 +8,8 @@
         return;
     }
     List<Customer> customerList = (List<Customer>) request.getAttribute("customerList");
+    String searchTerm = (String) request.getAttribute("searchTerm");
+    String searchType = (String) request.getAttribute("searchType");
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -93,6 +95,77 @@
         .delete-btn:hover {
             background: #c62828;
         }
+        .search-section {
+            max-width: 1100px;
+            margin: 0 auto 20px auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(44,62,80,0.10);
+            padding: 20px;
+        }
+        .search-form {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .search-input {
+            flex: 1;
+            min-width: 200px;
+            padding: 10px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+        .search-input:focus {
+            outline: none;
+            border-color: #21b701;
+        }
+        .search-select {
+            padding: 10px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+            background: #fff;
+            min-width: 150px;
+        }
+        .search-btn {
+            background: #21b701;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .search-btn:hover {
+            background: #43e97b;
+        }
+        .clear-btn {
+            background: #6c757d;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            text-decoration: none;
+        }
+        .clear-btn:hover {
+            background: #5a6268;
+            color: #fff;
+            text-decoration: none;
+        }
+        .search-results-info {
+            margin-bottom: 15px;
+            color: #232b3e;
+            font-size: 14px;
+        }
         @media (max-width: 800px) { 
             .main-content { 
                 margin-left: 70px; 
@@ -124,8 +197,41 @@
                 <i class="fa fa-user-shield"></i> <span>Role: <%= user.getRole() %></span>
             </div>
         </div>
+        <div class="search-section">
+            <h2 style="color:#232b3e;">Search Customers</h2>
+            <form action="ViewCustomerServlet" method="get" class="search-form">
+                <input type="text" name="searchTerm" value="<%= searchTerm != null ? searchTerm : "" %>" placeholder="Search customers..." class="search-input">
+                <select name="searchType" class="search-select">
+                    <option value="all" <%= "all".equals(searchType) || searchType == null ? "selected" : "" %>>All Fields</option>
+                    <option value="name" <%= "name".equals(searchType) ? "selected" : "" %>>Name</option>
+                    <option value="accountNumber" <%= "accountNumber".equals(searchType) ? "selected" : "" %>>Account Number</option>
+                    <option value="email" <%= "email".equals(searchType) ? "selected" : "" %>>Email</option>
+                    <option value="telephone" <%= "telephone".equals(searchType) ? "selected" : "" %>>Telephone</option>
+                    <option value="address" <%= "address".equals(searchType) ? "selected" : "" %>>Address</option>
+                </select>
+                <button type="submit" class="search-btn">
+                    <i class="fa fa-search"></i> Search
+                </button>
+                <a href="ViewCustomerServlet" class="clear-btn">
+                    <i class="fa fa-times"></i> Clear
+                </a>
+            </form>
+        </div>
         <div class="table-area">
             <h2 style="color:#232b3e;">All Customers</h2>
+            
+            <!-- Search Results Info -->
+            <% if (searchTerm != null && !searchTerm.trim().isEmpty()) { %>
+                <div class="search-results-info">
+                    <i class="fa fa-search"></i> 
+                    Search results for "<strong><%= searchTerm %></strong>" 
+                    <% if (searchType != null && !"all".equals(searchType)) { %>
+                        in <strong><%= searchType %></strong>
+                    <% } %>
+                    - Found <strong><%= customerList != null ? customerList.size() : 0 %></strong> customer(s)
+                </div>
+            <% } %>
+            
             <table>
                 <thead>
                     <tr>
@@ -159,7 +265,13 @@
                     </tr>
                 <%  } 
                 } else { %>
-                    <tr><td colspan="7" style="text-align:center; color:#888;">No customers found.</td></tr>
+                    <tr><td colspan="7" style="text-align:center; color:#888;">
+                        <% if (searchTerm != null && !searchTerm.trim().isEmpty()) { %>
+                            No customers found matching your search criteria.
+                        <% } else { %>
+                            No customers found.
+                        <% } %>
+                    </td></tr>
                 <% } %>
                 </tbody>
             </table>
