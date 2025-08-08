@@ -92,7 +92,6 @@
                         <th>Description</th>
                         <th>Price</th>
                         <th>Stock</th>
-                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -105,22 +104,10 @@
                         <td><%= item.getDescription() %></td>
                         <td><%= item.getPrice() %></td>
                         <td><%= item.getStock() %></td>
-                        <td>
-                            <div style="display: flex; gap: 5px; align-items: center;">
-                                <form action="EditItemServlet" method="get" style="margin: 0;">
-                                    <input type="hidden" name="id" value="<%= item.getId() %>" />
-                                    <button type="submit" style="background:#1976d2; color:#fff; border:none; border-radius:4px; padding:4px 12px; font-size:0.9em; font-weight:600; cursor:pointer; min-width:50px;">Edit</button>
-                                </form>
-                                <form action="DeleteItemServlet" method="post" style="margin: 0;" onsubmit="return confirm('Are you sure you want to delete this item?');">
-                                    <input type="hidden" name="id" value="<%= item.getId() %>" />
-                                    <button type="submit" style="background:#dc3545; color:#fff; border:none; border-radius:4px; padding:4px 12px; font-size:0.9em; font-weight:600; cursor:pointer; min-width:50px;">Delete</button>
-                                </form>
-                            </div>
-                        </td>
                     </tr>
                 <%  } 
                 } else { %>
-                    <tr><td colspan="7" style="text-align:center; color:#888;">No items found.</td></tr>
+                    <tr><td colspan="6" style="text-align:center; color:#888;">No items found.</td></tr>
                 <% } %>
                 </tbody>
             </table>

@@ -272,6 +272,26 @@ public class BillDAO {
         return result;
     }
 
+    public List<Object[]> getMostSoldItemsBySearch(String searchTerm, int limit) {
+        List<Object[]> result = new ArrayList<>();
+        String sql = "SELECT i.id, i.name, SUM(bi.quantity) AS total_sold " +
+                "FROM items i JOIN bill_items bi ON i.id = bi.item_id " +
+                "WHERE i.name LIKE ? OR CAST(i.id AS CHAR) LIKE ? " +
+                "GROUP BY i.id, i.name ORDER BY total_sold DESC LIMIT ?";
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            String likeTerm = "%" + searchTerm + "%";
+            pstmt.setString(1, likeTerm);
+            pstmt.setString(2, likeTerm);
+            pstmt.setInt(3, limit);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                result.add(new Object[]{rs.getInt(1), rs.getString(2), rs.getInt(3)});
+            }
+        } catch (SQLException e) { e.printStackTrace(); }
+        return result;
+    }
+
     public List<Object[]> getDailySales(int days) {
         List<Object[]> result = new ArrayList<>();
         String sql = "SELECT DATE(bill_date) AS day, SUM(total_amount) AS total_sales " +
@@ -294,6 +314,40 @@ public class BillDAO {
         try (Connection conn = DBConnection.getInstance().getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, months);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                result.add(new Object[]{rs.getString(1), rs.getDouble(2)});
+            }
+        } catch (SQLException e) { e.printStackTrace(); }
+        return result;
+    }
+
+    public List<Object[]> getDailySalesByDateRange(String startDate, String endDate) {
+        List<Object[]> result = new ArrayList<>();
+        String sql = "SELECT DATE(bill_date) AS day, SUM(total_amount) AS total_sales " +
+                "FROM bills WHERE DATE(bill_date) BETWEEN ? AND ? " +
+                "GROUP BY day ORDER BY day DESC";
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, startDate);
+            pstmt.setString(2, endDate);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                result.add(new Object[]{rs.getDate(1), rs.getDouble(2)});
+            }
+        } catch (SQLException e) { e.printStackTrace(); }
+        return result;
+    }
+
+    public List<Object[]> getMonthlySalesByDateRange(String startDate, String endDate) {
+        List<Object[]> result = new ArrayList<>();
+        String sql = "SELECT DATE_FORMAT(bill_date, '%Y-%m') AS month, SUM(total_amount) AS total_sales " +
+                "FROM bills WHERE DATE(bill_date) BETWEEN ? AND ? " +
+                "GROUP BY month ORDER BY month DESC";
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, startDate);
+            pstmt.setString(2, endDate);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 result.add(new Object[]{rs.getString(1), rs.getDouble(2)});

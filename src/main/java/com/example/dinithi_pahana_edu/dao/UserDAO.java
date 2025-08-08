@@ -180,6 +180,7 @@ public class UserDAO {
                         "id LIKE ? OR " +
                         "use_name LIKE ? OR " +
                         "username LIKE ? OR " +
+                        "password LIKE ? OR " +
                         "email LIKE ? OR " +
                         "telephone LIKE ?";
             
@@ -192,6 +193,7 @@ public class UserDAO {
                 stmt.setString(3, searchPattern);
                 stmt.setString(4, searchPattern);
                 stmt.setString(5, searchPattern);
+                stmt.setString(6, searchPattern);
                 
                 ResultSet rs = stmt.executeQuery();
                 while (rs.next()) {
@@ -352,6 +354,38 @@ public class UserDAO {
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             
             String searchPattern = "%" + telephone.trim() + "%";
+            stmt.setString(1, searchPattern);
+            
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                User user = new User(
+                    rs.getInt("id"),
+                    rs.getString("username"),
+                    rs.getString("password"),
+                    rs.getString("role"),
+                    rs.getString("use_name"),
+                    rs.getString("email"),
+                    rs.getString("telephone")
+                );
+                users.add(user);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return users;
+    }
+
+    public List<User> searchUsersByPassword(String password) {
+        List<User> users = new ArrayList<>();
+        if (password == null || password.trim().isEmpty()) {
+            return getAllUsers();
+        }
+        
+        String sql = "SELECT * FROM users WHERE password LIKE ?";
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            String searchPattern = "%" + password.trim() + "%";
             stmt.setString(1, searchPattern);
             
             ResultSet rs = stmt.executeQuery();
