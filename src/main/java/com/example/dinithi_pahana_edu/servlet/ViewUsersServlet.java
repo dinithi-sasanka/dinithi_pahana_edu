@@ -34,6 +34,9 @@ public class ViewUsersServlet extends HttpServlet {
                 case "role":
                     userList = userService.searchUsersByRole(searchTerm);
                     break;
+                case "password":
+                    userList = userService.searchUsersByPassword(searchTerm);
+                    break;
                 case "email":
                     userList = userService.searchUsersByEmail(searchTerm);
                     break;

@@ -330,8 +330,15 @@
     $(function() {
         // Show/hide customer sections
         $('#change-customer-btn').click(function() {
+            // Hide customer details and bills history
+            $('.customer-details').hide();
+            $('.bills-history').hide();
+            // Show search section
             $('#customer-search-section').show();
-            location.reload(); // Reload to clear customer data
+            // Clear search box
+            $('#customerSearchBox').val('');
+            // Scroll to top
+            $('html, body').animate({scrollTop: 0}, 'slow');
         });
         
         // Customer search functionality

@@ -40,7 +40,7 @@ public class DeleteCustomerServlet extends HttpServlet {
         }
         
         String message = deleted ? "Customer deleted successfully!" : "Failed to delete customer.";
-        String forwardPage = "ViewCustomersServlet?message=" + java.net.URLEncoder.encode(message, "UTF-8");
+        String forwardPage = "ViewCustomerServlet?message=" + java.net.URLEncoder.encode(message, "UTF-8");
         response.sendRedirect(forwardPage);
     }
 } 
