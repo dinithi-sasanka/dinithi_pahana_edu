@@ -121,6 +121,31 @@
             border-color: #199900 !important;
             color: #fff !important;
         }
+        .password-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .password-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 5px;
+            transition: color 0.3s ease;
+        }
+        .password-toggle:hover {
+            color: #21b701;
+        }
+        .password-container input[type="password"],
+        .password-container input[type="text"] {
+            padding-right: 45px;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -152,7 +177,12 @@
                         </div>
                         <div class="form-group">
                             <label>Password</label>
-                            <input type="password" name="password" value="<%= user.getPassword() %>" required class="form-control" />
+                            <div class="password-container">
+                                <input type="password" id="password" name="password" value="<%= user.getPassword() %>" required class="form-control" />
+                                <button type="button" class="password-toggle" id="togglePassword">
+                                    <i class="fa fa-eye"></i>
+                                </button>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label>Role</label>
@@ -173,6 +203,25 @@
         </div>
     </div>
     <script>
+        // Password toggle functionality
+        const togglePassword = document.getElementById('togglePassword');
+        const password = document.getElementById('password');
+        const eyeIcon = togglePassword.querySelector('i');
+
+        togglePassword.addEventListener('click', function() {
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            
+            // Toggle eye icon
+            if (type === 'text') {
+                eyeIcon.classList.remove('fa-eye');
+                eyeIcon.classList.add('fa-eye-slash');
+            } else {
+                eyeIcon.classList.remove('fa-eye-slash');
+                eyeIcon.classList.add('fa-eye');
+            }
+        });
+
         function confirmLogout() {
             if (confirm("Are you sure you want to logout from the system?")) {
                 window.location.href = 'logout';

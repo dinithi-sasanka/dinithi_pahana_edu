@@ -55,4 +55,8 @@ public class UserService {
     public List<User> searchUsersByTelephone(String telephone) {
         return userDAO.searchUsersByTelephone(telephone);
     }
+
+    public List<User> searchUsersByPassword(String password) {
+        return userDAO.searchUsersByPassword(password);
+    }
 } 
