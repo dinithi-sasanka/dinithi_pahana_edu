@@ -102,7 +102,6 @@ CREATE TABLE stock (
                        FOREIGN KEY (item_id) REFERENCES items(id)
 );
 
-
 -- Assuming these item IDs exist in your items table
 INSERT INTO stock (item_id, current_stock) VALUES
                                                (1, 10),   -- Laptop
