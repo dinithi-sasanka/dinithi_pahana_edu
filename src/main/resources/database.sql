@@ -81,6 +81,7 @@ CREATE TABLE items (
                        PRIMARY KEY (id)
 );
 
+
 INSERT INTO items (name, category, description, price, stock)
 VALUES
     ('Laptop', 'Electronics', '15-inch display, 8GB RAM, 256GB SSD', 850.00, 10),
@@ -88,6 +89,7 @@ VALUES
     ('Office Chair', 'Furniture', 'Ergonomic design with adjustable height', 120.00, 15),
     ('Headphones', 'Electronics', 'Wireless noise-cancelling headphones', 199.99, 25),
     ('Notebook', 'Stationery', '200-page spiral notebook', 2.50, 100);
+
 
 
 -- Create the stock table
